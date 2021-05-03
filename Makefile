@@ -1,13 +1,17 @@
 NAME		=	minishell
 LIBFT		=	libft.a
-CCF			=	@gcc $(CFLAGS)
-RM			=	@rm -f
+CCF			=	gcc $(CFLAGS)
+RM			=	rm -f
 CFLAGS		=	-Wall -Wextra -Werror -g
 PARSER_PATH	=	parser/
 PARSER_SRCS	=	parser.c
+EXEC_PATH	=	executor/
+EXEC_SRCS	=	executor.c
 GNL_PATH	=	gnl_dir/
 GNL_SRCS	=	get_next_line.c get_next_line_utils.c
-SRCS		=	$(addprefix $(PARSER_PATH), $(PARSER_SRCS)) \
+SRCS		=	minishell.c \
+				$(addprefix $(PARSER_PATH), $(PARSER_SRCS)) \
+				$(addprefix $(EXEC_PATH), $(EXEC_SRCS)) \
 				$(addprefix $(GNL_PATH), $(GNL_SRCS))
 OBJS		=	$(SRCS:.c=.o)
 LIB_DIR		=	libft/

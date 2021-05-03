@@ -1,6 +1,7 @@
 #include "../includes/minishell.h"
 
-int main(void)
+char *parser(char *line)
 {
-	printf("hi!\nProject started!");
+	printf("Hi from parser, line:\n\"%s\"\n", line);
+	return (line);
 }
