@@ -22,4 +22,3 @@ int main(void)
 		ret = get_next_line(1, &line);
 	}
 }
-
