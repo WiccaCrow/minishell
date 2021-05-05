@@ -1,10 +1,11 @@
 #include "../includes/minishell.h"
 
-int executor(char *line)
+int executor(t_command *command)
 {
-	int i;
-	
-	i = printf("Hi from executor, line:\n\"%s\"\n", line);
-
-	return (i);
+	if (ft_strnstr(command->command[0], ECHO, 4))
+	{
+//		printf("Hi from exec, command:\n\"%s\"\n", command->command[0]);
+		return (exec_echo(command));
+	}
+	return (0);
 }
