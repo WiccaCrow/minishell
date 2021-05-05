@@ -26,3 +26,7 @@ https://opensofty.com/2020/3/23/%D0%B2%D1%81%D1%82%D1%80%D0%BE%D0%B5%D0%BD%D0%BD
 https://www.gnu.org/software/bash/manual/html_node/Bash-Builtins.html
 
 https://translate.googleusercontent.com/translate_c?depth=1&pto=aue&rurl=translate.google.de&sl=en&sp=nmt4&tl=ru&u=https://www.gnu.org/software/bash/manual/html_node/Bash-Builtins.html&usg=ALkJrhjop0kbPID2VDo5tBqUfLKdOtx7Sg
+
+------------------------------------
+«Шелл» на С: пишем командную оболочку для Unix
+https://tproger.ru/translations/unix-shell-in-c/
