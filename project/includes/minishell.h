@@ -9,6 +9,7 @@
 # define NONECOLOR "\x1B[0m"
 # define GOLD "\033[40;33m"
 # define ECHO "echo"
+# define COM_NOT_FOUND ": command not found\n"
 
 typedef struct	s_command
 {

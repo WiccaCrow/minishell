@@ -1,11 +1,37 @@
 #include "../includes/minishell.h"
 
-int executor(t_command *command)
+int command_not_found()
 {
-	if (ft_strnstr(command->command[0], ECHO, 4))
+	int ret;
+	
+	ret = 0;
+	ret += (int) write(STDOUT_FILENO, COM_NOT_FOUND, ft_strlen(COM_NOT_FOUND));
+	return (ret);
+}
+
+int	is_command(const char *str, const char *command)
+{
+	int i;
+	
+	if (str && command)
 	{
-//		printf("Hi from exec, command:\n\"%s\"\n", command->command[0]);
-		return (exec_echo(command));
+		i = 0;
+		while (str[i] && command[i])
+		{
+			if (str[i] != command[i])
+				return (0);
+			i++;
+		}
+		if (str[i] != command[i])
+			return (0);
+		return (1);
 	}
 	return (0);
+}
+
+int executor(t_command *command)
+{
+	if (is_command(command->command[0], ECHO))
+		return (exec_echo(command));
+	return (command_not_found());
 }
