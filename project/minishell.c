@@ -10,17 +10,16 @@ int show_program_name()
 
 int main(void)
 {
-	char	*command;
-	char	*line;
-	int		ret;
+	t_command	command;
+	char		*line;
+	int			ret;
 
 	show_program_name();
 	ret = get_next_line(1, &line);
 	while (ret != -1)
 	{
-		command = parser(line);
-		executor(command);
-		printf("Hi from main, command:\n\"%s\"\n", command);
+		parser(line, &command);
+		executor(&command);
 		show_program_name();
 		ret = get_next_line(1, &line);
 	}
