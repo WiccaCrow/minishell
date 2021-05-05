@@ -1,7 +1,15 @@
 #include "../includes/minishell.h"
 
-char *parser(char *line)
+int parser(char *line, t_command *command)
 {
-	printf("Hi from parser, line:\n\"%s\"\n", line);
-	return (line);
+	char	**strings;
+	
+	strings = ft_split(line, ' ');
+	if (strings)
+	{
+		command->command = strings;
+		printf("Hi from parser, command:\"%s\"\n", command->command[0]);
+		return (0);
+	}
+	return (1);
 }
