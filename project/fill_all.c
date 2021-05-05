@@ -13,15 +13,15 @@
  * 		structure of the program. t_all all.
 */
 
-void	fill_all(t_all *all)
+int fill_all(t_all *all)
 {
-    int	ret;
+	int ret;
 
-    ret = 1;
-//	while (ret != -1)
-//	{
-    ret = get_next_line(1, &all->line);
-    parser(all);
-    executor(all);
-//	}
+	ret = get_next_line(1, &all->line);
+	if (ret != -1)
+	{
+		parser(all);
+		return (ret);
+	}
+	return (0);
 }

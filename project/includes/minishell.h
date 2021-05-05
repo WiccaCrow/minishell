@@ -28,7 +28,7 @@ typedef struct	s_all {
 void			start_all(t_all *all, char **env);
 void			init_env(t_all *all, char **env);
 void			exit_clean(t_all *all, int exit_code);
-void			fill_all(t_all *all);
+int 			fill_all(t_all *all);
 int				show_program_name(void);
 
 
