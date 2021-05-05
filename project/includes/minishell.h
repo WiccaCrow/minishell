@@ -8,8 +8,19 @@
 # define NAME "DULCIE&GRVELVA > "
 # define NONECOLOR "\x1B[0m"
 # define GOLD "\033[40;33m"
+# define ECHO "echo"
 
-char				*parser(char *line);
-int 				executor(char *line);
+typedef struct	s_command
+{
+	char		**command;
+}				t_command;
+
+int 			parser(char *line, t_command *command);
+
+
+
+int 			executor(t_command *command);
+int				exec_echo(t_command *command);
+
 
 #endif
