@@ -8,7 +8,6 @@ int parser(char *line, t_command *command)
 	if (strings)
 	{
 		command->command = strings;
-		printf("Hi from parser, command:\"%s\"\n", command->command[0]);
 		return (0);
 	}
 	return (1);
