@@ -11,18 +11,28 @@
 # define ECHO "echo"
 # define COM_NOT_FOUND ": command not found\n"
 
-typedef struct	s_command
+enum e_command
 {
-	char		**command;
-}				t_command;
+	not_found,
+	echo,
+	cd,
+	pwd,
+	export,
+	unset,
+	env,
+	exit_shell,
+	ctrl_c,
+	ctrl_d,
+	ctrl_slash
+};
 
-typedef struct	s_all {
-	int			flag_executer;
-	int			flag_exit;
-	char		*line;
-	t_command	command;
-	char		**env_my;
-}				t_all;
+typedef struct		s_all {
+	enum e_command	flag_command;
+	int				flag_exit;
+	char			*line;
+	char 			**args;
+	char			**env_my;
+}					t_all;
 
 
 void			start_all(t_all *all, char **env);
