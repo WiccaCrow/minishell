@@ -47,8 +47,7 @@ int main(int ac, char **av, char **env)
 
 	(void) ac;
 	(void) av;
-	(void) env;
-	start_all(&all);
+	start_all(&all, env);
 	while (!all.flag_exit)
 	{
 		show_program_name();
@@ -64,14 +63,37 @@ int main(int ac, char **av, char **env)
  * **********************************
  * Start program with zero-structure (example, all 
  * pointers = NULL, int variables = 0).
+ *
+ * function:
+ *  1.1.1. init_env;
+ *          do copy env;
  */
 
-void	start_all(t_all *all)
+void	start_all(t_all *all, char **env)
 {
-//	init_env(all);
+	init_env(all, env);
 	all->flag_executer = 0;
 	all->flag_exit = 0;
 	all->line = NULL;	
+}
+
+/************************************
+ * 		1.1.1. init_env     		*
+ * **********************************
+ *       do copy env;
+ */
+
+void	init_env(t_all *all, char **env)
+{
+    int i;
+
+    i = 0;
+    while (env[i++])
+        ;
+    all->env_my = (char**)malloc(--i);
+    all->env_my[i] = NULL;
+    while (--i)
+        all->env_my[i] = ft_strdup(env[i]);
 }
 
 /************************************
@@ -90,45 +112,6 @@ int show_program_name(void)
 	write(STDOUT_FILENO, NONECOLOR, 5);
 	return (0);
 }
-
-/************************************
- * 		1.3. fill_all				*
- * **********************************
- * This function performs several important operations:
- * 	1) checks the validity of the data entered 
- * 		by the user into the shell command line, 
- * 		sets the data validity flag in the t_all 
- * 		structure.
- * 				flag:		1 - data is not valid.
- * 	2) based on these data, fills in the main 
- * 		structure of the program. t_all all.
-*/
-
-void	fill_all(t_all *all)
-{
-	int	ret;
-
-	ret = 1;
-//	while (ret != -1)
-//	{
-		ret = get_next_line(1, &all->line);
-		parser(all);
-		executor(all);
-//	}
-}
-
-/************************************
- * 		1.4. executor				*
- * **********************************
- * Look README for more information (operation flags).
- * Accepts a data-ready structure.
- * Checks the flags of the operations in the structure.
- * Applies functions corresponding to flags to data.
- * Prints the result or error to standard output as 
- * needed.
- * 1.5. exit_clean;
- * 			Clean exit.
-*/
 
 /************************************
  * 		1.5. exit_clean				*

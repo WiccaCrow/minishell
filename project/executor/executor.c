@@ -29,6 +29,18 @@ int	is_command(const char *str, const char *command)
 	return (0);
 }
 
+
+/************************************
+ * 		1.4. executor				*
+ * **********************************
+ * Look README for more information (operation flags).
+ * Accepts a data-ready structure.
+ * Checks the flags of the operations in the structure.
+ * Applies functions corresponding to flags to data.
+ * Prints the result or error to standard output as
+ * needed.
+*/
+
 int executor(t_all *all)
 {
 	if (is_command(all->command.command[0], ECHO))

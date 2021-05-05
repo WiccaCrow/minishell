@@ -9,7 +9,7 @@ EXEC_PATH	=	executor/
 EXEC_SRCS	=	executor.c exec_echo.c
 GNL_PATH	=	gnl_dir/
 GNL_SRCS	=	get_next_line.c get_next_line_utils.c
-SRCS		=	minishell.c \
+SRCS		=	minishell.c fill_all.c \
 				$(addprefix $(PARSER_PATH), $(PARSER_SRCS)) \
 				$(addprefix $(EXEC_PATH), $(EXEC_SRCS)) \
 				$(addprefix $(GNL_PATH), $(GNL_SRCS))
