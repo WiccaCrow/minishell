@@ -35,7 +35,7 @@ int parser(t_all *all)
 	strings = ft_split(all->line, ' ');
 	if (strings)
 	{
-		all->command.command = strings;
+		all->args = &strings[1];
 		return (0);
 	}
 	return (1);
