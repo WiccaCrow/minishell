@@ -16,12 +16,29 @@ typedef struct	s_command
 	char		**command;
 }				t_command;
 
-int 			parser(char *line, t_command *command);
+typedef struct	s_all {
+	int			flag_executer;
+	int			flag_exit;
+	char		*line;
+	t_command	command;
+	char		**env_my;
+}				t_all;
+
+
+void			start_all(t_all *all);
+void			init_env(t_all *all);
+void			exit_clean(t_all *all, int exit_code);
+void			fill_all(t_all *all);
+int				show_program_name(void);
 
 
 
-int 			executor(t_command *command);
-int				exec_echo(t_command *command);
+int 			parser(t_all *all);
+
+
+
+int 			executor(t_all *all);
+int				exec_echo(t_all *all);
 
 
 #endif

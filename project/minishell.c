@@ -45,6 +45,9 @@ int main(int ac, char **av, char **env)
 {
 	t_all	all;
 
+	(void) ac;
+	(void) av;
+	(void) env;
 	start_all(&all);
 	while (!all.flag_exit)
 	{
@@ -65,7 +68,7 @@ int main(int ac, char **av, char **env)
 
 void	start_all(t_all *all)
 {
-	init_env(all);
+//	init_env(all);
 	all->flag_executer = 0;
 	all->flag_exit = 0;
 	all->line = NULL;	
@@ -106,15 +109,12 @@ void	fill_all(t_all *all)
 	int	ret;
 
 	ret = 1;
-	while (ret != -1)
-	{
+//	while (ret != -1)
+//	{
 		ret = get_next_line(1, &all->line);
-		command = parser(all->line);
-		executor(command);
-		printf("Hi from main, command:\n\"%s\"\n", command);
-		show_program_name();
-		ret = get_next_line(1, &line);
-	}
+		parser(all);
+		executor(all);
+//	}
 }
 
 /************************************

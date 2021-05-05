@@ -1,13 +1,13 @@
 #include "../includes/minishell.h"
 
-int parser(char *line, t_command *command)
+int parser(t_all *all)
 {
 	char	**strings;
 	
-	strings = ft_split(line, ' ');
+	strings = ft_split(all->line, ' ');
 	if (strings)
 	{
-		command->command = strings;
+		all->command.command = strings;
 		return (0);
 	}
 	return (1);

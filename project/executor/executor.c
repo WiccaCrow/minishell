@@ -29,9 +29,9 @@ int	is_command(const char *str, const char *command)
 	return (0);
 }
 
-int executor(t_command *command)
+int executor(t_all *all)
 {
-	if (is_command(command->command[0], ECHO))
-		return (exec_echo(command));
+	if (is_command(all->command.command[0], ECHO))
+		return (exec_echo(all));
 	return (command_not_found());
 }
