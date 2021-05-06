@@ -5,10 +5,5 @@
 # define DOUBLE_QUOTE 2
 # define SPEC_SYMS "\'\"$"
 
-typedef struct		s_args
-{
-	char 			*arg;
-	struct t_args	*next;
-}					t_args;
 
 #endif 

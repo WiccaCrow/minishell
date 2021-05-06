@@ -44,22 +44,17 @@ enum e_command	get_command(t_all *all)
 	return (0);
 }
 
-char *skip_command(char *line)
-{
-	while (line && *line && *line != ' ')
-		line++;
-	return (line);	
-}
-
 int parser(t_all *all)
 {
-	char	**args;
-
 	all->flag_command = get_command(all);
-	args = ft_split(skip_command(all->line), ' ');
-	all->args = args;
+//	args = ft_split(skip_command(all->line), ' ');
+//	all->args = args;
+	get_args(all);
 	show_parse_result(all);
-	free(all->line);
-	all->line = NULL;
+	if (all->flag_command)
+	{
+		free(all->line);
+		all->line = NULL;
+	}
 	return (1);
 }
