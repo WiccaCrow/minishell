@@ -1,7 +1,14 @@
 #ifndef PARSER_H
 # define PARSER_H
 
-# include "../libft/libft.h"
-# define ECHO "echo"
+# define QUOTE 1
+# define DOUBLE_QUOTE 2
+# define SPEC_SYMS "\'\"$"
+
+typedef struct		s_args
+{
+	char 			*arg;
+	struct t_args	*next;
+}					t_args;
 
 #endif 
