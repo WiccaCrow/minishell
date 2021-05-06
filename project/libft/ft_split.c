@@ -79,7 +79,7 @@ char	**ft_split(char const *s, char c)
 	size_t	res_size;
 	char	**result;
 
-	if (s == NULL)
+	if (s == NULL || *s == 0)
 		return (NULL);
 	str = ft_strtrim(s, &c);
 	if (!str)
