@@ -57,14 +57,8 @@ int parser(t_all *all)
 
 	all->flag_command = get_command(all);
 	args = ft_split(skip_command(all->line), ' ');
-	if (args)
-	{
-		all->args = args;
-		show_parse_result(all);
-		free(all->line);
-		all->line = NULL;
-		return (0);
-	}
+	all->args = args;
+	show_parse_result(all);
 	free(all->line);
 	all->line = NULL;
 	return (1);
