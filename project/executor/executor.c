@@ -1,49 +1,32 @@
 #include "../includes/minishell.h"
 
-int command_not_found()
+int command_not_found(t_all *all)
 {
 	int ret;
-	
+
+	write(1, "minishell: ", 12);
 	ret = 0;
+	while (all->line[ret] && all->line[ret] != ' ')
+		++ret;
+	write(1, all->line, ret);
 	ret += (int) write(STDOUT_FILENO, COM_NOT_FOUND, ft_strlen(COM_NOT_FOUND));
 	return (ret);
 }
-
-int	is_command(const char *str, const char *command)
-{
-	int i;
-	
-	if (str && command)
-	{
-		i = 0;
-		while (str[i] && command[i])
-		{
-			if (str[i] != command[i])
-				return (0);
-			i++;
-		}
-		if (str[i] != command[i])
-			return (0);
-		return (1);
-	}
-	return (0);
-}
-
 
 /************************************
  * 		1.4. executor				*
  * **********************************
  * Look README for more information (operation flags).
  * Accepts a data-ready structure.
- * Checks the flags of the operations in the structure.
- * Applies functions corresponding to flags to data.
  * Prints the result or error to standard output as
  * needed.
 */
 
 int executor(t_all *all)
 {
-	if (is_command(all->command.command[0], ECHO))
-		return (exec_echo(all));
-	return (command_not_found());
+	if (all->flag_command == not_found)
+		return (command_not_found(all));
+	if (all->flag_command == exit_shell)
+		exit_clean(all);
+	return (exec_echo(all));
 }

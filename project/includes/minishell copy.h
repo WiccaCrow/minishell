@@ -13,7 +13,7 @@ typedef struct s_all {
 	int		flag_executer;
 	int		flag_exit;
 	char	*line;
-	char	**env_my;
+	char	**env;
 }	t_all;
 
 void	start_all(t_all *all);

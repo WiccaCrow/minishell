@@ -48,13 +48,15 @@ int main(int ac, char **av, char **env)
 	(void) ac;
 	(void) av;
 	start_all(&all, env);
-	while (!all.flag_exit)
+	while (1)
 	{
 		show_program_name();
 		fill_all(&all);
 		executor(&all);
+		*all.line = 0;
+	
 	}
-	exit_clean(&all, 0);
+	exit_clean(&all);
 	return (0);
 }
 
@@ -62,7 +64,7 @@ int main(int ac, char **av, char **env)
  * 		1.1. start_all				*
  * **********************************
  * Start program with zero-structure (example, all 
- * pointers = NULL, int variables = 0).
+ * pointers = NULL, int variables = 0, flag command = 0).
  *
  * function:
  *  1.1.1. init_env;
@@ -72,9 +74,23 @@ int main(int ac, char **av, char **env)
 void	start_all(t_all *all, char **env)
 {
 	init_env(all, env);
-	all->flag_executer = 0;
-	all->flag_exit = 0;
-	all->line = NULL;	
+	init_commands(all);
+	all->flag_command = 0;
+	all->line = NULL;
+}
+
+void	init_commands(t_all *all)
+{
+	all->all_commands[0] = ft_strdup("echo");
+	all->all_commands[1] = ft_strdup("cd");
+	all->all_commands[2] = ft_strdup("pwd");
+	all->all_commands[3] = ft_strdup("export");
+	all->all_commands[4] = ft_strdup("unset");
+	all->all_commands[5] = ft_strdup("env");
+	all->all_commands[6] = ft_strdup("ctrl_c");
+	all->all_commands[7] = ft_strdup("ctrl_d");
+	all->all_commands[8] = ft_strdup("ctrl_slash");
+	all->all_commands[9] = ft_strdup("exit");
 }
 
 /************************************
@@ -90,10 +106,10 @@ void	init_env(t_all *all, char **env)
     i = 0;
     while (env[i++])
         ;
-    all->env_my = (char**)malloc(--i);
-    all->env_my[i] = NULL;
+    all->env = (char**)malloc(--i);
+    all->env[i] = NULL;
     while (--i)
-        all->env_my[i] = ft_strdup(env[i]);
+        all->env[i] = ft_strdup(env[i]);
 }
 
 /************************************
@@ -119,15 +135,17 @@ int show_program_name(void)
  * 	Clean exit.
 */
 
-void	exit_clean(t_all *all, int exit_code)
+void	exit_clean(t_all *all)
 {
 	if (all->line)
 	{
 		free(all->line);
 		all->line = NULL;
 	}
-	if (all->flag_executer == 1)
+	if (all->flag_command == exit_shell)
+	{
+		write(1, "exit\n",5);
 		exit(0);
-	else if (exit_code)
-		exit(exit_code);
+	}
+	exit(1);
 }

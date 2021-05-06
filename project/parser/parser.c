@@ -7,31 +7,34 @@ static int	is_command(const char *str, const char *command)
 	if (str && command)
 	{
 		i = 0;
-		while (str[i] && command[i])
-		{
-			if (str[i] != command[i])
-				return (0);
+		while (str[i] == command[i] && (str[i] && command[i]))
 			i++;
-		}
-		if (str[i] != 0 && str[i] != ' ')
-			return (0);
-		return (1);
+		++i;
+		if (str[i] == 0 || str[i] == ' ')
+			return (1);
 	}
 	return (0);
 }
 
 
-enum e_command	get_command(char *line)
+enum e_command	get_command(t_all *all)
 {
-	if (is_command(line, ECHO))
-		return echo;
+	int	i;
+
+	i = 0;
+	while (++i <= 10)
+		if (all->line && is_command(all->line, all->all_commands[i - 1]))
+			return i;
+	return (0);
 }
 
 int parser(t_all *all)
 {
 	char	**strings;
-	
-	all->flag_command = get_command(all->line);
+
+		printf("pars %d\n", all->flag_command);
+	all->flag_command = get_command(all);
+		printf("pars %d\n", all->flag_command);
 	strings = ft_split(all->line, ' ');
 	if (strings)
 	{

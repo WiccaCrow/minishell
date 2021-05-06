@@ -20,24 +20,25 @@ enum e_command
 	export,
 	unset,
 	env,
-	exit_shell,
 	ctrl_c,
 	ctrl_d,
-	ctrl_slash
+	ctrl_slash,
+	exit_shell
 };
 
 typedef struct		s_all {
 	enum e_command	flag_command;
-	int				flag_exit;
 	char			*line;
-	char 			**args;
-	char			**env_my;
+	char 			**args; // аргументы комманды
+	char			**env; // переменные окружения, внутрипрограммная копия
+	char			*all_commands[10];
 }					t_all;
 
 
 void			start_all(t_all *all, char **env);
 void			init_env(t_all *all, char **env);
-void			exit_clean(t_all *all, int exit_code);
+void			init_commands(t_all *all);
+void			exit_clean(t_all *all);
 int 			fill_all(t_all *all);
 int				show_program_name(void);
 
