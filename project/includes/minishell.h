@@ -2,13 +2,13 @@
 # define MINISHELL_H
 
 # include <stdio.h>
+# include "./parser.h"
 # include "../libft/libft.h"
 # include "../gnl_dir/get_next_line.h"
 
 # define NAME "DULCIE&GRVELVA > "
 # define NONECOLOR "\x1B[0m"
 # define GOLD "\033[40;33m"
-# define ECHO "echo"
 # define COM_NOT_FOUND ": command not found\n"
 
 enum e_command
