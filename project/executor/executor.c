@@ -10,6 +10,8 @@ int command_not_found(t_all *all)
 		++ret;
 	write(1, all->line, ret);
 	ret += (int) write(STDOUT_FILENO, COM_NOT_FOUND, ft_strlen(COM_NOT_FOUND));
+	free(all->line);
+	all->line = NULL;
 	return (ret);
 }
 
