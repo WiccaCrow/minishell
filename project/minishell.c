@@ -51,10 +51,9 @@ int main(int ac, char **av, char **env)
 	while (1)
 	{
 		show_program_name();
-		fill_all(&all);
-		executor(&all);
+		if (fill_all(&all) != -1)
+			executor(&all);
 		*all.line = 0;
-	
 	}
 	exit_clean(&all);
 	return (0);
@@ -125,7 +124,7 @@ int show_program_name(void)
 {
 	write(STDOUT_FILENO, GOLD, 8);
 	write(STDOUT_FILENO, NAME, ft_strlen(NAME));
-	write(STDOUT_FILENO, NONECOLOR, 5);
+	write(STDOUT_FILENO, NONECOLOR, 4);
 	return (0);
 }
 

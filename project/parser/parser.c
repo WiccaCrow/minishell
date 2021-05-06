@@ -9,7 +9,7 @@ static int	is_command(const char *str, const char *command)
 		i = 0;
 		while (str[i] == command[i] && (str[i] && command[i]))
 			i++;
-		++i;
+//		++i;
 		if (str[i] == 0 || str[i] == ' ')
 			return (1);
 	}
@@ -32,9 +32,7 @@ int parser(t_all *all)
 {
 	char	**strings;
 
-		printf("pars %d\n", all->flag_command);
 	all->flag_command = get_command(all);
-		printf("pars %d\n", all->flag_command);
 	strings = ft_split(all->line, ' ');
 	if (strings)
 	{
