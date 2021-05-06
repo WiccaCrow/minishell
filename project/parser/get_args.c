@@ -46,10 +46,26 @@ int get_next_arg(const char *line, int i, char **tmp_line)
 	flag = 0;
 	while (line[i])
 	{
-		if (line[i] != ' ')
+		if (line[i] == '\\')
+		{
+			flag = flag & SHIELD;
+			i++;
+		}
+		if (line[i] == '\"')
+		{
+			flag = flag ^ DOUBLE_QUOTE;
+			i++;
+		}
+		if (line[i] == '\'')
+		{
+			flag = flag ^ QUOTE;
+			i++;
+		}
+		if (line[i] != ' ' && !flag)
 			*tmp_line = add_chr(*tmp_line, line[i]);
 		else
 			return (i);
+		flag = flag & ~(SHIELD);
 		i++;
 	}
 	return (i);
