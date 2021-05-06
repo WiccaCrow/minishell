@@ -30,5 +30,9 @@ int executor(t_all *all)
 		return (command_not_found(all));
 	if (all->flag_command == exit_shell)
 		exit_clean(all);
-	return (exec_echo(all));
+	if (all->flag_command == echo)
+		exec_echo(all);
+	else
+		return (write(1, "other command\n", 15));
+	return (1);
 }
