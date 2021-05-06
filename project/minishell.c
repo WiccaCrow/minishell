@@ -53,7 +53,6 @@ int main(int ac, char **av, char **env)
 		show_program_name();
 		if (fill_all(&all) != -1)
 			executor(&all);
-		*all.line = 0;
 	}
 	exit_clean(&all);
 	return (0);

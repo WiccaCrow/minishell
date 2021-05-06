@@ -1,5 +1,21 @@
 #include "../includes/minishell.h"
 
+void show_parse_result(t_all *all)
+{
+	int i;
+	
+	printf("command flag = %d\n", all->flag_command);
+	i = 0;
+	if (all->args)
+	{
+		while (all->args[i])
+		{
+			printf("arg %d:\"%s\"\n", i, all->args[i]);
+			i++;
+		}
+	}
+}
+
 static int	is_command(const char *str, const char *command)
 {
 	int i;
@@ -28,16 +44,28 @@ enum e_command	get_command(t_all *all)
 	return (0);
 }
 
+char *skip_command(char *line)
+{
+	while (line && *line && *line != ' ')
+		line++;
+	return (line);	
+}
+
 int parser(t_all *all)
 {
-	char	**strings;
+	char	**args;
 
 	all->flag_command = get_command(all);
-	strings = ft_split(all->line, ' ');
-	if (strings)
+	args = ft_split(skip_command(all->line), ' ');
+	if (args)
 	{
-		all->args = &strings[1];
+		all->args = args;
+		show_parse_result(all);
+		free(all->line);
+		all->line = NULL;
 		return (0);
 	}
+	free(all->line);
+	all->line = NULL;
 	return (1);
 }
