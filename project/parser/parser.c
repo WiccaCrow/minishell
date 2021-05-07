@@ -26,7 +26,7 @@ static int	is_command(const char *str, const char *command)
 		while (str[i] == command[i] && (str[i] && command[i]))
 			i++;
 //		++i;
-		if (str[i] == 0 || str[i] == ' ')
+		if ((str[i] == 0 || str[i] == ' ') && !command[i])
 			return (1);
 	}
 	return (0);
