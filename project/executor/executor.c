@@ -1,5 +1,15 @@
 #include "../includes/minishell.h"
 
+/************************************
+ * 		1.4.1. command_not_found	*
+ * **********************************
+ * Prints the result or error to standard 
+ * output as needed. Bash standart erorr $? 127.
+ * 
+ * functions:
+ * libft. ft_strlen;
+*/
+
 int command_not_found(t_all *all)
 {
 	int ret;
@@ -18,10 +28,18 @@ int command_not_found(t_all *all)
 /************************************
  * 		1.4. executor				*
  * **********************************
- * Look README for more information (operation flags).
- * Accepts a data-ready structure.
+ * Checks the command flag (enum) and sends the 
+ * command for execution.
  * Prints the result or error to standard output as
  * needed.
+ * 
+ * function:
+ * 1.4.1. command_not_found;
+ * 		Prints the result or error to standard 
+ * 		output as needed. Bash standart erorr $? 127.
+ * 1.4.2. exec_echo;
+ * 		execution command 'echo'
+ * 1.5.   exit_clean;
 */
 
 int executor(t_all *all)

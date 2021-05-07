@@ -1,6 +1,12 @@
 #include "../includes/minishell.h"
 
-int	ft_strcmp(const char *s1, const char *s2, unsigned int n)
+/************************************
+ * 		1.4.2.2.1.1. ft_strcmp	*
+ * **********************************
+ * compare two strings len size.
+*/
+
+static int	ft_strcmp(const char *s1, const char *s2, unsigned int n)
 {
 	unsigned int	i;
 
@@ -15,6 +21,16 @@ int	ft_strcmp(const char *s1, const char *s2, unsigned int n)
 		return (s1[i] - s2[i]);
 	return (0);
 }
+
+/************************************
+ * 		1.4.2.2.1. echo_find_env	*
+ * **********************************
+ * find and write to stdout env variables.
+ * 
+ * functions:
+ * 1.4.2.2.1.1. ft_strcmp;
+ * 	compare two strings len size.
+*/
 
 int	echo_find_env(t_all *all, int *i, int *j)
 {
@@ -47,6 +63,16 @@ int	echo_find_env(t_all *all, int *i, int *j)
 	return(ret);
 }
 
+/************************************
+ * 		1.4.2.2. echo_write_args	*
+ * **********************************
+ * execution command 'echo'.
+ * 
+ * function:
+ * 1.4.2.2.1. echo_find_env;
+ * 		find and write to stdout env variables.
+*/
+
 void	echo_write_args(t_all *all, int i, int *ret)
 {
 	int	j;
@@ -72,6 +98,13 @@ void	echo_write_args(t_all *all, int i, int *ret)
 	// ret += write(STDOUT_FILENO, all->args[i], ft_strlen(all->args[i]));
 }
 
+
+/************************************
+ * 		1.4.2.1. echo_check_flag_n	*
+ * **********************************
+ * check flag '-n'.
+*/
+
 void	echo_check_flag_n(t_all *all, int *i, int *flag_n)
 {
 	int	iter;
@@ -92,12 +125,22 @@ void	echo_check_flag_n(t_all *all, int *i, int *flag_n)
 	}
 }
 
+/************************************
+ * 		1.4.2. exec_echo			*
+ * **********************************
+ * execution command 'echo'.
+ * 
+ * function:
+ * 1.4.2.1. echo_check_flag_n;
+ * 			check flag '-n'.
+ * 1.4.2.2. echo_write_args;
+*/
+
 int exec_echo(t_all *all)
 {
 	int i;
 	int ret;
 	int	flag_n;
-	// write(1, "test exec_echo\n", 16);
 
 	ret = 0;
 	echo_check_flag_n(all, &i, &flag_n);

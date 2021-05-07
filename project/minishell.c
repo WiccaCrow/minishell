@@ -67,7 +67,9 @@ int main(int ac, char **av, char **env)
  *
  * function:
  *  1.1.1. init_env;
- *          do copy env;
+ *          do copy env
+ *  1.1.2. init_commands;
+ *          init our shell commands
  */
 
 void	start_all(t_all *all, char **env)
@@ -78,6 +80,16 @@ void	start_all(t_all *all, char **env)
 	init_env(all, env);
 	init_commands(all);
 }
+
+/************************************
+ * 		1.1.2. init_commands		*
+ * **********************************
+ * init our shell commands.
+ *
+ * function:
+ *  libft. init_env;
+ *          do copy env.
+ */
 
 void	init_commands(t_all *all)
 {
