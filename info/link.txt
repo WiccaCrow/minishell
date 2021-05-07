@@ -34,3 +34,9 @@ ____________________________________
 
 про переменные и специальные параметры
 http://rus-linux.net/nlib.php?name=/MyLDP/BOOKS/Bash-Guide-1.12-ru/bash-guide-03-2.html
+
+____________________________________
+
+https://www.opennet.ru/docs/RUS/bash_scripting_guide/a14876.html
+
+Предопределенные коды

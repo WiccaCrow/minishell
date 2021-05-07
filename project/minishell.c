@@ -72,10 +72,11 @@ int main(int ac, char **av, char **env)
 
 void	start_all(t_all *all, char **env)
 {
+	all->flag_command = 0;
+	all->return_code = 0;
+	all->line = NULL;
 	init_env(all, env);
 	init_commands(all);
-	all->flag_command = 0;
-	all->line = NULL;
 }
 
 void	init_commands(t_all *all)
@@ -102,12 +103,13 @@ void	init_env(t_all *all, char **env)
 {
     int i;
 
-    i = 0;
-    while (env[i++])
-        ;
-    all->env = (char**)malloc(--i);
+    i = -1;
+    while (env[++i])
+		;
+    all->env = (char**)malloc(sizeof(char*) * i);
     all->env[i] = NULL;
-    while (--i)
+	i = -1;
+    while (env[++i])
         all->env[i] = ft_strdup(env[i]);
 }
 

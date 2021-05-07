@@ -12,7 +12,7 @@ int command_not_found(t_all *all)
 	ret += (int) write(STDOUT_FILENO, COM_NOT_FOUND, ft_strlen(COM_NOT_FOUND));
 	free(all->line);
 	all->line = NULL;
-	return (ret);
+	return (127);
 }
 
 /************************************
@@ -27,7 +27,7 @@ int command_not_found(t_all *all)
 int executor(t_all *all)
 {
 	if (all->flag_command == not_found)
-		return (command_not_found(all));
+		return (all->return_code = command_not_found(all));
 	if (all->flag_command == exit_shell)
 		exit_clean(all);
 	if (all->flag_command == echo)
