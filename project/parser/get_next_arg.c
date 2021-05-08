@@ -39,7 +39,7 @@ static char *add_chr(char *str, char c)
 	return (new_str);
 }
 
-int get_next_arg(const char *line, int i, char **tmp_line)
+int get_next_arg(char *line, int i, char **tmp_line)
 {
 	int	flag;
 
@@ -65,8 +65,14 @@ int get_next_arg(const char *line, int i, char **tmp_line)
 			*tmp_line = add_chr(*tmp_line, line[i]);
 		else
 			return (i);
-		flag = flag & ~(SHIELD);
 		i++;
+		if (line[i])
+			flag = flag & ~(SHIELD);
+		if (flag && !line[i] && get_another_line(&line))
+		{
+			*tmp_line = add_chr(*tmp_line, '\n');
+			i = 0;
+		}
 	}
 	return (i);
 }
