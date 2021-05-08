@@ -59,6 +59,7 @@ int 			executor(t_all *all);
 int				exec_echo(t_all *all);
 int				exec_cd(t_all *all);
 void			exec_pwd(t_all *all);
+void			exec_env(t_all *all);
 void			all_args_free(t_all *all);
 
 
