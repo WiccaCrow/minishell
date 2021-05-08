@@ -10,6 +10,9 @@
 # define NONECOLOR "\x1B[0m"
 # define GOLD "\033[40;33m"
 # define COM_NOT_FOUND ": command not found\n"
+# define QUOTE 1
+# define DOUBLE_QUOTE 2
+# define SHIELD 4
 
 enum e_command
 {

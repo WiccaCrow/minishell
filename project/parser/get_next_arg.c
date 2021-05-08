@@ -61,18 +61,13 @@ int get_next_arg(char *line, int i, char **tmp_line)
 			flag = flag ^ QUOTE;
 			i++;
 		}
-		if (line[i] != ' ' || flag)
+		if ((line[i] && line[i] != ' ') || flag)
 			*tmp_line = add_chr(*tmp_line, line[i]);
 		else
 			return (i);
 		i++;
 		if (line[i])
 			flag = flag & ~(SHIELD);
-		if (flag && !line[i] && get_another_line(&line))
-		{
-			*tmp_line = add_chr(*tmp_line, '\n');
-			i = 0;
-		}
 	}
 	return (i);
 }
