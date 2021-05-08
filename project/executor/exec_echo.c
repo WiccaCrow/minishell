@@ -89,7 +89,7 @@ void	echo_write_args(t_all *all, int i, int *ret)
 		if (all->args[i][j] == '$' && !all->args[i][j + 1])
 			*ret += write(STDOUT_FILENO, &all->args[i][j], 1);
 		else if (all->args[i][j] == '$' && all->args[i][j + 1] == '?')
-			all->return_code;
+			all->return_code = all->return_code;
 		else
 			*ret += echo_find_env(all, &i, &j);
 		j++;
