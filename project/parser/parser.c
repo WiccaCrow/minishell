@@ -47,8 +47,6 @@ enum e_command	get_command(t_all *all)
 int parser(t_all *all)
 {
 	all->flag_command = get_command(all);
-//	args = ft_split(skip_command(all->line), ' ');
-//	all->args = args;
 	get_args(all);
 	show_parse_result(all);
 	if (all->flag_command)

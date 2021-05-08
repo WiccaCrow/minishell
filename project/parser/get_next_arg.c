@@ -61,7 +61,7 @@ int get_next_arg(char *line, int i, char **tmp_line)
 			flag = flag ^ QUOTE;
 			i++;
 		}
-		if ((line[i] && line[i] != ' ') || flag)
+		if (line[i] && (line[i] != ' ' || flag))
 			*tmp_line = add_chr(*tmp_line, line[i]);
 		else
 			return (i);
