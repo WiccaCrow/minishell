@@ -32,7 +32,7 @@ int check_end_of_input(const char *line, int flag)
 			if ((flag & SHIELD) && line[i])
 				flag = flag & ~(SHIELD);
 		}
-		return (!flag);
+		return (flag);
 	}
 	return (0);
 }
@@ -46,17 +46,17 @@ int fill_all(t_all *all)
 	line = NULL;
 	ret = get_next_line(STDIN_FILENO, &line);
 	all->line = gnl_strjoin(all->line, line);
-	flag = 0;
-	flag = check_end_of_input(all->line, flag);
-	while (!flag)
+	flag = check_end_of_input(all->line, 0);
+	while (flag)
 	{
-		all->line = gnl_strjoin(all->line, "\n");
+		if (!(flag & SHIELD))
+			all->line = gnl_strjoin(all->line, "\n");
 		free(line);
 		line = NULL;
 		write(STDOUT_FILENO, "> ", 2);
 		ret = get_next_line(STDIN_FILENO, &line);
 		all->line = gnl_strjoin(all->line, line);
-		flag = check_end_of_input(all->line, flag);
+		flag = check_end_of_input(all->line, 0);
 	}
 	free(line);
 	line = NULL;
