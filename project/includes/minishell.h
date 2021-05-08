@@ -2,6 +2,7 @@
 # define MINISHELL_H
 
 # include <stdio.h>
+# include <errno.h>
 # include "./parser.h"
 # include "../libft/libft.h"
 # include "../gnl_dir/get_next_line.h"
@@ -35,6 +36,7 @@ typedef struct		s_all {
 	char 			**args; // аргументы комманды
 	char			**env; // переменные окружения, внутрипрограммная копия
 	char			*all_commands[10];
+	char			*pwd;
 	int				return_code; // код возврата ошибки $?
 }					t_all;
 
@@ -55,6 +57,9 @@ int 			get_args(t_all *all);
 
 int 			executor(t_all *all);
 int				exec_echo(t_all *all);
+int				exec_cd(t_all *all);
+void			exec_pwd(t_all *all);
+void			all_args_free(t_all *all);
 
 
 #endif

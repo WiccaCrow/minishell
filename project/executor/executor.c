@@ -1,5 +1,18 @@
 #include "../includes/minishell.h"
 
+void	all_args_free(t_all *all)
+{
+	int	i;
+
+	i = 0;
+	while (all->args[i])
+	{
+		if (all->args[i] != NULL)
+			all->args[i] = NULL;
+		++i;
+	}
+}
+
 /************************************
  * 		1.4.1. command_not_found	*
  * **********************************
@@ -46,10 +59,14 @@ int executor(t_all *all)
 {
 	if (all->flag_command == not_found)
 		return (all->return_code = command_not_found(all));
-	if (all->flag_command == exit_shell)
+	else if (all->flag_command == exit_shell)
 		exit_clean(all);
-	if (all->flag_command == echo)
+	else if (all->flag_command == echo)
 		exec_echo(all);
+	else if (all->flag_command == cd)
+		exec_cd(all);
+	else if (all->flag_command == pwd)
+		exec_pwd(all);
 	else
 		return (write(1, "other command\n", 15));
 	return (1);

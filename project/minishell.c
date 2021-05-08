@@ -74,10 +74,16 @@ int main(int ac, char **av, char **env)
 
 void	start_all(t_all *all, char **env)
 {
+	int	i;
+
+	i = 0;
 	all->flag_command = 0;
 	all->return_code = 0;
 	all->line = NULL;
 	init_env(all, env);
+	while (all->env[i] && !(all->env[i][0] == 'P' && all->env[i][1] == 'W' && all->env[i][2] == 'D'))
+		++i;
+	all->pwd = ft_strdup(all->env[i]);
 	init_commands(all);
 }
 

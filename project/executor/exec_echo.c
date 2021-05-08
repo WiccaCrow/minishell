@@ -9,7 +9,7 @@
 // static int	ft_strcmp(const char *s1, const char *s2, unsigned int n)
 // {
 // 	unsigned int	i;
-
+//
 // 	i = 0;
 // 	while (!s1[i] && i < n)
 // 	{
@@ -38,7 +38,7 @@
 // 	int		jj;
 // 	int		iter;
 // 	int		ret;
-
+//
 // 	jj = 0;
 // 	ret = 0;
 // 	dollar = 0;
@@ -77,7 +77,7 @@
 // {
 // 	int	j;
 // 	int	start_args;
-
+//
 // 	j = 0;
 // 	start_args = 0;
 // 	while (all->args[i][j])
@@ -154,5 +154,6 @@ int exec_echo(t_all *all)
 	if (flag_n)
 		ret += write(STDOUT_FILENO, "\n", 1);
 	return (ret > 0);
+	all_args_free(all);
 	// добавить в историю напечатанное и отфришить весь массив all->args
 }
