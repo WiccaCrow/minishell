@@ -54,3 +54,5 @@ int executor(t_all *all)
 		return (write(1, "other command\n", 15));
 	return (1);
 }
+
+//echo m$PWD$USER$

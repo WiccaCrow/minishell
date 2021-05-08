@@ -35,7 +35,7 @@ typedef struct		s_all {
 	char 			**args; // аргументы комманды
 	char			**env; // переменные окружения, внутрипрограммная копия
 	char			*all_commands[10];
-	int				return_code;
+	int				return_code; // код возврата ошибки $?
 }					t_all;
 
 
