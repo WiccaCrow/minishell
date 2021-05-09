@@ -62,6 +62,7 @@ int fill_all(t_all *all)
 	line = NULL;
 	if (ret != -1)
 	{
+		dollar_handler(all);
 		parser(all);
 		return (ret);
 	}
