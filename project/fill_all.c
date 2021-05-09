@@ -22,11 +22,11 @@ int check_end_of_input(const char *line, int flag)
 		i = 0;
 		while (line[i])
 		{
-			if (line[i] == 92)
+			if (line[i] == '\\' && !(flag & QUOTE))
 				flag = flag | SHIELD;
-			if (line[i] == '\"')
+			if (line[i] == '\"' && !(flag & SHIELD) && !(flag & QUOTE))
 				flag = flag ^ DOUBLE_QUOTE;
-			if (line[i] == '\'')
+			if (line[i] == '\'' && !(flag & SHIELD) && !(flag & DOUBLE_QUOTE))
 				flag = flag ^ QUOTE;
 			i++;
 			if ((flag & SHIELD) && line[i])
