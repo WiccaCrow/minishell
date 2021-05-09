@@ -52,6 +52,7 @@ int				show_program_name(void);
 
 int 			parser(t_all *all);
 int 			get_args(t_all *all);
+int				dollar_handler(char **line, t_all *all);
 
 
 

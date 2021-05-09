@@ -3,7 +3,6 @@
 int	get_args_list(t_list **args, t_all *all)
 {
 	int		i;
-	int		has_dollar;
 	char	*tmp_line;
 	t_list	*lst_new;
 	
@@ -12,11 +11,11 @@ int	get_args_list(t_list **args, t_all *all)
 	tmp_line = NULL;
 	while (all->line[i])
 	{
-		i = get_next_arg(all->line, i, &tmp_line, &has_dollar);
+		i = get_next_arg(all->line, i, &tmp_line);
 		i = skip_spaces(all->line, i);
 		if (tmp_line)
 		{
-			lst_new = ft_lstnew(ft_strdup(tmp_line), has_dollar);
+			lst_new = ft_lstnew(ft_strdup(tmp_line));
 			ft_lstadd_back(args, lst_new);
 			free(tmp_line);
 			tmp_line = NULL;

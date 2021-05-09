@@ -39,12 +39,11 @@ static char *add_chr(char *str, char c)
 	return (new_str);
 }
 
-int get_next_arg(char *line, int i, char **tmp_line, int *has_dollar)
+int get_next_arg(char *line, int i, char **tmp_line)
 {
 	int	flag;
 
 	flag = 0;
-	*has_dollar = 0;
 	while (line[i])
 	{
 		if (line[i] == '\\' && !(flag & QUOTE))
