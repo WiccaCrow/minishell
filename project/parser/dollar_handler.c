@@ -8,7 +8,7 @@ char *get_key(int i, char *line)
 	if (key)
 	{
 		i = 0;
-		while (key[i] && key[i != ' '] && key[i] != '"')
+		while (key[i] && key[i] != ' ' && key[i] != '"')
 			i++;
 		key[i] = 0;
 	}
