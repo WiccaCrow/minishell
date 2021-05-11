@@ -40,3 +40,8 @@ ____________________________________
 https://www.opennet.ru/docs/RUS/bash_scripting_guide/a14876.html
 
 Предопределенные коды
+
+____________________________________
+
+Имена символов на английском
+https://www.prepressure.com/fonts/basics/character-names#semicolon
