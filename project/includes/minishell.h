@@ -14,6 +14,9 @@
 # define QUOTE 1
 # define DOUBLE_QUOTE 2
 # define SHIELD 4
+# define PIPE 1
+# define AND 2
+# define SEMICOLON 4
 
 enum e_command
 {
@@ -30,15 +33,24 @@ enum e_command
 	exit_shell
 };
 
-typedef struct		s_all {
-	enum e_command	flag_command;
-	char			*line;
-	char 			**args; // аргументы комманды
-	char			**env; // переменные окружения, внутрипрограммная копия
-	char			*all_commands[10];
-	char			*pwd;
-	int				return_code; // код возврата ошибки $?
-}					t_all;
+typedef struct			s_command {
+	enum e_command		flag_command;
+	char 				**args; // аргументы комманды
+	int					end_flag;
+	int					return_code; // код возврата ошибки $?
+	struct s_command	*next;
+}						t_command;
+
+typedef struct			s_all {
+	enum e_command		flag_command;
+	char				*line;
+	char 				**args; // аргументы комманды
+	char				**env; // переменные окружения, внутрипрограммная копия
+	char				*all_commands[10];
+	char				*pwd;
+	int					return_code; // код возврата ошибки $?
+	t_command			**commands;
+}						t_all;
 
 
 void			start_all(t_all *all, char **env);

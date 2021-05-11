@@ -80,6 +80,7 @@ void	start_all(t_all *all, char **env)
 	all->flag_command = 0;
 	all->return_code = 0;
 	all->line = NULL;
+	all->commands = NULL;
 	init_env(all, env);
 	while (all->env[i] && !(all->env[i][0] == 'P' && all->env[i][1] == 'W' && all->env[i][2] == 'D'))
 		++i;
