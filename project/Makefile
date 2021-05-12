@@ -4,7 +4,8 @@ CCF			=	gcc $(CFLAGS)
 RM			=	rm -f
 CFLAGS		=	-Wall -Wextra -Werror -g
 PARSER_PATH	=	parser/
-PARSER_SRCS	=	parser.c get_args.c get_next_arg.c dollar_handler.c
+PARSER_SRCS	=	parser.c get_args.c get_next_arg.c dollar_handler.c \
+				add_command.c
 EXEC_PATH	=	executor/
 EXEC_SRCS	=	executor.c exec_echo.c exec_cd.c exec_pwd.c exec_env.c
 GNL_PATH	=	gnl_dir/
@@ -26,24 +27,24 @@ all:		$(NAME)
 $(NAME):	$(OBJS) $(HDR)
 			@make bonus -C $(LIB_DIR)
 			@mv $(LIB_DIR)$(LIBFT) $(LIBFT)
-			$(CCF) $(OBJS) $(LIBFT) -o $(NAME)
+			@$(CCF) $(OBJS) $(LIBFT) -o $(NAME)
 			@echo "${GREEN}"$(NAME)" is compiled${ENDCOLOR}"
 
 clean:
 			@make clean -C $(LIB_DIR)
-			$(RM) $(LIBFT)
-			$(RM) $(OBJS)
+			@$(RM) $(LIBFT)
+			@$(RM) $(OBJS)
 			@echo objs deleted
 
 fclean:		clean
 			@make fclean -C $(LIB_DIR)
-			$(RM) $(NAME)
+			@$(RM) $(NAME)
 			@echo $(NAME) deleted
 
 re:			fclean all
 
 %.o:		%.c $(HDR)
-			$(CCF) -c $< -o $@
+			@$(CCF) -c $< -o $@
 			@echo $@ compilled
 
 norm:

@@ -25,7 +25,6 @@ static int	is_command(const char *str, const char *command)
 		i = 0;
 		while (str[i] == command[i] && (str[i] && command[i]))
 			i++;
-//		++i;
 		if ((str[i] == 0 || str[i] == ' ') && !command[i])
 			return (1);
 	}
@@ -46,13 +45,20 @@ enum e_command	get_command(t_all *all)
 
 int parser(t_all *all)
 {
-	all->flag_command = get_command(all);
-	get_args(all);
-	show_parse_result(all);
-	if (all->flag_command)
+	all->commands = (t_command **)malloc(sizeof (t_command *));
+	if (all->commands)
 	{
-		free(all->line);
-		all->line = NULL;
+		*(all->commands) = NULL;
+		while (add_command(all))
+			;
+		all->flag_command = get_command(all);
+		get_args(all);
+		show_parse_result(all);
+		if (all->flag_command)
+		{
+			free(all->line);
+			all->line = NULL;
+		}
 	}
 	return (1);
 }

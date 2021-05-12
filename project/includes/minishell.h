@@ -17,6 +17,8 @@
 # define PIPE 1
 # define AND 2
 # define SEMICOLON 4
+# define LEFT_ARROW 8
+# define RIGHT_ARROW 16
 
 enum e_command
 {
@@ -65,6 +67,7 @@ int				show_program_name(void);
 int 			parser(t_all *all);
 int 			get_args(t_all *all);
 int				dollar_handler(t_all *all);
+int				add_command(t_all *all);
 
 
 
