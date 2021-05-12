@@ -83,7 +83,7 @@ int	dollar_handler(t_all *all)
 	
 	i = 0;
 	flag = 0;
-	while (all->line[i])
+	while (all->line[i] && all->line[i] != ';')
 	{
 		if (all->line[i] == '\\' && !(flag & QUOTE))
 		{
@@ -105,6 +105,6 @@ int	dollar_handler(t_all *all)
 		if ((flag & SHIELD) && all->line[i])
 			flag = flag & ~(SHIELD);
 	}
-	return(0);
+	return(1);
 	
 }

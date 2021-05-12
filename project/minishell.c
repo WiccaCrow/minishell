@@ -52,9 +52,8 @@ int main(int ac, char **av, char **env)
 	{
 		show_program_name();
 		if (fill_all(&all) != -1)
-			dollar_handler(&all);
-			parser(&all);
-			executor(&all);
+			while(all.line && dollar_handler(&all) && parser(&all))
+				executor(&all);
 		free(all.args);
 	}
 	exit_clean(&all);
