@@ -68,7 +68,9 @@ int executor(t_all *all)
 	else if (all->flag_command == pwd)
 		exec_pwd(all);
 	else if (all->flag_command == env)
-		exec_env(all);
+		exec_env(all, all->env);
+	else if (all->flag_command == export)
+		exec_export(all);
 	else
 		return (write(1, "other command\n", 15));
 	return (1);
