@@ -5,7 +5,7 @@ RM			=	rm -f
 CFLAGS		=	-Wall -Wextra -Werror -g
 PARSER_PATH	=	parser/
 PARSER_SRCS	=	parser.c get_args.c get_next_arg.c dollar_handler.c \
-				add_command.c
+				add_command.c crop_line.c
 EXEC_PATH	=	executor/
 EXEC_SRCS	=	executor.c exec_echo.c exec_cd.c exec_pwd.c exec_env.c
 GNL_PATH	=	gnl_dir/

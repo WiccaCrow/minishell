@@ -9,7 +9,7 @@ int	get_args_list(t_list **args, t_all *all)
 	i = skip_command(all->line);
 	i = skip_spaces(all->line, i);
 	tmp_line = NULL;
-	while (all->line[i])
+	while (all->line[i] && all->line[i] != ';')
 	{
 		i = get_next_arg(all->line, i, &tmp_line);
 		i = skip_spaces(all->line, i);
