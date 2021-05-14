@@ -21,6 +21,7 @@ void show_parse_result(t_all *all)
 		while (tmp)
 		{
 			printf("command flag = %d\n", tmp->flag_command);
+			printf("end flag = %d\n", tmp->end_flag);
 			i = 0;
 			if (tmp->args)
 			{
@@ -45,6 +46,13 @@ int parse_command(t_all *all, int i)
 	{
 		command->flag_command = get_command(all);
 		i = get_args(all, command, i);
+		if (all->line[i] == ';')
+			command->end_flag = SEMICOLON;
+		if (all->line[i] == '|')
+			command->end_flag = PIPE;
+		else
+			command->end_flag = 0;
+		command->next = NULL;
 		add_command(all, command);
 	}
 	return (i);

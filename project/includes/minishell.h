@@ -14,6 +14,8 @@
 # define QUOTE 1
 # define DOUBLE_QUOTE 2
 # define SHIELD 4
+# define PIPE 1
+# define SEMICOLON 2
 
 enum e_command
 {
