@@ -36,7 +36,7 @@ void show_parse_result(t_all *all)
 	}
 	
 }
-echo 1 | echo 2 | echo 3; echo 4 | echo "5 | echo 6"
+
 int parse_command(t_all *all, int i)
 {
 	t_command	*command;
