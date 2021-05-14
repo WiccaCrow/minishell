@@ -36,7 +36,7 @@ void show_parse_result(t_all *all)
 	}
 	
 }
-
+echo 1 | echo 2 | echo 3; echo 4 | echo "5 | echo 6"
 int parse_command(t_all *all, int i)
 {
 	t_command	*command;
@@ -48,8 +48,11 @@ int parse_command(t_all *all, int i)
 		i = get_args(all, command, i);
 		if (all->line[i] == ';')
 			command->end_flag = SEMICOLON;
-		if (all->line[i] == '|')
+		else if (all->line[i] == '|')
+		{
 			command->end_flag = PIPE;
+			i++;
+		}
 		else
 			command->end_flag = 0;
 		command->next = NULL;
@@ -77,6 +80,7 @@ int parser(t_all *all)
 		while (all->line && all->line[i] && all->line[i] != ';')
 		{
 			i = parse_command(all, i);
+			i = skip_spaces(all->line, i);
 		}
 		set_command_to_all(all);
 		show_parse_result(all);

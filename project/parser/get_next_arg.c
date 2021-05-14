@@ -59,7 +59,7 @@ int get_next_arg(char *line, int i, char **tmp_line)
 			i++;
 		}
 		if (line[i] && ((line[i] != ' ' && line[i] != ';' && line[i] != '|') 
-		|| flag))
+			|| flag))
 			*tmp_line = add_chr(*tmp_line, line[i]);
 		else
 			return (i);
