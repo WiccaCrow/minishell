@@ -1,10 +1,7 @@
 #include "../includes/minishell.h"
 
-int skip_command(const char *line)
+int skip_command(const char *line, int i)
 {
-	int	i;
-
-	i = 0;
 	while (line && line[i] && line[i] != ' ' && line[i] != ';')
 		i++;
 	return (i);

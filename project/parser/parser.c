@@ -3,61 +3,77 @@
 void show_parse_result(t_all *all)
 {
 	int i;
+	t_command *tmp;
 	
-	printf("command flag = %d\n", all->flag_command);
+	printf("OLD command flag = %d\n", all->flag_command);
 	i = 0;
 	if (all->args)
 	{
 		while (all->args[i])
 		{
-			printf("arg %d:\"%s\"\n", i, all->args[i]);
+			printf("OLD arg %d:\"%s\"\n", i, all->args[i]);
 			i++;
 		}
 	}
-}
-
-static int	is_command(const char *str, const char *command)
-{
-	int i;
-
-	if (str && command)
+	if (all->commands)
 	{
-		i = 0;
-		while (str[i] == command[i] && (str[i] && command[i]))
-			i++;
-		if ((str[i] == 0 || str[i] == ' ' || str[i] == ';') && !command[i])
-			return (1);
+		tmp = *all->commands;
+		while (tmp)
+		{
+			printf("command flag = %d\n", tmp->flag_command);
+			i = 0;
+			if (tmp->args)
+			{
+				while (tmp->args[i])
+				{
+					printf("arg %d:\"%s\"\n", i, tmp->args[i]);
+					i++;
+				}
+			}
+			tmp = tmp->next;
+		}
 	}
-	return (0);
+	
 }
 
-
-enum e_command	get_command(t_all *all)
+int parse_command(t_all *all, int i)
 {
-	int	i;
+	t_command	*command;
+	
+	command = (t_command *)malloc(sizeof (t_command));
+	if (command)
+	{
+		command->flag_command = get_command(all);
+		i = get_args(all, command, i);
+		add_command(all, command);
+	}
+	return (i);
+}
 
-	i = 0;
-	while (++i <= 10)
-		if (all->line && is_command(all->line, all->all_commands[i - 1]))
-			return i;
+int set_command_to_all(t_all *all)
+{
+	all->flag_command = (*all->commands)->flag_command;
+	all->args = (*all->commands)->args;
 	return (0);
 }
 
 int parser(t_all *all)
 {
-//	all->commands = (t_command **)malloc(sizeof (t_command *));
-//	if (all->commands)
-//	{
-//		*(all->commands) = NULL;
-//		while (add_command(all))
-//			;
-		all->flag_command = get_command(all);
-		get_args(all);
+	int			i;
+	
+	i = 0;
+	all->commands = (t_command **)malloc(sizeof (t_command *));
+	if (all->commands)
+	{
+		*all->commands = NULL;
+		while (all->line && all->line[i] && all->line[i] != ';')
+		{
+			i = parse_command(all, i);
+		}
+		set_command_to_all(all);
 		show_parse_result(all);
 		if (all->flag_command)
 			crop_line(&(all->line));
-//		if (all->line)
-//			return (1);
-//	}
+	}
 	return (1);
 }

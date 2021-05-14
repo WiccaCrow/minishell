@@ -61,9 +61,10 @@ int				show_program_name(void);
 
 
 int 			parser(t_all *all);
-int 			get_args(t_all *all);
+int				get_args(t_all *all, t_command *command, int i);
 int				dollar_handler(t_all *all);
-int				add_command(t_all *all);
+int				add_command(t_all *all, t_command *command);
+enum e_command	get_command(t_all *all);
 
 
 
@@ -71,12 +72,12 @@ int 			executor(t_all *all);
 int				exec_echo(t_all *all);
 int				exec_cd(t_all *all);
 void			exec_pwd(t_all *all);
-void			exec_env(t_all *all, char **env_my);////////////
+void			exec_env(t_all *all, char **env_my);
 int				exec_export(t_all *all);
-void	sort_env(t_all *all, int i, int k, int j);
-int	do_sort_index(char ***sort_env_index, int **sort, int i);
+void			sort_env(t_all *all, int i, int k, int j);
+int				do_sort_index(char ***sort_env_index, int **sort, int i);
 void			all_args_free(t_all *all);
-void	subjoin_env(t_all *all, int i, int j);
+void			subjoin_env(t_all *all, int i, int j);
 
 
 #endif
