@@ -14,7 +14,7 @@ int skip_spaces(const char *line, int i)
 	return (i);
 }
 
-static char *add_chr(char *str, char c)
+char	 *add_chr(char *str, char c)
 {
 	char	*new_str;
 	size_t	size;

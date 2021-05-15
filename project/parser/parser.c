@@ -44,7 +44,7 @@ int parse_command(t_all *all, int i)
 	command = (t_command *)malloc(sizeof (t_command));
 	if (command)
 	{
-		command->flag_command = get_command(all);
+		command->flag_command = get_command(all, i);
 		i = get_args(all, command, i);
 		if (all->line[i] == ';')
 			command->end_flag = SEMICOLON;

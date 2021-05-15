@@ -66,7 +66,7 @@ int 			parser(t_all *all);
 int				get_args(t_all *all, t_command *command, int i);
 int				dollar_handler(t_all *all);
 int				add_command(t_all *all, t_command *command);
-enum e_command	get_command(t_all *all);
+enum e_command	get_command(t_all *all, int i);
 
 
 
