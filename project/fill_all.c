@@ -28,9 +28,9 @@ int check_end_of_input(const char *line, int flag)
 				flag = flag ^ DOUBLE_QUOTE;
 			if (line[i] == '\'' && !(flag & SHIELD) && !(flag & DOUBLE_QUOTE))
 				flag = flag ^ QUOTE;
-			i++;
-			if ((flag & SHIELD) && line[i])
+			if (line[i] != '\\' && (flag & SHIELD) && line[i + 1])
 				flag = flag & ~(SHIELD);
+			i++;
 		}
 		return (flag);
 	}
