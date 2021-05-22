@@ -48,6 +48,10 @@ int main(int ac, char **av, char **env)
 	(void) ac;
 	(void) av;
 	start_all(&all, env);
+	line_getter(&all);
+	printf("%s\n", all.line);
+//	free(all.line);
+	all.line = NULL;
 	while (1)
 	{
 		show_program_name();

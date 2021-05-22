@@ -3,6 +3,8 @@ LIBFT		=	libft.a
 CCF			=	gcc $(CFLAGS)
 RM			=	rm -f
 CFLAGS		=	-Wall -Wextra -Werror -g
+LG_PATH		=	line_getter/
+LG_SRCS		=	line_getter.c
 PARSER_PATH	=	parser/
 PARSER_SRCS	=	parser.c get_args.c get_next_arg.c dollar_handler.c \
 				add_command.c crop_line.c get_command.c
@@ -14,6 +16,7 @@ GNL_SRCS	=	get_next_line.c get_next_line_utils.c
 SRCS		=	minishell.c fill_all.c \
 				$(addprefix $(PARSER_PATH), $(PARSER_SRCS)) \
 				$(addprefix $(EXEC_PATH), $(EXEC_SRCS)) \
+				$(addprefix $(LG_PATH), $(LG_SRCS)) \
 				$(addprefix $(GNL_PATH), $(GNL_SRCS))
 OBJS		=	$(SRCS:.c=.o)
 LIB_DIR		=	libft/

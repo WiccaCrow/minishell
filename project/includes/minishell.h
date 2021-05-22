@@ -60,7 +60,7 @@ void			exit_clean(t_all *all);
 int 			fill_all(t_all *all);
 int				show_program_name(void);
 
-
+int 			line_getter(t_all *all);
 
 int 			parser(t_all *all);
 int				get_args(t_all *all, t_command *command, int i);
