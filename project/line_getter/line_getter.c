@@ -137,8 +137,7 @@ char *get_line(char **history)
 	term.c_lflag |= ECHO;
 	term.c_lflag |= ICANON;
 	tcsetattr(0, TCSANOW, &term);
-	line = NULL;
-	return ("test");
+	return (line);
 }
 
 int	line_getter(t_all *all)

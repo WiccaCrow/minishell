@@ -2,7 +2,7 @@ NAME		=	minishell
 LIBFT		=	libft.a
 CCF			=	gcc $(CFLAGS)
 RM			=	rm -f
-CFLAGS		=	-Wall -Wextra -Werror -ltermcap -g
+CFLAGS		=	-Wall -Wextra -Werror -g
 LG_PATH		=	line_getter/
 LG_SRCS		=	line_getter.c history_handler.c
 PARSER_PATH	=	parser/
@@ -31,7 +31,7 @@ all:		$(NAME)
 $(NAME):	$(OBJS) $(HDR)
 			@make bonus -C $(LIB_DIR)
 			@mv $(LIB_DIR)$(LIBFT) $(LIBFT)
-			@$(CCF) $(OBJS) $(LIBFT) -o $(NAME)
+			@$(CCF) -ltermcap $(OBJS) $(LIBFT) -o $(NAME)
 			@echo "${GREEN}"$(NAME)" is compiled${ENDCOLOR}"
 
 clean:
