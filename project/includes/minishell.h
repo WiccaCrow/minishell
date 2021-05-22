@@ -4,6 +4,7 @@
 # include <stdio.h>
 # include <errno.h>
 # include "./parser.h"
+# include "./line_getter.h"
 # include "../libft/libft.h"
 # include "../gnl_dir/get_next_line.h"
 

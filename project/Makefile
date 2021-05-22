@@ -2,9 +2,9 @@ NAME		=	minishell
 LIBFT		=	libft.a
 CCF			=	gcc $(CFLAGS)
 RM			=	rm -f
-CFLAGS		=	-Wall -Wextra -Werror -g
+CFLAGS		=	-Wall -Wextra -Werror -ltermcap -g
 LG_PATH		=	line_getter/
-LG_SRCS		=	line_getter.c
+LG_SRCS		=	line_getter.c history_handler.c
 PARSER_PATH	=	parser/
 PARSER_SRCS	=	parser.c get_args.c get_next_arg.c dollar_handler.c \
 				add_command.c crop_line.c get_command.c
