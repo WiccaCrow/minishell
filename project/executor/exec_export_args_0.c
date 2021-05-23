@@ -1,5 +1,7 @@
 #include "../includes/minishell.h"
 
+void	print_export(char **sort_env_index);
+
 int	exec_export(t_all *all)
 {
 	int	i;
@@ -48,12 +50,11 @@ int	do_sort_index(char ***sort_env_index, int **sort, int i)
 
 	k = -1;
 	*sort_env_index = (char **)malloc((i + 1) * sizeof(char *));
-	*sort_env_index[i] = NULL;
-	*sort = (int *)malloc((i + 1) * sizeof(int));
-	*sort[i] = 0;
-write(1, "test  4\n", 9);
+	(*sort_env_index)[i] = NULL;
+	*sort = (int *)malloc((i + 1) * sizeof(int));//индексы возрастания строк
+	(*sort)[i] = 0;
 	while (++k < i)
-		*sort[k] = 1;
+		(*sort)[k] = 1;
 	if (*sort_env_index == NULL || *sort == NULL)
 	{
 		write(STDOUT_FILENO, "Error: malloc error. Try again.\n", 33);
@@ -70,7 +71,6 @@ void	sort_env(t_all *all, int i, int k, int j)
 
 	if (do_sort_index(&sort_env_index, &sort, i))
 		return ;
-write(1, "test  3\n", 9);
 	j_zero = 0;
 	while (i)
 	{
@@ -85,6 +85,35 @@ write(1, "test  3\n", 9);
 		sort_env_index[--i] = all->env[j];
 		sort[j] = 0;
 	}
-	exec_env(all, sort_env_index);
+	print_export(sort_env_index);
 	free_sort_index(sort_env_index, sort);
 }
+
+void	print_export(char **sort_env_index)
+{
+	int		i;
+	char	*len_equal;
+
+	i = -1;
+	while (sort_env_index[++i])
+	{
+		write(STDOUT_FILENO, "declare -x ", ft_strlen("declare -x "));
+		len_equal = ft_strchr(sort_env_index[i], '=');
+		if (len_equal++)
+		{
+			write(STDOUT_FILENO, sort_env_index[i], len_equal - sort_env_index[i]);
+			write(STDOUT_FILENO, "\"", 1);
+			write(STDOUT_FILENO, len_equal, ft_strlen(len_equal));
+			write(STDOUT_FILENO, "\"\n", 2);
+		}
+		else
+		{
+			write(STDOUT_FILENO, sort_env_index[i], ft_strlen(sort_env_index[i]));
+			write(STDOUT_FILENO, "\n", 1);
+		}
+	}
+}
+
+// export A AA= AAA AAAA=1234 AAAAA="12345" AAAAAA='123456'
+// export B BA= BAA BAAA=1234 BAAAA="12345" BAAAAA='123456'
+// export A=1 AA=12345 AAA= AAAA AAAAA="12" AAAAAA='56'

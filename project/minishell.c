@@ -87,9 +87,9 @@ void	start_all(t_all *all, char **env)
 	all->line = NULL;
 	all->commands = NULL;
 	init_env(all, env);
-	while (all->env[i] && !(all->env[i][0] == 'P' && all->env[i][1] == 'W' && all->env[i][2] == 'D'))
+	while (all->env[i] && ft_strncmp(all->env[i], "PWD=", 4))
 		++i;
-	all->pwd = ft_strdup(all->env[i]);
+	all->pwd = ft_strdup(&all->env[i][4]);
 	init_commands(all);
 }
 
@@ -130,7 +130,7 @@ void	init_env(t_all *all, char **env)
     i = -1;
     while (env[++i])
 		;
-    all->env = (char**)malloc(sizeof(char*) * i);
+    all->env = (char**)malloc(sizeof(char*) * (i + 1));
     all->env[i] = NULL;
 	i = -1;
     while (env[++i])

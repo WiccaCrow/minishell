@@ -1,7 +1,8 @@
 #include "../includes/minishell.h"
 
-void	test_print_pwd(t_all *all);
+void	test_print_pwd(t_all *all, char *str_pwd);
 int	change_pwd_oldpwd(t_all *all);
+int	get_my_env_index(char **my_env, char *env_str, size_t len_env_str);
 
 int	exec_cd(t_all *all)
 {
@@ -27,50 +28,64 @@ int	exec_cd(t_all *all)
 // если pwd нет в env, необходимо его создать
 			i = change_pwd_oldpwd(all);
 			all->pwd = getcwd(NULL, 0);
-			if (i > 0)
+			if (i >= 0)
 				all->env[i] = ft_strjoin("PWD=", all->pwd);
 	}
-// test_print_pwd(all);
+// test_print_pwd(all, "PWD=");///////////////////////
+// test_print_pwd(all, "OLDPWD=");///////////////////////
 	return (ret_chdir);
 }
 
-void	test_print_pwd(t_all *all)
+void	test_print_pwd(t_all *all, char *str_pwd)
 {
 	int i;
-	
-	i = 0;
-	while (all->env[i])
+
+	i = get_my_env_index(all->env, str_pwd, ft_strlen(str_pwd));
+	if (all->env[i])
 	{
-		if (all->env[i][0] == 'P' && all->env[i][1] == 'W' && all->env[i][2] == 'D')
-			break ;
-		++i;
+		write(1, all->env[i], ft_strlen(all->env[i]));
+		write(1, "\n", 1);
 	}
-	write(1, all->env[i], ft_strlen(all->env[i]));
-	write(1, "\n", 1);
+	else
+		write(1, "not pwd/oldpwd\n", 16);
 }
 
+/************************************
+ * 		  change_pwd_oldpwd			*
+ * **********************************
+ * Описание:
+ * 		функция находит в массиве all->env строки 
+ * 		PWD и OLDPWD. В строку OLDPWD записывает 
+ * 		полное имя рабочего каталога до вызова 
+ * 		команды cd. Память из-под строки PWD 
+ * 		освобождает и зануляет.
+ *
+ * Возвращаемое значение:
+ * 		int. Если в массиве all->env строка PWD 
+ * 		была найдена, возвращает индекс
+ * 		строки PWD в массиве all->env.
+ *		В противном случае возвращает -1.
+ */
 
 int	change_pwd_oldpwd(t_all *all)
 {
 	int	i;
 	int	j;
 
-	j = 0;
-	i = 0;
-	while (all->env[i] && !(all->env[i][0] == 'P' && all->env[i][1] == 'W' && all->env[i][2] == 'D'))
-		++i;
-	while (all->env[j] && !(all->env[j][0] == 'O' && all->env[j][1] == 'L' && all->env[j][2] == 'D' &&
-					all->env[j][3] == 'P' && all->env[j][4] == 'W' && all->env[j][5] == 'D'))
-		++j;
+	i = get_my_env_index(all->env, "PWD=", 4);
+	j = get_my_env_index(all->env, "OLDPWD=", 7);
 	all->oldpwd = all->pwd;
 	if (all->env[j])
 	{
 		free(all->env[j]);
 		all->env[j] = NULL;
-		all->env[j] = ft_strjoin("OLD", all->pwd);
+		all->env[j] = ft_strjoin("OLDPWD=", all->pwd);
 	}
 	if (all->pwd)
+	{
+		free(all->pwd);
 		all->pwd = NULL;
+	}
 	if (all->env[i])
 	{
 		free(all->env[i]);
@@ -78,4 +93,29 @@ int	change_pwd_oldpwd(t_all *all)
 		return (i);
 	}
 	return (-1);
+}
+
+/************************************
+ * 		  get_my_env_index			*
+ * **********************************
+ * Описание:
+ * 		функция находит индекс строки, содержащей 
+ * 		len_env_str байт от строки env_str,
+ * 		в двумерном массиве строк my_env.
+ *
+ * Возвращаемое значение:
+ * 		int индекс строки env_str в двумерном 
+ * 		массиве строк my_env, если env_str есть 
+ * 		среди my_env. В противном случае 
+ * 		возвращает индекс строки NULL в массиве my_env.
+ */
+
+int	get_my_env_index(char **my_env, char *env_str, size_t len_env_str)
+{
+	int	i;
+
+	i = 0;
+	while (my_env[i] && ft_strncmp(my_env[i], env_str, len_env_str))
+		++i;
+	return (i);
 }

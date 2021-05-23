@@ -75,12 +75,16 @@ int 			executor(t_all *all);
 int				exec_echo(t_all *all);
 int				exec_cd(t_all *all);
 void			exec_pwd(t_all *all);
-void			exec_env(t_all *all, char **env_my);
+void			exec_env(t_all *all);
 int				exec_export(t_all *all);
 void			sort_env(t_all *all, int i, int k, int j);
 int				do_sort_index(char ***sort_env_index, int **sort, int i);
 void			all_args_free(t_all *all);
+int	check_valid_args(t_all *all, int j, int flag_print);
+int		find_env_str(t_all *all, int j);
 void			subjoin_env(t_all *all, int i, int j);
+int	get_my_env_index(char **my_env, char *env_str, size_t len_env_str);
+int				exec_unset(t_all *all);
 
 
 #endif
