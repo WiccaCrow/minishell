@@ -49,7 +49,7 @@ int main(int ac, char **av, char **env)
 	(void) av;
 	start_all(&all, env);
 	line_getter(&all);
-	printf("%s\n", all.line);
+	printf("\nline_getter result:\n\"%s\"\n", all.line);
 //	free(all.line);
 	all.line = NULL;
 	while (1)
