@@ -50,8 +50,11 @@ int main(int ac, char **av, char **env)
 	start_all(&all, env);
 	line_getter(&all);
 	printf("\nline_getter result:\n\"%s\"\n", all.line);
-//	free(all.line);
+	if (all.line && dollar_handler(&all) && parser(&all))
+		executor(&all);
+	free(all.line);
 	all.line = NULL;
+	
 	while (1)
 	{
 		show_program_name();
