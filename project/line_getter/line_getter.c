@@ -5,18 +5,18 @@ int 		ft_putchar(int c)
 	return (int)(write(STDOUT_FILENO, &c, 1));
 }
 
-char	 	*add_chr_to_pos(char *str, char c, int pos)
+char	 	*add_chr_to_pos(char *str, char c, size_t *pos)
 {
 	char	*new_str;
 	size_t	size;
-	int 	i;
+	size_t	i;
 
 	size = gnl_strlen(str) + 2;
 	new_str = (char *)malloc(sizeof(char) * size);
 	if (new_str)
 	{
 		i = 0;
-		while (str && str[i] && i < pos)
+		while (str && str[i] && i < *pos)
 		{
 			new_str[i] = str[i];
 			i++;
@@ -30,6 +30,10 @@ char	 	*add_chr_to_pos(char *str, char c, int pos)
 		new_str[i] = 0;
 	}
 	free(str);
+	size = write(STDIN_FILENO, &new_str[*pos], ft_strlen(&new_str[*pos])) - 1;
+	while (size--)
+		tputs(cursor_left, 1, ft_putchar);
+	(*pos)++;
 	return (new_str);
 }
 
@@ -74,6 +78,16 @@ int 	key_right_handle(char *line, size_t *pos)
 	return (0);
 }
 
+int 	key_left_handle(size_t *pos)
+{
+	if (*pos > 0)
+	{
+		(*pos)--;
+		tputs(cursor_left, 1, ft_putchar);
+	}
+	return (0);
+}
+
 char	*get_line(char **history)
 {
 	char			*line;
@@ -101,19 +115,11 @@ char	*get_line(char **history)
 			else if (!strcmp(buff, KEY_RIGHT))
 				key_right_handle(line, &pos);
 			else if (!strcmp(buff, KEY_LEFT))
-			{
-				if (pos > 0)
-				{
-					pos--;
-					tputs(cursor_left, 1, ft_putchar);
-				}
-			} else if (!strcmp(buff, "\4") || !strcmp(buff, "\n"))
+				key_left_handle(&pos);
+			else if (!strcmp(buff, "\4") || !strcmp(buff, "\n"))
 				break;
 			else
-			{
-				pos += write(STDOUT_FILENO, buff, ret);
-				line = add_chr_to_pos(line, *buff, pos);
-			}
+				line = add_chr_to_pos(line, *buff, &pos);
 		}
 		if (!canon_on())
 			return (line);
