@@ -5,14 +5,24 @@ char	**get_history(void)
 	return (ft_split("pwd ls echo", ' '));
 }
 
-int		show_prev_command(char **history)
+char 		*show_prev_command(char **history, size_t *pos, char *line)
 {
 	(void) history;
-	return ((int)write(STDOUT_FILENO, "prev_command", 12));
+	while (*pos && !tputs(cursor_left, 1, ft_putchar) && \
+					!tputs(tgetstr("ce", 0), 1, ft_putchar))
+		(*pos)--;
+	*pos += write(STDOUT_FILENO, "prev_command", 12);
+	free(line);
+	return (ft_strdup("prev_command"));
 }
 
-int		show_next_command(char **history)
+char		*show_next_command(char **history, size_t *pos, char *line)
 {
 	(void) history;
-	return ((int)write(STDOUT_FILENO, "next_command", 12));
+	while (*pos && !tputs(cursor_left, 1, ft_putchar) && \
+					!tputs(tgetstr("ce", 0), 1, ft_putchar))
+		(*pos)--;
+	*pos += write(STDOUT_FILENO, "next_command", 12);
+	free(line);
+	return (ft_strdup("next_command"));
 }

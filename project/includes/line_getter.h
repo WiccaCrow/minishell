@@ -14,10 +14,11 @@
 # define KEY_BACKSPACE "\177"
 
 char		**get_history(void);
-int			show_prev_command(char **history);
-int			show_next_command(char **history);
+char 		*show_prev_command(char **history, size_t *pos, char *line);
+char		*show_next_command(char **history, size_t *pos, char *line);
 int 		canon_off(void);
 int 		canon_on(void);
+int 		ft_putchar(int c);
 
 
 #endif
