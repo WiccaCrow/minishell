@@ -59,8 +59,12 @@ int main(int ac, char **av, char **env)
 	{
 		show_program_name();
 		if (fill_all(&all) != -1)
-			while(all.line && dollar_handler(&all) && parser(&all))
+		{
+			while (all.line && dollar_handler(&all) && parser(&all))
 				executor(&all);
+		}
+		else
+			break ;			
 		free(all.args);
 	}
 	exit_clean(&all);
