@@ -16,7 +16,8 @@
 char		**get_history(void);
 int			show_prev_command(char **history);
 int			show_next_command(char **history);
-
+int 		canon_off(void);
+int 		canon_on(void);
 
 
 #endif

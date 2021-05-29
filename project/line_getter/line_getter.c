@@ -68,76 +68,67 @@ char *get_line(char **history)
 	int				ret;
 	char			*termtype;
 	char			buff[10];
-	struct termios	term;
 
 	line = NULL;
 	termtype = getenv("TERM");
-	tcgetattr(0, &term);
-	term.c_lflag &= ~(ECHO);
-	term.c_lflag &= ~(ICANON);
-	tcsetattr(0, TCSANOW, &term);
-	tgetent(0, termtype);
-	tputs(save_cursor, 1, ft_putchar);
-	pos = 0;
-	while (1)
+	if (!canon_off() && termtype)
 	{
-		ret = read(STDIN_FILENO, buff, 10);
-		buff[ret] = 0;
-		if (!strcmp(buff, KEY_UP))
+		tgetent(0, termtype);
+		tputs(save_cursor, 1, ft_putchar);
+		pos = 0;
+		while (1)
 		{
-			while (pos)
+			ret = read(STDIN_FILENO, buff, 10);
+			buff[ret] = 0;
+			if (!strcmp(buff, KEY_UP))
 			{
-				tputs(cursor_left, 1, ft_putchar);
+				while (pos)
+				{
+					tputs(cursor_left, 1, ft_putchar);
+					tputs(tgetstr("ce", 0), 1, ft_putchar);
+					pos--;
+				}
 				tputs(tgetstr("ce", 0), 1, ft_putchar);
-				pos--;
-			}
-			tputs(tgetstr("ce", 0), 1, ft_putchar);
-			pos += show_prev_command(history);
-		}
-		else if (!strcmp(buff, KEY_DOWN))
-		{
-			while (pos)
+				pos += show_prev_command(history);
+			} else if (!strcmp(buff, KEY_DOWN))
 			{
-				tputs(cursor_left, 1, ft_putchar);
+				while (pos)
+				{
+					tputs(cursor_left, 1, ft_putchar);
+					tputs(tgetstr("ce", 0), 1, ft_putchar);
+					pos--;
+				}
 				tputs(tgetstr("ce", 0), 1, ft_putchar);
-				pos--;
-			}
-			tputs(tgetstr("ce", 0), 1, ft_putchar);
-			pos += show_next_command(history);
-		}
-		else if (!strcmp(buff, KEY_BACKSPACE) && pos > 0)
-		{
-			tputs(cursor_left, 1, ft_putchar);
-			tputs(delete_character, 1, ft_putchar);
-			line = remove_chr_from_pos(line, pos);
-			pos--;
-		}
-		else if (!strcmp(buff, KEY_RIGHT))
-		{
-			tputs(cursor_right, 1, ft_putchar);
-			pos++;
-		}
-		else if (!strcmp(buff, KEY_LEFT))
-		{
-			if (pos > 0)
+				pos += show_next_command(history);
+			} else if (!strcmp(buff, KEY_BACKSPACE) && pos > 0)
 			{
-				pos--;
 				tputs(cursor_left, 1, ft_putchar);
+				tputs(delete_character, 1, ft_putchar);
+				line = remove_chr_from_pos(line, pos);
+				pos--;
+			} else if (!strcmp(buff, KEY_RIGHT))
+			{
+				tputs(cursor_right, 1, ft_putchar);
+				pos++;
+			} else if (!strcmp(buff, KEY_LEFT))
+			{
+				if (pos > 0)
+				{
+					pos--;
+					tputs(cursor_left, 1, ft_putchar);
+				}
+			} else if (!strcmp(buff, "\4") || !strcmp(buff, "\n"))
+				break;
+			else
+			{
+				pos += write(STDOUT_FILENO, buff, ret);
+				line = add_chr_to_pos(line, *buff, pos);
 			}
 		}
-		else
-		{
-			pos += write(STDOUT_FILENO, buff, ret);
-			line = add_chr_to_pos(line, *buff, pos);
-		}
-		if (!strcmp(buff, "\4"))
-			break;
+		if (!canon_on())
+			return (line);
 	}
-	tcgetattr(0, &term);
-	term.c_lflag |= ECHO;
-	term.c_lflag |= ICANON;
-	tcsetattr(0, TCSANOW, &term);
-	return (line);
+	return (NULL);
 }
 
 int	line_getter(t_all *all)
