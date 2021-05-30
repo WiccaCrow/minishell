@@ -13,7 +13,7 @@
  * 		structure of the program. t_all all.
 */
 
-int check_end_of_input(const char *line, int flag)
+static int	check_end_of_input(const char *line, int flag)
 {
 	int i;
 	

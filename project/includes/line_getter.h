@@ -19,6 +19,8 @@ char		*show_next_command(char **history, size_t *pos, char *line);
 int 		canon_off(void);
 int 		canon_on(void);
 int 		ft_putchar(int c);
+char	 	*add_chr_to_pos(char *str, char c, size_t *pos);
+char	 	*remove_chr_from_pos(char *str, size_t *pos);
 
 
 #endif
