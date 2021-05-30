@@ -16,11 +16,20 @@ void	subjoin_env(t_all *all, int i, int j)//subjoin_env(all, i, -1);
 	{
 		if (!check_valid_args(all, "export", j, 0))// проверяет валидность введенных аргументов, 0/1 флаг - печатать/нет сообщение о валидности аргументов
 			continue;
-		// if (check_double_args(&(all->args[j])))//проверяет наличие этого же аргумента среди последующих аргументов 1 - повторяется, 0 - нет повторов
-		// 	continue;
+		if (check_double_args(&(all->args[j])))//проверяет наличие этого же аргумента среди последующих аргументов 1 - повторяется, 0 - нет повторов
+			continue;
+if (j == 1)
+printf("test test 1\n");
+
+
 		index = find_env_str(all, "export", j);//нахожу индекс env строки или нулл
 		if (all->env[index] == NULL)
+		{
+if (j == 1)
+printf("test test 2\n");
 			env_new[--i] = ft_strdup(all->args[j]);//если такой переменной не было, создать ее
+printf("env_new i = %s || i = %d\n", env_new[i], i);
+		}
 		else
 		{
 			if (ft_strchr(all->args[j], '=') != NULL)
@@ -28,7 +37,10 @@ void	subjoin_env(t_all *all, int i, int j)//subjoin_env(all, i, -1);
 		}
 	}
 	while (--i >= 0)
+	{
 		env_new[i] = all->env[i];
+printf("env_new i = %s || i = %d\n", env_new[i], i);
+	}
 	free(all->env);
 	all->env = env_new;
 }
@@ -40,6 +52,8 @@ int	count_lines(t_all *all, char *oper_name, int nb_env_lines, int j)
 	while (all->args[++j])// пока не переберу все аргументы
 	{
 		if (!check_valid_args(all, oper_name, j, 1))// проверяет валидность введенных аргументов
+			continue;
+		if (check_double_args(&(all->args[j])))//проверяет наличие этого же аргумента среди последующих аргументов 1 - повторяется, 0 - нет повторов
 			continue;
 		index = find_env_str(all, oper_name, j);//нахожу индекс env строки или нулл
 		if (!ft_strncmp(oper_name, "export", ft_strlen(oper_name)))
@@ -57,24 +71,29 @@ int	count_lines(t_all *all, char *oper_name, int nb_env_lines, int j)
 	return (nb_env_lines);
 }
 
-// int	check_double_args(char **args)
-// {
-// 	int	i;
-// 	int	j;
+int	check_double_args(char **args)
+{
+	int	i;
+	int	nb_args;
 
-// 	i = 0;
-// 	while (args[0][i] != '-' && args[0][i])
-// 		++i;
-// 	--i;
-// 	j = 0;
-// 	while (args[++j])// перебираю все последующие аргументы
-// 	{
-// 		printf("args0 %s || argsj %s\n", args[0], args[j]);
-// 		if (!ft_strncmp(args[0], args[j], i) && (args[j][i + 1] == '=' || args[j][i + 1] == '\0'))//если встречу совпадение, возвращаю 1
-// 			return (1);
-// 	}
-// 	return (0);
-// }
+	i = 0;
+	while (args[0][i] != '=' && args[0][i])
+		++i;
+	nb_args = 0;
+	while (args[++nb_args])// перебираю все последующие аргументы
+	{
+		if (!ft_strncmp(args[0], args[nb_args], i))
+		{
+			printf("args0 = %s\nargsj = %s\ni = %d\n\n", args[0], args[nb_args], i);
+			if (args[nb_args][i] == '=' || args[nb_args][i] == '\0')//если встречу совпадение, возвращаю 1
+			{
+				// printf("i = %d || args0 %s || argsj %s\n", i, args[0], args[j]);
+				return (1);
+			}
+		}
+	}
+	return (0);
+}
 
 int	find_env_str(t_all *all, char *oper_name, int j)
 {
