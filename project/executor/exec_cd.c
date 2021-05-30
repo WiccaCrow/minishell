@@ -102,6 +102,13 @@ int	change_pwd_oldpwd(t_all *all)
  * 		функция находит индекс строки, содержащей 
  * 		len_env_str байт от строки env_str,
  * 		в двумерном массиве строк my_env.
+ * 		Если env_str не содержит '=', после сравнения
+ * 		len_env_str байт, функция проверяет следующий 
+ * 		символ (len_env_str + 1) строки в массиве 
+ * 		env_my. Если это '=' или строка закончилась, 
+ * 		значит искомый индекс найден, возвращается его 
+ * 		значение. В противном случае поиск строки и ее 
+ * 		индекса продолжается.
  *
  * Возвращаемое значение:
  * 		int индекс строки env_str в двумерном 
@@ -113,9 +120,22 @@ int	change_pwd_oldpwd(t_all *all)
 int	get_my_env_index(char **my_env, char *env_str, size_t len_env_str)
 {
 	int	i;
+	int	cmp;
 
 	i = 0;
-	while (my_env[i] && ft_strncmp(my_env[i], env_str, len_env_str))
+	cmp = ft_strncmp(my_env[i], env_str, len_env_str);
+	while (my_env[i] && cmp)
+	{
 		++i;
+		if (my_env[i])
+		{
+			cmp = ft_strncmp(my_env[i], env_str, len_env_str);
+			if (!cmp && ft_strchr(env_str, '=') == NULL)
+			{
+				if (my_env[i][len_env_str + 1] == '=' || my_env[i][len_env_str + 1] == '\0')
+				return (i);
+			}
+		}
+	}
 	return (i);
 }
