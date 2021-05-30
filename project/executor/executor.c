@@ -71,8 +71,8 @@ int executor(t_all *all)
 		exec_env(all);
 	else if (all->flag_command == export)
 		exec_export(all);
-//	else if (all->flag_command == unset)
-//		exec_unset(all);
+	else if (all->flag_command == unset)
+		exec_unset(all);
 	else
 		return (write(1, "other command\n", 15));
 	return (1);

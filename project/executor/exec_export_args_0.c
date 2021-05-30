@@ -1,14 +1,13 @@
 #include "../includes/minishell.h"
 
-void	print_export(char **sort_env_index);
+int	ft_strcmp_s1_less_s2(char *str1, char *str2);
+void	free_sort_index(char **sort_env_index, int *sort);
 
 int	exec_export(t_all *all)
 {
 	int	i;
 
-	i = 0;
-	while (all->env[i])
-		++i;
+	i = count_env_lines(all);
 write(1, "test  1\n", 9);
 	if (!all->args[0])
 		sort_env(all, i, -1, 0);
@@ -18,49 +17,14 @@ write(1, "test  2\n", 9);
 	return (0);
 }
 
-void	free_sort_index(char **sort_env_index, int *sort)
+int	count_env_lines(t_all *all)
 {
-	if (sort)
-	{
-		free(sort);
-		sort = NULL;
-	}
-	if (**sort_env_index)
-	{
-		free(sort_env_index);
-		sort_env_index = NULL;
-	}
-}
+	int	i;
 
-int	ft_strcmp_s1_less_s2(char *str1, char *str2)
-{
-	while (*str1 == *str2 && *str2 && *str1)
-	{
-		++str1;
-		++str2;
-	}
-	if (*str1 < *str2)
-		return (1);
-	return (0);
-}
-
-int	do_sort_index(char ***sort_env_index, int **sort, int i)
-{
-	int	k;
-
-	k = -1;
-	*sort_env_index = (char **)malloc((i + 1) * sizeof(char *));
-	(*sort_env_index)[i] = NULL;
-	*sort = (int *)malloc((i + 1) * sizeof(int));//индексы возрастания строк
-	(*sort)[i] = 0;
-	while (++k < i)
-		(*sort)[k] = 1;
-	if (*sort_env_index == NULL || *sort == NULL)
-	{
-		write(STDOUT_FILENO, "Error: malloc error. Try again.\n", 33);
-		return (1);
-	}
-	return (0);
+	i = 0;
+	while (all->env[i])
+		++i;
+	return (i);
 }
 
 void	sort_env(t_all *all, int i, int k, int j)
@@ -89,6 +53,37 @@ void	sort_env(t_all *all, int i, int k, int j)
 	free_sort_index(sort_env_index, sort);
 }
 
+int	do_sort_index(char ***sort_env_index, int **sort, int i)
+{
+	int	k;
+
+	k = -1;
+	*sort_env_index = (char **)malloc((i + 1) * sizeof(char *));
+	(*sort_env_index)[i] = NULL;
+	*sort = (int *)malloc((i + 1) * sizeof(int));//индексы возрастания строк
+	(*sort)[i] = 0;
+	while (++k < i)
+		(*sort)[k] = 1;
+	if (*sort_env_index == NULL || *sort == NULL)
+	{
+		write(STDOUT_FILENO, "Error: malloc error. Try again.\n", 33);
+		return (1);
+	}
+	return (0);
+}
+
+int	ft_strcmp_s1_less_s2(char *str1, char *str2)
+{
+	while (*str1 == *str2 && *str2 && *str1)
+	{
+		++str1;
+		++str2;
+	}
+	if (*str1 < *str2)
+		return (1);
+	return (0);
+}
+
 void	print_export(char **sort_env_index)
 {
 	int		i;
@@ -111,6 +106,20 @@ void	print_export(char **sort_env_index)
 			write(STDOUT_FILENO, sort_env_index[i], ft_strlen(sort_env_index[i]));
 			write(STDOUT_FILENO, "\n", 1);
 		}
+	}
+}
+
+void	free_sort_index(char **sort_env_index, int *sort)
+{
+	if (sort)
+	{
+		free(sort);
+		sort = NULL;
+	}
+	if (**sort_env_index)
+	{
+		free(sort_env_index);
+		sort_env_index = NULL;
 	}
 }
 
