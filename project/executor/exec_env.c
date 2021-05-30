@@ -1,5 +1,16 @@
 #include "../includes/minishell.h"
 
+/************************************
+ * 			exec_env				*
+ * **********************************
+ * Description:
+ * 		Print my env array.
+ * 
+ * Contains functions:
+ * libft.	ft_strlen;
+ * libft.	ft_strchr;
+*/
+
 void	exec_env(t_all *all)
 {
 	int	i;

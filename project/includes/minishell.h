@@ -74,21 +74,28 @@ enum e_command	get_command(t_all *all, int i);
 int 			executor(t_all *all);
 int				exec_echo(t_all *all);
 int				exec_cd(t_all *all);
+int				get_my_env_index(char **my_env, char *env_str, size_t len_env_str);
+int				change_pwd_oldpwd(t_all *all);
+int				get_my_env_index(char **my_env, char *env_str, size_t len_env_str);
 void			exec_pwd(t_all *all);
 void			exec_env(t_all *all);
 int				exec_export(t_all *all);
-int	count_env_lines(t_all *all);
-int	count_lines(t_all *all, char *oper_name, int nb_env_lines, int j);
-void	print_export(char **sort_env_index);
-int	print_not_valid(char *args_name, char *operation_name, int flag_print);
+int				count_env_lines(t_all *all);
 void			sort_env(t_all *all, int i, int k, int j);
 int				do_sort_index(char ***sort_env_index, int **sort, int i);
-void			all_args_free(t_all *all);
-int	check_valid_args(t_all *all, char *oper_name, int j, int flag_print);
-int		find_env_str(t_all *all, char *oper_name, int j);
+int				ft_strcmp_s1_less_s2(char *str1, char *str2);
+void			print_export(char **sort_env_index);
+void			free_sort_index(char **sort_env_index, int *sort);
 void			subjoin_env(t_all *all, int i, int j);
-int	get_my_env_index(char **my_env, char *env_str, size_t len_env_str);
+int				count_lines(t_all *all, char *oper_name, int nb_env_lines, int j);
+int				check_valid_args(t_all *all, char *oper_name, int j, int flag_print);
+int				print_not_valid(char *args_name, char *operation_name, int flag_print);
+int				check_double_args(char **args);
+int				find_env_str(t_all *all, char *oper_name, int j);
+void			change_env_str(t_all *all, int j, int index);
 int				exec_unset(t_all *all);
-
+void			exec_unset_find_env_str(t_all *all, char *oper_name);
+void			exec_unset_do_new_env(t_all *all, char **env_new, int nb_lines);
+void			all_args_free(t_all *all);
 
 #endif

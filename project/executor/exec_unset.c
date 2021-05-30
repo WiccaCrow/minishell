@@ -1,11 +1,23 @@
 #include "../includes/minishell.h"
 
-void	exec_unset_find_env_str(t_all *all, char *oper_name);
-void	exec_unset_do_new_env(t_all *all, char **env_new, int nb_lines);
+/************************************
+ * 			 exec_unset				*
+ * **********************************
+ * Description:
+ * 		Each variable or function 
+ * 		specified by name shall be 
+ * 		unset.
+ * 
+ * Contains functions:
+ * 		count_env_lines;
+ * 		count_lines;
+ * 		exec_unset_find_env_str;
+ * 		exec_unset_do_new_env;
+ */
 
 int	exec_unset(t_all *all)
 {
-	char 	**env_new;//будущий новый массив env
+	char 	**env_new;
 	int		i;
 	int		j;
 
@@ -22,14 +34,19 @@ int	exec_unset(t_all *all)
 /************************************
  * 		 exec_unset_find_env_str	*
  * **********************************
- * Описание:
- * 		Функция из валидных аргументов находит строки 
- * 		среди env массива с этими аргументами. Далее 
- * 		функция освобождает память, выделенную под эти 
- * 		строки и перенаправляет указатели с найденных 
- * 		строк на NULL.
+ * Description:
+ * 		This function checks arguments 
+ * 		for validity. In the env array, 
+ * 		finds strings with these valid 
+ * 		arguments. If the strings are 
+ * 		found, the function frees the 
+ * 		memory allocated for these 
+ * 		strings and redirects pointers 
+ * 		from the found strings to NULL.
  * 
- * Функции:
+ * 		oper_name - "export" or "unset".
+ * 
+ * Contains functions
  * 		check_valid_args;
  * 		find_env_str;
  */
@@ -42,9 +59,9 @@ void	exec_unset_find_env_str(t_all *all, char *oper_name)
 	j = -1;
 	while (all->args[++j])
 	{
-		if (!check_valid_args(all, oper_name, j, 0))// проверяет валидность введенных аргументов, 0/1 флаг - печатать/нет сообщение о валидности аргументов
+		if (!check_valid_args(all, oper_name, j, 0))
 			continue;
-		index_env_str = find_env_str(all, oper_name, j);//нахожу индекс env строки или нулл
+		index_env_str = find_env_str(all, oper_name, j);
 		if (all->env[index_env_str] != NULL)
 		{
 			free(all->env[index_env_str]);
@@ -56,10 +73,10 @@ void	exec_unset_find_env_str(t_all *all, char *oper_name)
 /************************************
  * 	  exec_unset_delete_env_str		*
  * **********************************
- * Описание:
- * 		Функция заменяет старый массив 
- * 		env на новый массив env (без 
- * 		удаленных строк).
+ * Description:
+ * 		The function replaces the old 
+ * 		env array with the new env 
+ * 		array (no deleted lines).
  */
 
 void	exec_unset_do_new_env(t_all *all, char **env_new, int nb_lines)
@@ -78,5 +95,3 @@ void	exec_unset_do_new_env(t_all *all, char **env_new, int nb_lines)
 	free(all->env);
 	all->env = env_new;
 }
-
-// export A AA= AAA AAAA=1234 AAAAA="12345" AAAAAA='123456'
