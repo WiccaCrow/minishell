@@ -22,20 +22,25 @@ static int	check_end_of_input(const char *line)
 			i++;
 		}
 	}
-	return (flag);
+	return (!flag);
 }
 
 int		enter_handle(char **line, char **curr_line, size_t *pos)
 {
-	if (check_end_of_input(*line))
-		return (1);
-	else
+	if (*line)
+		*line = gnl_strjoin(*line, "\n");
+	*line = gnl_strjoin(*line, *curr_line);
+	if (*line)
 	{
-		*line = gnl_strjoin(*line, *curr_line);
 		free(*curr_line);
 		*curr_line = NULL;
-		*pos = 0;
-		write(STDOUT_FILENO, "\n> ", 3);
+		if (check_end_of_input(*line))
+			return (1);
+		else
+		{
+			*pos = 0;
+			write(STDOUT_FILENO, "\n> ", 3);
+		}
 	}
 	return (0);
 }

@@ -47,9 +47,7 @@ char	*get_line(char **history)
 		}
 		if (!canon_on())
 		{
-			line = gnl_strjoin(line, curr_line);
-			if (line)
-				return (line);
+			return (line);
 		}
 	}
 	return (NULL);
