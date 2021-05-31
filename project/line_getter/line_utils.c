@@ -25,12 +25,13 @@ char	 	*add_chr_to_pos(char *str, char c, size_t *pos)
 			i++;
 		}
 		new_str[i] = 0;
+		free(str);
+		size = write(STDIN_FILENO, &new_str[*pos], ft_strlen(&new_str[*pos]))
+				- 1;
+		while (size--)
+			tputs(cursor_left, 1, ft_putchar);
+		(*pos)++;
 	}
-	free(str);
-	size = write(STDIN_FILENO, &new_str[*pos], ft_strlen(&new_str[*pos])) - 1;
-	while (size--)
-		tputs(cursor_left, 1, ft_putchar);
-	(*pos)++;
 	return (new_str);
 }
 

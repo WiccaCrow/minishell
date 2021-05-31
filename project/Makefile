@@ -4,7 +4,7 @@ CCF			=	gcc $(CFLAGS)
 RM			=	rm -f
 CFLAGS		=	-Wall -Wextra -Werror -g
 LG_PATH		=	line_getter/
-LG_SRCS		=	line_getter.c line_utils.c history_handler.c term_switch.c
+LG_SRCS		=	line_getter.c line_utils.c history_handler.c term_switch.c key_handlers.c
 PARSER_PATH	=	parser/
 PARSER_SRCS	=	parser.c get_args.c get_next_arg.c dollar_handler.c \
 				add_command.c crop_line.c get_command.c

@@ -21,6 +21,8 @@ int 		canon_on(void);
 int 		ft_putchar(int c);
 char	 	*add_chr_to_pos(char *str, char c, size_t *pos);
 char	 	*remove_chr_from_pos(char *str, size_t *pos);
-
+int			enter_handle(char **line, char **curr_line, size_t *pos);
+int 		key_right_handle(char *line, size_t *pos);
+int 		key_left_handle(size_t *pos);
 
 #endif
