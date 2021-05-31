@@ -48,17 +48,18 @@ int main(int ac, char **av, char **env)
 	(void) ac;
 	(void) av;
 	start_all(&all, env);
-	line_getter(&all);
-	printf("\nline_getter result:\n\"%s\"\n", all.line);
-	if (all.line && dollar_handler(&all) && parser(&all))
-		executor(&all);
-	free(all.line);
-	all.line = NULL;
+//	line_getter(&all);
+//	printf("\nline_getter result:\n\"%s\"\n", all.line);
+//	if (all.line && dollar_handler(&all) && parser(&all))
+//		executor(&all);
+//	free(all.line);
+//	all.line = NULL;
 	
 	while (1)
 	{
 		show_program_name();
-		if (fill_all(&all) != -1)
+//		if (fill_all(&all) != -1)
+		if (line_getter(&all))
 		{
 			while (all.line && dollar_handler(&all) && parser(&all))
 				executor(&all);

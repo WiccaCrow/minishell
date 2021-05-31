@@ -59,13 +59,13 @@ int	line_getter(t_all *all)
 	char 	**history;
 	
 	line = NULL;
-	show_program_name();
 	history = get_history();
 	if (history)
 		line = get_line(history);
 	if (line)
 	{
 		all->line = line;
+		write(STDOUT_FILENO, "\n", 1);
 		return (1);
 	}
 	return(0);
