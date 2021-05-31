@@ -19,7 +19,7 @@ void	all_args_free(t_all *all)
  * Prints the result or error to standard 
  * output as needed. Bash standart erorr $? 127.
  * 
- * functions:
+ * Contains functions:
  * libft. ft_strlen;
 */
 
@@ -46,12 +46,17 @@ int command_not_found(t_all *all)
  * Prints the result or error to standard output as
  * needed.
  * 
- * function:
+ * Contains functions:
  * 1.4.1. command_not_found;
  * 		Prints the result or error to standard 
  * 		output as needed. Bash standart erorr $? 127.
  * 1.4.2. exec_echo;
  * 		execution command 'echo'
+ * exec_cd;
+ * exec_pwd;
+ * exec_env;
+ * exec_export;
+ * exec_unset;
  * 1.5.   exit_clean;
 */
 

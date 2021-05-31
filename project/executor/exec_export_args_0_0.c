@@ -1,21 +1,43 @@
 #include "../includes/minishell.h"
 
-int	ft_strcmp_s1_less_s2(char *str1, char *str2);
-void	free_sort_index(char **sort_env_index, int *sort);
+/************************************
+ * 				exec_export			*
+ * **********************************
+ * Description:
+ * 		If no arguments, print sort env array.
+ * 		The shell shall give the export attribute 
+ * 		to the variables corresponding to the 
+ * 		specified names, which shall cause them 
+ * 		to be in the environment of subsequently 
+ * 		executed commands. If the name of a variable 
+ * 		is followed by = word, then the value of 
+ * 		that variable shall be set to word.
+ * 
+ * Contains functions:
+ * 		count_env_lines;
+ * 		sort_env;
+ * 		subjoin_env;
+*/
 
 int	exec_export(t_all *all)
 {
 	int	i;
 
 	i = count_env_lines(all);
-write(1, "test  1\n", 9);
 	if (!all->args[0])
 		sort_env(all, i, -1, 0);
 	else
 		subjoin_env(all, i, -1);
-write(1, "test  2\n", 9);
 	return (0);
 }
+
+/************************************
+ * 			count_env_lines			*
+ * **********************************
+ * Description:
+ * 		Counts the number of lines in
+ * 		env array.
+*/
 
 int	count_env_lines(t_all *all)
 {
@@ -26,6 +48,18 @@ int	count_env_lines(t_all *all)
 		++i;
 	return (i);
 }
+
+/************************************
+ * 				sort_env			*
+ * **********************************
+ * Description:
+ * 		Sort env array for export.
+ * Contains functions:
+ * 	do_sort_index;
+ * 	ft_strcmp_s1_less_s2;
+ * 	print_export;
+ * 	free_sort_index;
+*/
 
 void	sort_env(t_all *all, int i, int k, int j)
 {
@@ -53,6 +87,13 @@ void	sort_env(t_all *all, int i, int k, int j)
 	free_sort_index(sort_env_index, sort);
 }
 
+/************************************
+ * 			do_sort_index			*
+ * **********************************
+ * Description:
+ * 		Do array for sort index.
+*/
+
 int	do_sort_index(char ***sort_env_index, int **sort, int i)
 {
 	int	k;
@@ -72,6 +113,16 @@ int	do_sort_index(char ***sort_env_index, int **sort, int i)
 	return (0);
 }
 
+/************************************
+ * 			ft_strcmp_s1_less_s2			*
+ * **********************************
+ * Description:
+ * 		Compare two strings.
+ * Return value:
+ * 		if str1 less str2 return 1,
+ * 		else return 0.
+*/
+
 int	ft_strcmp_s1_less_s2(char *str1, char *str2)
 {
 	while (*str1 == *str2 && *str2 && *str1)
@@ -83,46 +134,3 @@ int	ft_strcmp_s1_less_s2(char *str1, char *str2)
 		return (1);
 	return (0);
 }
-
-void	print_export(char **sort_env_index)
-{
-	int		i;
-	char	*len_equal;
-
-	i = -1;
-	while (sort_env_index[++i])
-	{
-		write(STDOUT_FILENO, "declare -x ", ft_strlen("declare -x "));
-		len_equal = ft_strchr(sort_env_index[i], '=');
-		if (len_equal++)
-		{
-			write(STDOUT_FILENO, sort_env_index[i], len_equal - sort_env_index[i]);
-			write(STDOUT_FILENO, "\"", 1);
-			write(STDOUT_FILENO, len_equal, ft_strlen(len_equal));
-			write(STDOUT_FILENO, "\"\n", 2);
-		}
-		else
-		{
-			write(STDOUT_FILENO, sort_env_index[i], ft_strlen(sort_env_index[i]));
-			write(STDOUT_FILENO, "\n", 1);
-		}
-	}
-}
-
-void	free_sort_index(char **sort_env_index, int *sort)
-{
-	if (sort)
-	{
-		free(sort);
-		sort = NULL;
-	}
-	if (**sort_env_index)
-	{
-		free(sort_env_index);
-		sort_env_index = NULL;
-	}
-}
-
-// export A AA= AAA AAAA=1234 AAAAA="12345" AAAAAA='123456'
-// export B BA= BAA BAAA=1234 BAAAA="12345" BAAAAA='123456'
-// export A=1 AA=12345 AAA= AAAA AAAAA="12" AAAAAA='56'
