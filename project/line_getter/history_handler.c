@@ -2,7 +2,21 @@
 
 char	**get_history(void)
 {
-	return (ft_split("pwd ls echo", ' '));
+	int		fd;
+	char	*history_line;
+
+	fd = open(HIST_FILE, O_CREAT | O_RDWR | O_APPEND, 0644);
+	if (fd > 0)
+	{
+		history_line = read_history(fd);
+		if (history_line)
+			return (ft_split(history_line, '\n'));
+		close(fd);
+		
+	}
+	else
+		write(STDOUT_FILENO, "Create/open file error\n", 23);
+	return (0);
 }
 
 char 		*show_prev_command(char **history, size_t *pos, char *line)

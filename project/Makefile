@@ -4,7 +4,8 @@ CCF			=	gcc $(CFLAGS)
 RM			=	rm -f
 CFLAGS		=	-Wall -Wextra -Werror -g
 LG_PATH		=	line_getter/
-LG_SRCS		=	line_getter.c line_utils.c history_handler.c term_switch.c key_handlers.c
+LG_SRCS		=	line_getter.c line_utils.c history_handler.c term_switch.c key_handlers.c \
+				read_history.c
 PARSER_PATH	=	parser/
 PARSER_SRCS	=	parser.c get_args.c get_next_arg.c dollar_handler.c \
 				add_command.c crop_line.c get_command.c
@@ -21,7 +22,7 @@ SRCS		=	minishell.c fill_all.c \
 				$(addprefix $(GNL_PATH), $(GNL_SRCS))
 OBJS		=	$(SRCS:.c=.o)
 LIB_DIR		=	libft/
-HDR			=	includes/minishell.h $(GNL_PATH)/get_next_line.h
+HDR			=	includes/*.h
 CYAN		=	\x1B[36m
 MAGENTA		=	\x1B[35m
 GREEN		=	\033[92m

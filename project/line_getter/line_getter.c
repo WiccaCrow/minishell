@@ -57,11 +57,15 @@ int	line_getter(t_all *all)
 {
 	char	*line;
 	char 	**history;
+	int 	i;
 	
 	line = NULL;
 	history = get_history();
-	if (history)
-		line = get_line(history);
+	i = 0;
+	while (history && history[i])
+		printf("%s\n", history[i++]);
+	//	if (history)
+	line = get_line(history);
 	if (line)
 	{
 		all->line = line;

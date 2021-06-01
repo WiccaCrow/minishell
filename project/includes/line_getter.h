@@ -12,6 +12,7 @@
 # define KEY_RIGHT "\e[C"
 # define KEY_LEFT "\e[D"
 # define KEY_BACKSPACE "\177"
+# define HIST_FILE "./.hist.txt"
 
 char		**get_history(void);
 char 		*show_prev_command(char **history, size_t *pos, char *line);
@@ -24,5 +25,6 @@ char	 	*remove_chr_from_pos(char *str, size_t *pos);
 int			enter_handle(char **line, char **curr_line, size_t *pos);
 int 		key_right_handle(char *line, size_t *pos);
 int 		key_left_handle(size_t *pos);
+char 		*read_history(int fd);
 
 #endif
