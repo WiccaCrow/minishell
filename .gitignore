@@ -53,3 +53,4 @@ dkms.conf
 minishell
 *.DS_Store*
 *idea*
+*hist*
