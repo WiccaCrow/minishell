@@ -36,6 +36,12 @@ $(NAME):	$(OBJS) $(HDR)
 			@$(CCF) -ltermcap $(OBJS) $(LIBFT) -o $(NAME)
 			@echo "${GREEN}"$(NAME)" is compiled${ENDCOLOR}"
 
+linux:		$(OBJS) $(HDR)
+			@make bonus -C $(LIB_DIR)
+			@mv $(LIB_DIR)$(LIBFT) $(LIBFT)
+			@$(CCF) -lncurses $(OBJS) $(LIBFT) -o $(NAME)
+			@echo "${GREEN}"$(NAME)" is compiled${ENDCOLOR}"
+
 clean:
 			@make clean -C $(LIB_DIR)
 			@$(RM) $(LIBFT)

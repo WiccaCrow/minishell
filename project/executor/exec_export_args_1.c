@@ -136,6 +136,7 @@ void	change_env_str(t_all *all, int j, int index)
 {
 	int	len_args;
 
+	(void) len_args; // завойдил переменную (компилятор на линуксе на нее ругался)
 	len_args = ft_strlen(all->args[j]);
 	free(all->env[index]);
 	all->env[index] = NULL;
