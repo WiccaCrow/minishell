@@ -39,7 +39,7 @@ char	*get_line(char **history)
 				break ;
 			else if (!strcmp(buff, "\n"))
 			{
-				if (enter_handle(&line, &curr_line, &pos))
+				if (enter_handle(&line, &curr_line, &pos) && add_to_history(line, &history))
 					break ;
 			}
 			else
@@ -57,19 +57,20 @@ int	line_getter(t_all *all)
 {
 	char	*line;
 	char 	**history;
-	int 	i;
+	// int 	i;
 	
 	line = NULL;
 	history = get_history();
-	i = 0;
-	while (history && history[i])
-		printf("%s\n", history[i++]);
+	// i = 0;
+	// while (history && history[i])
+	// 	printf("%s\n", history[i++]);
 	//	if (history)
 	line = get_line(history);
 	if (line)
 	{
 		all->line = line;
 		write(STDOUT_FILENO, "\n", 1);
+		// write_history(history);
 		return (1);
 	}
 	return(0);

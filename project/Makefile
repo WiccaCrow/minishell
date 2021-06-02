@@ -40,7 +40,7 @@ linux:		$(OBJS) $(HDR)
 			@make bonus -C $(LIB_DIR)
 			@mv $(LIB_DIR)$(LIBFT) $(LIBFT)
 			@$(CCF) -lncurses $(OBJS) $(LIBFT) -o $(NAME)
-			@echo "${GREEN}"$(NAME)" is compiled${ENDCOLOR}"
+			@echo $(NAME) is compiled
 
 clean:
 			@make clean -C $(LIB_DIR)

@@ -26,5 +26,8 @@ int			enter_handle(char **line, char **curr_line, size_t *pos);
 int 		key_right_handle(char *line, size_t *pos);
 int 		key_left_handle(size_t *pos);
 char 		*read_history(int fd);
+int		    write_history(char **history);
+int         clean_history(char **history);
+int         add_to_history(char *line, char ***history);
 
 #endif
