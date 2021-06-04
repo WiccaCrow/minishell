@@ -17,7 +17,6 @@ char	*get_line(t_all *all)
 	line = NULL;
 	curr_line = NULL;
 	termtype = getenv("TERM");
-//	termtype = "xterm-256color";
 	if (!canon_off() && termtype && tgetent(0, termtype) && \
 		!tputs(save_cursor, 1, ft_putchar))
 	{

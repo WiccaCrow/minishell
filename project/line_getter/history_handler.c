@@ -22,7 +22,7 @@ char		*show_next_command(char **history, size_t *pos, char *line)
 	return (ft_strdup("next_command"));
 }
 
-int add_to_history(char *line, char ***history)
+int		add_to_history(char *line, char ***history)
 {
 	int i;
 	char *history_line;
