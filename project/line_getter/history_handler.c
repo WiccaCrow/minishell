@@ -1,25 +1,39 @@
 #include "../includes/minishell.h"
 
-char 		*show_prev_command(char **history, size_t *pos, char *line)
+char 		*show_prev_command(char **history, size_t *pos, char *line,
+							   int *hist_pos)
 {
-	(void) history;
 	while (*pos && !tputs(cursor_left, 1, ft_putchar) && \
 					!tputs(tgetstr("ce", 0), 1, ft_putchar))
 		(*pos)--;
-	*pos += write(STDOUT_FILENO, "prev_command", 12);
+	if (*hist_pos > 0)
+		(*hist_pos)--;
+	*pos += write(STDOUT_FILENO, history[*hist_pos], ft_strlen(history[*hist_pos]));
 	free(line);
-	return (ft_strdup("prev_command"));
+	return (ft_strdup(history[*hist_pos]));
 }
 
-char		*show_next_command(char **history, size_t *pos, char *line)
+char		*show_next_command(char **history, size_t *pos, char *line,
+							   int *hist_pos)
 {
-	(void) history;
 	while (*pos && !tputs(cursor_left, 1, ft_putchar) && \
 					!tputs(tgetstr("ce", 0), 1, ft_putchar))
 		(*pos)--;
-	*pos += write(STDOUT_FILENO, "next_command", 12);
-	free(line);
-	return (ft_strdup("next_command"));
+	if (*hist_pos < history_len(history) - 1)
+	{
+		(*hist_pos)++;
+		*pos += write(STDOUT_FILENO, history[*hist_pos],
+					  ft_strlen(history[*hist_pos]));
+		free(line);
+		return (ft_strdup(history[*hist_pos]));
+	}
+	else
+	{
+		*pos += write(STDOUT_FILENO, history[*hist_pos],
+					  ft_strlen(history[*hist_pos]));
+		free(line);
+		return (ft_strdup(history[*hist_pos]));
+	}
 }
 
 int		add_to_history(char *line, char ***history)
@@ -48,4 +62,15 @@ int		add_to_history(char *line, char ***history)
 		}
 	}
 	return (0);
+}
+
+int		history_len(char **history)
+{
+	int len;
+	
+	len = 0;
+	if (history)
+		while (history[len])
+			len++;
+	return (len);
 }

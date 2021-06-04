@@ -9,6 +9,7 @@ char	*get_line(t_all *all)
 {
 	char			*line;
 	char			*curr_line;
+	int 			hist_pos;
 	size_t			pos;
 	ssize_t			ret;
 	char			*termtype;
@@ -21,14 +22,15 @@ char	*get_line(t_all *all)
 		!tputs(save_cursor, 1, ft_putchar))
 	{
 		pos = 0;
+		hist_pos = history_len(all->history);
 		while (1)
 		{
 			ret = read(STDIN_FILENO, buff, 10);
 			buff[ret] = 0;
 			if (!strcmp(buff, KEY_UP))
-				curr_line = show_prev_command(all->history, &pos, line);
+				curr_line = show_prev_command(all->history, &pos, line, &hist_pos);
 			else if (!strcmp(buff, KEY_DOWN))
-				curr_line = show_next_command(all->history, &pos, line);
+				curr_line = show_next_command(all->history, &pos, line, &hist_pos);
 			else if (!strcmp(buff, KEY_BACKSPACE) && pos > 0)
 				curr_line = remove_chr_from_pos(curr_line, &pos);
 			else if (!strcmp(buff, KEY_RIGHT))
@@ -59,7 +61,6 @@ int	line_getter(t_all *all)
 	char	*line;
 	
 	line = NULL;
-//		if (history)
 	line = get_line(all);
 	if (line)
 	{

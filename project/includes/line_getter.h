@@ -15,8 +15,10 @@
 # define HIST_FILE "./.hist.txt"
 
 char		**get_history(void);
-char 		*show_prev_command(char **history, size_t *pos, char *line);
-char		*show_next_command(char **history, size_t *pos, char *line);
+char 		*show_prev_command(char **history, size_t *pos, char *line, 
+				int *hist_pos);
+char		*show_next_command(char **history, size_t *pos, char *line, 
+				int *hist_pos);
 int 		canon_off(void);
 int 		canon_on(void);
 int 		ft_putchar(int c);
@@ -29,5 +31,6 @@ char 		*read_history(int fd);
 int		    write_history(char **history);
 int         clean_history(char **history);
 int         add_to_history(char *line, char ***history);
+int			history_len(char **history);
 
 #endif
