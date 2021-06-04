@@ -92,6 +92,7 @@ void	sort_env(t_all *all, int i, int k, int j)
  * **********************************
  * Description:
  * 		Do array for sort index.
+ * 		The Sort array contains ascending indices of strings.
 */
 
 int	do_sort_index(char ***sort_env_index, int **sort, int i)
@@ -101,7 +102,7 @@ int	do_sort_index(char ***sort_env_index, int **sort, int i)
 	k = -1;
 	*sort_env_index = (char **)malloc((i + 1) * sizeof(char *));
 	(*sort_env_index)[i] = NULL;
-	*sort = (int *)malloc((i + 1) * sizeof(int));//индексы возрастания строк
+	*sort = (int *)malloc((i + 1) * sizeof(int));
 	(*sort)[i] = 0;
 	while (++k < i)
 		(*sort)[k] = 1;
@@ -114,7 +115,7 @@ int	do_sort_index(char ***sort_env_index, int **sort, int i)
 }
 
 /************************************
- * 			ft_strcmp_s1_less_s2			*
+ * 		ft_strcmp_s1_less_s2		*
  * **********************************
  * Description:
  * 		Compare two strings.

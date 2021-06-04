@@ -17,7 +17,7 @@ void	all_args_free(t_all *all)
  * 		1.4.1. command_not_found	*
  * **********************************
  * Prints the result or error to standard 
- * output as needed. Bash standart erorr $? 127.
+ * output as needed. Bash standart erorr $? sets 127.
  * 
  * Contains functions:
  * libft. ft_strlen;
