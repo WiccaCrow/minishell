@@ -1,5 +1,9 @@
 #include "../includes/minishell.h"
 
+/**
+ * Функция возвращает команду, найденную в строке
+*/
+
 char	*get_command_name(const char *str, int i)
 {
 	int		flag;
@@ -35,6 +39,10 @@ char	*get_command_name(const char *str, int i)
 	return (command_name);
 }
 
+/**
+ * Функция проверяет, является ли поданная строка командой 
+*/
+
 static int	is_command(const char *str, const char *command, int i)
 {
 	char *command_name;
@@ -55,6 +63,9 @@ static int	is_command(const char *str, const char *command, int i)
 	return (0);
 }
 
+/**
+ * Функция ищет команды в строке и возвращает ее код
+*/
 
 enum e_command	get_command(t_all *all, int i)
 {

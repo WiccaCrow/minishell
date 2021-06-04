@@ -1,5 +1,9 @@
 #include "../includes/minishell.h"
 
+/**
+ * Функция пропускает команду перед аргусментами
+*/
+
 int skip_command(const char *line, int i)
 {
 	while (line && line[i] && line[i] != ' ' && line[i] != ';')
@@ -7,12 +11,20 @@ int skip_command(const char *line, int i)
 	return (i);
 }
 
+/**
+ * Функция пропускает пробелы
+*/
+
 int skip_spaces(const char *line, int i)
 {
 	while (line && line[i] && line[i] == ' ')
 		i++;
 	return (i);
 }
+
+/**
+ * Функция добавляет символ в строку
+*/
 
 char	 *add_chr(char *str, char c)
 {
@@ -35,6 +47,10 @@ char	 *add_chr(char *str, char c)
 	}
 	return (new_str);
 }
+
+/**
+ * Функция читает строку посимвольно и собирает прочитанное в аргумент
+*/
 
 int get_next_arg(char *line, int i, char **tmp_line)
 {

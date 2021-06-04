@@ -1,5 +1,9 @@
 #include "../includes/minishell.h"
 
+/**
+ * Функция парсит строку в лист аргументов 
+*/
+
 int	get_args_list(t_list **args, t_all *all, int i)
 {
 	char	*tmp_line;
@@ -22,6 +26,10 @@ int	get_args_list(t_list **args, t_all *all, int i)
 	}
 	return (i);
 }
+
+/**
+ * Функция пишет лист аргументов в массив строк
+*/
 
 int	args_list_to_arr(t_list **args, t_command *command)
 {
@@ -50,6 +58,11 @@ int	args_list_to_arr(t_list **args, t_command *command)
 	}
 	return (1);
 }
+
+/**
+ * Функция очищает лист 
+*/
+
 int clear_list(t_list **args)
 {
 	t_list *tmp;
@@ -65,6 +78,10 @@ int clear_list(t_list **args)
 	free(args);
 	return (0);
 }
+
+/**
+ * Функция получает массив аргументов для комманды
+*/
 
 int get_args(t_all *all, t_command *command, int i)
 {

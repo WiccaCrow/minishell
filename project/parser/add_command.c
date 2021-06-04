@@ -1,5 +1,9 @@
 #include "../includes/minishell.h"
 
+/**
+ * Функция добавляет комманду в лист комманд в основной структуре
+*/
+
 int	add_command(t_all *all, t_command *command)
 {
 	t_command *tmp;
@@ -9,7 +13,7 @@ int	add_command(t_all *all, t_command *command)
 		if (!(*all->commands))
 		{
 			*all->commands = command;
-			return (0);
+			return (1);
 		}
 		tmp = *all->commands;
 		while (tmp->next)

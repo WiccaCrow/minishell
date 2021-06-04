@@ -1,5 +1,9 @@
 #include "../includes/minishell.h"
 
+/**
+ * Функция показывает результат парсинга
+*/
+
 void show_parse_result(t_all *all)
 {
 	int i;
@@ -37,6 +41,10 @@ void show_parse_result(t_all *all)
 	
 }
 
+/**
+ * Функция получает из строки команду с параметрами
+*/
+
 int parse_command(t_all *all, int i)
 {
 	t_command	*command;
@@ -61,12 +69,23 @@ int parse_command(t_all *all, int i)
 	return (i);
 }
 
+/**
+ * Первый элемент из листа комманд пишет в старую структуру, где есть место 
+ * только для одной комманды
+*/
+
 int set_command_to_all(t_all *all)
 {
 	all->flag_command = (*all->commands)->flag_command;
 	all->args = (*all->commands)->args;
 	return (0);
 }
+
+/**
+ * Основная функция парсинга строки
+ * 
+ * Идем по строке, находим комманды и их аргументы, все собираем в лист
+*/
 
 int parser(t_all *all)
 {
