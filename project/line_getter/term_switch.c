@@ -1,5 +1,9 @@
 #include "../includes/line_getter.h"
 
+/**
+ * Функция переключает терминал в НЕканонический режим
+*/
+
 int		canon_off(void)
 {
 	struct termios	term;
@@ -13,6 +17,10 @@ int		canon_off(void)
 	}
 	return (-1);
 }
+
+/**
+ * Функция переключает терминал в канонический режим
+*/
 
 int		canon_on(void)
 {
