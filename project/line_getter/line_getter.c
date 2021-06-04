@@ -5,7 +5,7 @@ int 		ft_putchar(int c)
 	return (int)(write(STDOUT_FILENO, &c, 1));
 }
 
-char	*get_line(char **history)
+char	*get_line(t_all *all)
 {
 	char			*line;
 	char			*curr_line;
@@ -17,6 +17,7 @@ char	*get_line(char **history)
 	line = NULL;
 	curr_line = NULL;
 	termtype = getenv("TERM");
+//	termtype = "xterm-256color";
 	if (!canon_off() && termtype && tgetent(0, termtype) && \
 		!tputs(save_cursor, 1, ft_putchar))
 	{
@@ -26,9 +27,9 @@ char	*get_line(char **history)
 			ret = read(STDIN_FILENO, buff, 10);
 			buff[ret] = 0;
 			if (!strcmp(buff, KEY_UP))
-				curr_line = show_prev_command(history, &pos, line);
+				curr_line = show_prev_command(all->history, &pos, line);
 			else if (!strcmp(buff, KEY_DOWN))
-				curr_line = show_next_command(history, &pos, line);
+				curr_line = show_next_command(all->history, &pos, line);
 			else if (!strcmp(buff, KEY_BACKSPACE) && pos > 0)
 				curr_line = remove_chr_from_pos(curr_line, &pos);
 			else if (!strcmp(buff, KEY_RIGHT))
@@ -39,7 +40,8 @@ char	*get_line(char **history)
 				break ;
 			else if (!strcmp(buff, "\n"))
 			{
-				if (enter_handle(&line, &curr_line, &pos) && add_to_history(line, &history))
+				if (enter_handle(&line, &curr_line, &pos) && add_to_history
+				(line, &(all->history)))
 					break ;
 			}
 			else
@@ -56,21 +58,14 @@ char	*get_line(char **history)
 int	line_getter(t_all *all)
 {
 	char	*line;
-	char 	**history;
-	// int 	i;
 	
 	line = NULL;
-	history = get_history();
-	// i = 0;
-	// while (history && history[i])
-	// 	printf("%s\n", history[i++]);
-	//	if (history)
-	line = get_line(history);
+//		if (history)
+	line = get_line(all);
 	if (line)
 	{
 		all->line = line;
 		write(STDOUT_FILENO, "\n", 1);
-		// write_history(history);
 		return (1);
 	}
 	return(0);

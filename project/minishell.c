@@ -95,6 +95,7 @@ void	start_all(t_all *all, char **env)
 	all->line = NULL;
 	all->commands = NULL;
 	init_env(all, env);
+	all->history = get_history();
 	while (all->env[i] && ft_strncmp(all->env[i], "PWD=", 4))
 		++i;
 	all->pwd = ft_strdup(&all->env[i][4]);
@@ -170,6 +171,7 @@ int show_program_name(void)
 
 void	exit_clean(t_all *all)
 {
+	write_history(all->history);
 	if (all->line)
 	{
 		free(all->line);
