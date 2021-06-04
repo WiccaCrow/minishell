@@ -1,5 +1,13 @@
 #include "../includes/minishell.h"
 
+/**
+ * Функция проверяет достигли ли мы конца ввода
+ * 
+ * выставляется флаг при открытии кавычек и снимается при закрытии, для слэша
+ * экранируется один символ после него
+ * если по завершении строки есть открытая кавычка или слэш, ввод не окончен
+*/
+
 static int	check_end_of_input(const char *line)
 {
 	int i;
@@ -25,6 +33,14 @@ static int	check_end_of_input(const char *line)
 	return (!flag);
 }
 
+/**
+ * Функция обрабатывает нажатие клавиши Enter
+ * 
+ * Если есть уже набранная строка, то добавляем к ней текущую
+ * Если ввод окончен, возвращаем 1,
+ * если нет, предлагаем пользователю продолжить ввод
+*/
+
 int		enter_handle(char **line, char **curr_line, size_t *pos)
 {
 	if (*line)
@@ -45,6 +61,12 @@ int		enter_handle(char **line, char **curr_line, size_t *pos)
 	return (0);
 }
 
+/**
+ * Функция обрабатывает нажатие стрелочки вправо
+ * 
+ * Перемещаем курсор на позицию вправо, если есть куда
+*/
+
 int 	key_right_handle(char *line, size_t *pos)
 {
 	if (*pos < ft_strlen(line))
@@ -54,6 +76,12 @@ int 	key_right_handle(char *line, size_t *pos)
 	}
 	return (0);
 }
+
+/**
+ * Функция обрабатывает нажатие стрелочки влево
+ * 
+ * Перемещаем курсор на позицию влево, если есть куда
+*/
 
 int 	key_left_handle(size_t *pos)
 {

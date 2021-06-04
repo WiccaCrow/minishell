@@ -1,5 +1,17 @@
 #include "../includes/minishell.h"
 
+/**
+ * Функция обрабатывает нажатие клавиши вверх
+ * (показывает предыдущую команду)
+ * 
+ * Очищаем набранные символы в строке,
+ * позицию курсора ставим в ноль
+ * уменьшаем номер строки в истории
+ * выводим команду из истории
+ * очищаем текущую строку
+ * возвращаем копию команды из истории
+*/
+
 char 		*show_prev_command(char **history, size_t *pos, char *line,
 							   int *hist_pos)
 {
@@ -12,6 +24,18 @@ char 		*show_prev_command(char **history, size_t *pos, char *line,
 	free(line);
 	return (ft_strdup(history[*hist_pos]));
 }
+
+/**
+ * Функция обрабатывает нажатие клавиши вниз
+ * (показывает следующую команду)
+ * 
+ * Очищаем набранные символы в строке,
+ * позицию курсора ставим в ноль
+ * увеличиваем номер строки в истории
+ * выводим команду из истории
+ * очищаем текущую строку
+ * возвращаем копию команды из истории
+*/
 
 char		*show_next_command(char **history, size_t *pos, char *line,
 							   int *hist_pos)
@@ -35,6 +59,15 @@ char		*show_next_command(char **history, size_t *pos, char *line,
 		return (ft_strdup(history[*hist_pos]));
 	}
 }
+
+/**
+ * Функция добавляет строку к истории
+ * 
+ * Вся история собирается в одну строку
+ * к этой строке добавляем еще одну поданную на вход
+ * чистим старую историю
+ * в адрес истории сплитим полученную суммарную строку
+*/
 
 int		add_to_history(char *line, char ***history)
 {
@@ -63,6 +96,10 @@ int		add_to_history(char *line, char ***history)
 	}
 	return (0);
 }
+
+/**
+ * Функция считает длину массива(истории)
+*/
 
 int		history_len(char **history)
 {
