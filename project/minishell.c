@@ -68,7 +68,7 @@ int main(int ac, char **av, char **env)
 			break ;			
 		free(all.args);
 	}
-	exit_clean(&all);
+	exit_clean(&all, 0);
 	return (0);
 }
 
@@ -91,7 +91,8 @@ void	start_all(t_all *all, char **env)
 
 	i = 0;
 	all->flag_command = 0;
-	all->return_code = 0;
+	all->completion_code = 0;
+	all->pipe_on_of = 0;
 	all->line = NULL;
 	all->commands = NULL;
 	init_env(all, env);
@@ -169,7 +170,7 @@ int show_program_name(void)
  * 	Clean exit.
 */
 
-void	exit_clean(t_all *all)
+void	exit_clean(t_all *all, int code)
 {
 	write_history(all->history);
 	if (all->line)
@@ -177,10 +178,5 @@ void	exit_clean(t_all *all)
 		free(all->line);
 		all->line = NULL;
 	}
-	if (all->flag_command == exit_shell)
-	{
-		write(1, "exit\n",5);
-		exit(0);
-	}
-	exit(1);
+	exit(all->completion_code = code);
 }

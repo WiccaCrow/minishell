@@ -50,7 +50,8 @@ typedef struct			s_all {
 	char				*all_commands[10];
 	char				*pwd;
     char    			*oldpwd;
-	int					return_code; // код возврата ошибки $?
+	int					completion_code; // код возврата ошибки $? return заменила на completion
+	int					pipe_on_of; // exit срабатывает только если нет '|'
 	t_command			**commands;
 }						t_all;
 
@@ -58,7 +59,7 @@ typedef struct			s_all {
 void			start_all(t_all *all, char **env);
 void			init_env(t_all *all, char **env);
 void			init_commands(t_all *all);
-void			exit_clean(t_all *all);
+void			exit_clean(t_all *all, int code);
 int 			fill_all(t_all *all);
 int				show_program_name(void);
 
@@ -98,5 +99,7 @@ int				exec_unset(t_all *all);
 void			exec_unset_find_env_str(t_all *all, char *oper_name);
 void			exec_unset_do_new_env(t_all *all, char **env_new, int nb_lines);
 void			all_args_free(t_all *all);
+void	exec_exit(t_all *all);
+int		exit_code(t_all *all);
 
 #endif

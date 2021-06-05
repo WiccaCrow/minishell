@@ -63,9 +63,9 @@ int command_not_found(t_all *all)
 int executor(t_all *all)
 {
 	if (all->flag_command == not_found)
-		return (all->return_code = command_not_found(all));
+		return (all->completion_code = command_not_found(all));
 	else if (all->flag_command == exit_shell)
-		exit_clean(all);
+		exec_exit(all);
 	else if (all->flag_command == echo)
 		exec_echo(all);
 	else if (all->flag_command == cd)
