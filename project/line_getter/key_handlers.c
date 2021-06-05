@@ -41,20 +41,20 @@ static int	check_end_of_input(const char *line)
  * если нет, предлагаем пользователю продолжить ввод
 */
 
-int		enter_handle(char **line, char **curr_line, size_t *pos)
+int		enter_handle(t_line *line)
 {
-	if (*line)
-		*line = gnl_strjoin(*line, "\n");
-	*line = gnl_strjoin(*line, *curr_line);
-	if (*line)
+	if (line->main_line)
+		line->main_line = gnl_strjoin(line->main_line, "\n");
+	line->main_line = gnl_strjoin(line->main_line, line->curr_line);
+	if (line->main_line)
 	{
-		free(*curr_line);
-		*curr_line = NULL;
-		if (check_end_of_input(*line))
+		free(line->curr_line);
+		line->curr_line = NULL;
+		if (check_end_of_input(line->main_line))
 			return (1);
 		else
 		{
-			*pos = 0;
+			line->pos = 0;
 			write(STDOUT_FILENO, "\n> ", 3);
 		}
 	}
@@ -67,11 +67,11 @@ int		enter_handle(char **line, char **curr_line, size_t *pos)
  * Перемещаем курсор на позицию вправо, если есть куда
 */
 
-int 	key_right_handle(char *line, size_t *pos)
+int 	key_right_handle(t_line *line)
 {
-	if (*pos < ft_strlen(line))
+	if (line->pos < ft_strlen(line->curr_line))
 	{
-		(*pos)++;
+		line->pos++;
 		tputs(cursor_right, 1, ft_putchar);
 	}
 	return (0);
@@ -83,11 +83,11 @@ int 	key_right_handle(char *line, size_t *pos)
  * Перемещаем курсор на позицию влево, если есть куда
 */
 
-int 	key_left_handle(size_t *pos)
+int 	key_left_handle(t_line *line)
 {
-	if (*pos > 0)
+	if (line->pos > 0)
 	{
-		(*pos)--;
+		line->pos--;
 		tputs(cursor_left, 1, ft_putchar);
 	}
 	return (0);

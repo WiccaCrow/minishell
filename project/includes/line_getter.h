@@ -14,19 +14,25 @@
 # define KEY_BACKSPACE "\177"
 # define HIST_FILE "./.hist.txt"
 
+typedef struct			s_line {
+	char			*main_line;
+	char			*curr_line;
+	char			*tmp_line;
+	int 			hist_pos;
+	size_t			pos;
+}						t_line;
+
 char		**get_history(void);
-char 		*show_prev_command(char **history, size_t *pos, char *line, 
-				int *hist_pos);
-char		*show_next_command(char **history, size_t *pos, char *line, 
-				int *hist_pos);
+int			show_prev_command(char **history, t_line *line);
+int			show_next_command(char **history, t_line *line);
 int 		canon_off(void);
 int 		canon_on(void);
 int 		ft_putchar(int c);
-char	 	*add_chr_to_pos(char *str, char c, size_t *pos);
-char	 	*remove_chr_from_pos(char *str, size_t *pos);
-int			enter_handle(char **line, char **curr_line, size_t *pos);
-int 		key_right_handle(char *line, size_t *pos);
-int 		key_left_handle(size_t *pos);
+int 		add_chr_to_pos(t_line *line, char c);
+int			remove_chr_from_pos(t_line *line);
+int			enter_handle(t_line *line);
+int 		key_right_handle(t_line *line);
+int 		key_left_handle(t_line *line);
 char 		*read_history(int fd);
 int		    write_history(char **history);
 int         clean_history(char **history);

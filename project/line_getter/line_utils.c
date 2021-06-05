@@ -7,39 +7,41 @@
  * на 1 символ, позиция курсора также сдвигается на 1 позицию вправо
 */
 
-char	 	*add_chr_to_pos(char *str, char c, size_t *pos)
+int 		add_chr_to_pos(t_line *line, char c)
 {
 	char	*new_str;
 	size_t	size;
 	size_t	i;
 
-	size = gnl_strlen(str) + 2;
+	size = gnl_strlen(line->curr_line) + 2;
 	new_str = (char *)malloc(sizeof(char) * size);
 	if (new_str)
 	{
 		if (c == '\n')
-			*pos = ft_strlen(str);
+			line->pos = ft_strlen(line->curr_line);
 		i = 0;
-		while (str && str[i] && i < *pos)
+		while (line->curr_line && line->curr_line[i] && i < line->pos)
 		{
-			new_str[i] = str[i];
+			new_str[i] = line->curr_line[i];
 			i++;
 		}
 		new_str[i++] = c;
-		while (str && str[i - 1])
+		while (line->curr_line && line->curr_line[i - 1])
 		{
-			new_str[i] = str[i - 1];
+			new_str[i] = line->curr_line[i - 1];
 			i++;
 		}
 		new_str[i] = 0;
-		free(str);
-		size = write(STDIN_FILENO, &new_str[*pos], ft_strlen(&new_str[*pos]))
+		free(line->curr_line);
+		line->curr_line = new_str;
+		size = write(STDIN_FILENO, &new_str[line->pos], ft_strlen(&new_str[line->pos]))
 				- 1;
 		while (size--)
 			tputs(cursor_left, 1, ft_putchar);
-		(*pos)++;
+		line->pos++;
+		return (1);
 	}
-	return (new_str);
+	return (0);
 }
 
 /**
@@ -49,7 +51,7 @@ char	 	*add_chr_to_pos(char *str, char c, size_t *pos)
  * на 1 символ, позиция курсора также сдвигается на 1 позицию влево
 */
 
-char	 	*remove_chr_from_pos(char *str, size_t *pos)
+int			remove_chr_from_pos(t_line *line)
 {
 	char	*new_str;
 	size_t	size;
@@ -57,27 +59,29 @@ char	 	*remove_chr_from_pos(char *str, size_t *pos)
 
 	tputs(cursor_left, 1, ft_putchar);
 	tputs(delete_character, 1, ft_putchar);
-	size = gnl_strlen(str);
+	size = gnl_strlen(line->curr_line);
 	new_str = (char *)malloc(sizeof(char) * size);
 	if (new_str)
 	{
 		i = 0;
-		while (str && str[i] && i < (*pos - 1))
+		while (line->curr_line && line->curr_line[i] && i < (line->pos - 1))
 		{
-			new_str[i] = str[i];
+			new_str[i] = line->curr_line[i];
 			i++;
 		}
 		i++;
-		while (str && str[i - 1])
+		while (line->curr_line && line->curr_line[i - 1])
 		{
-			new_str[i - 1] = str[i];
+			new_str[i - 1] = line->curr_line[i];
 			i++;
 		}
 		new_str[i - 1] = 0;
+		free(line->curr_line);
+		line->curr_line = new_str;
+		line->pos--;
+		return (1);
 	}
-	free(str);
-	(*pos)--;
-	return (new_str);
+	return (0);
 }
 
 

@@ -12,17 +12,24 @@
  * возвращаем копию команды из истории
 */
 
-char 		*show_prev_command(char **history, size_t *pos, char *line,
-							   int *hist_pos)
+int		show_prev_command(char **history, t_line *line)
 {
-	while (*pos && !tputs(cursor_left, 1, ft_putchar) && \
+	if (!(line->tmp_line))
+	{
+		line->tmp_line = gnl_strjoin(NULL, line->curr_line);
+	}
+	while (line->pos && !tputs(cursor_left, 1, ft_putchar) && \
 					!tputs(tgetstr("ce", 0), 1, ft_putchar))
-		(*pos)--;
-	if (*hist_pos > 0)
-		(*hist_pos)--;
-	*pos += write(STDOUT_FILENO, history[*hist_pos], ft_strlen(history[*hist_pos]));
-	free(line);
-	return (ft_strdup(history[*hist_pos]));
+		line->pos--;
+	if (line->hist_pos > 0)
+		line->hist_pos--;
+	line->pos += write(STDOUT_FILENO, history[line->hist_pos], ft_strlen
+	(history[line->hist_pos]));
+	free(line->curr_line);
+	line->curr_line = ft_strdup(history[line->hist_pos]);
+	if (line->curr_line)
+		return (1);
+	return (0);
 }
 
 /**
@@ -37,27 +44,34 @@ char 		*show_prev_command(char **history, size_t *pos, char *line,
  * возвращаем копию команды из истории
 */
 
-char		*show_next_command(char **history, size_t *pos, char *line,
-							   int *hist_pos)
+int		show_next_command(char **history, t_line *line)
+
 {
-	while (*pos && !tputs(cursor_left, 1, ft_putchar) && \
-					!tputs(tgetstr("ce", 0), 1, ft_putchar))
-		(*pos)--;
-	if (*hist_pos < history_len(history) - 1)
+	if (!(line->tmp_line))
 	{
-		(*hist_pos)++;
-		*pos += write(STDOUT_FILENO, history[*hist_pos],
-					  ft_strlen(history[*hist_pos]));
-		free(line);
-		return (ft_strdup(history[*hist_pos]));
+		line->tmp_line = gnl_strjoin(NULL, line->curr_line);
+	}
+	while (line->pos && !tputs(cursor_left, 1, ft_putchar) && \
+					!tputs(tgetstr("ce", 0), 1, ft_putchar))
+		line->pos--;
+	if (line->hist_pos < history_len(history) - 1)
+	{
+		line->hist_pos++;
+		line->pos += write(STDOUT_FILENO, history[line->hist_pos],
+					  ft_strlen(history[line->hist_pos]));
+		free(line->curr_line);
+		line->curr_line = ft_strdup(history[line->hist_pos]);
+		return (1);
+	}
+	else if (line->tmp_line)
+	{
+		line->pos += write(STDOUT_FILENO, line->tmp_line, ft_strlen(line->tmp_line));
+		free(line->curr_line);
+		line->curr_line = line->tmp_line;
+		return (1);
 	}
 	else
-	{
-		*pos += write(STDOUT_FILENO, history[*hist_pos],
-					  ft_strlen(history[*hist_pos]));
-		free(line);
-		return (ft_strdup(history[*hist_pos]));
-	}
+		return (0);
 }
 
 /**

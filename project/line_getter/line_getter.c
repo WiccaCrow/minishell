@@ -17,52 +17,63 @@ int 		ft_putchar(int c)
  * режим
 */
 
+int		init_t_line(t_line *line, t_all *all)
+{
+	if(line)
+	{
+		line->main_line = NULL;
+		line->curr_line = NULL;
+		line->tmp_line = NULL;
+		line->pos = 0;
+		line->hist_pos = history_len(all->history);
+		return (1);
+	}
+	return (0);
+}
+
+
 char	*get_line(t_all *all)
 {
-	char			*line;
-	char			*curr_line;
-	int 			hist_pos;
-	size_t			pos;
+	t_line			line;
 	ssize_t			ret;
 	char			*termtype;
 	char			buff[10];
 
-	line = NULL;
-	curr_line = NULL;
+	init_t_line(&line, all);
 	termtype = getenv("TERM");
 	if (!canon_off() && termtype && tgetent(0, termtype) && \
 		!tputs(save_cursor, 1, ft_putchar))
 	{
-		pos = 0;
-		hist_pos = history_len(all->history);
 		while (1)
 		{
 			ret = read(STDIN_FILENO, buff, 10);
 			buff[ret] = 0;
 			if (!strcmp(buff, KEY_UP))
-				curr_line = show_prev_command(all->history, &pos, line, &hist_pos);
+			{
+				show_prev_command(all->history, &line);
+			}
 			else if (!strcmp(buff, KEY_DOWN))
-				curr_line = show_next_command(all->history, &pos, line, &hist_pos);
-			else if (!strcmp(buff, KEY_BACKSPACE) && pos > 0)
-				curr_line = remove_chr_from_pos(curr_line, &pos);
+				show_next_command(all->history, &line);
+			else if (!strcmp(buff, KEY_BACKSPACE) && line.pos > 0)
+				remove_chr_from_pos(&line);
 			else if (!strcmp(buff, KEY_RIGHT))
-				key_right_handle(line, &pos);
+				key_right_handle(&line);
 			else if (!strcmp(buff, KEY_LEFT))
-				key_left_handle(&pos);
+				key_left_handle(&line);
 			else if (!strcmp(buff, "\4"))
 				break ;
 			else if (!strcmp(buff, "\n"))
 			{
-				if (enter_handle(&line, &curr_line, &pos) && add_to_history
-				(line, &(all->history)))
+				if (enter_handle(&line) && \
+					add_to_history(line.main_line, &(all->history)))
 					break ;
 			}
 			else
-				curr_line = add_chr_to_pos(curr_line, *buff, &pos);
+				add_chr_to_pos(&line, *buff);
 		}
 		if (!canon_on())
 		{
-			return (line);
+			return (line.main_line);
 		}
 	}
 	return (NULL);
