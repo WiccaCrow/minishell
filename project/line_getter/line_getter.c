@@ -55,7 +55,7 @@ char	*get_line(t_all *all)
 			}
 			else if (!strcmp(buff, KEY_DOWN))
 				show_next_command(all->history, &line);
-			else if (!strcmp(buff, KEY_BACKSPACE) && line.pos > 0)
+			else if (!strcmp(buff, KEY_BACKSPACE))
 				remove_chr_from_pos(&line);
 			else if (!strcmp(buff, KEY_RIGHT))
 				key_right_handle(&line);

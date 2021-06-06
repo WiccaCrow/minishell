@@ -60,32 +60,35 @@ int			remove_chr_from_pos(t_line *line)
 	size_t	size;
 	size_t 	i;
 
-	tputs(cursor_left, 1, ft_putchar);
-	tputs(delete_character, 1, ft_putchar);
-	size = gnl_strlen(line->curr_line);
-	new_str = (char *)malloc(sizeof(char) * size);
-	if (new_str)
+	if (line->pos)
 	{
-		i = 0;
-		while (line->curr_line && line->curr_line[i] && i < (line->pos - 1))
+		tputs(cursor_left, 1, ft_putchar);
+		tputs(delete_character, 1, ft_putchar);
+		size = gnl_strlen(line->curr_line);
+		new_str = (char *) malloc(sizeof(char) * size);
+		if (new_str)
 		{
-			new_str[i] = line->curr_line[i];
+			i = 0;
+			while (line->curr_line && line->curr_line[i] && i < (line->pos - 1))
+			{
+				new_str[i] = line->curr_line[i];
+				i++;
+			}
 			i++;
+			while (line->curr_line && line->curr_line[i - 1])
+			{
+				new_str[i - 1] = line->curr_line[i];
+				i++;
+			}
+			new_str[i - 1] = 0;
+			free(line->curr_line);
+			line->curr_line = new_str;
+			line->pos--;
+			line->hist_pos = line->hist_len;
+			free(line->tmp_line);
+			line->tmp_line = NULL;
+			return (1);
 		}
-		i++;
-		while (line->curr_line && line->curr_line[i - 1])
-		{
-			new_str[i - 1] = line->curr_line[i];
-			i++;
-		}
-		new_str[i - 1] = 0;
-		free(line->curr_line);
-		line->curr_line = new_str;
-		line->pos--;
-		line->hist_pos = line->hist_len;
-		free(line->tmp_line);
-		line->tmp_line = NULL;
-		return (1);
 	}
 	return (0);
 }
