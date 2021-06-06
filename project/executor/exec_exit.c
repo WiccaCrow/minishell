@@ -16,7 +16,7 @@ void	exec_exit(t_all *all)
 {
 	write(STDOUT_FILENO, "exit\n", 6);
 	all->completion_code = exit_code(all);
-	if (all->args[1]== NULL && !all->pipe_on_of)
+	if (((all->args[0] && !all->args[1]) || !all->args[0]) && !all->pipe_on_of)
 		exit_clean(all, all->completion_code);
 	all->pipe_on_of = 0;
 }

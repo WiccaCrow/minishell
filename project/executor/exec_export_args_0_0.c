@@ -23,6 +23,7 @@ int	exec_export(t_all *all)
 {
 	int	i;
 
+	all->completion_code = 0;
 	i = count_env_lines(all);
 	if (!all->args[0])
 		sort_env(all, i, -1, 0);
@@ -67,7 +68,8 @@ void	sort_env(t_all *all, int i, int k, int j)
 	char	**sort_env_index;
 	int		*sort;
 
-	if (do_sort_index(&sort_env_index, &sort, i))
+	all->completion_code = do_sort_index(&sort_env_index, &sort, i);
+	if (all->completion_code)
 		return ;
 	j_zero = 0;
 	while (i)
