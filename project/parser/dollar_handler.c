@@ -8,11 +8,16 @@ char *get_key(int i, char *line)
 {
 	char *key;
 	
-	key = ft_strdup(&line[i]);
+	key = ft_strdup(&line[i + 1]);
 	if (key)
 	{
 		i = 0;
-		while (key[i] && key[i] != ' ' && key[i] != '"')
+		if (key[0] == '?')
+		{
+			key[1] = 0;
+			return (key);
+		}
+		while (key[i] && key[i] != ' ' && key[i] != '"' && key[i] != '$')
 			i++;
 		key[i] = 0;
 	}
@@ -28,16 +33,21 @@ char *get_value(const char *key, t_all *all)
 	int	i;
 	int	j;
 	char *value;
-	
-	i = 0;
-	while (all->env[i])
+
+	printf("%s\n", key);
+	if (key && *key == '?')
 	{
-		j = 1;
-		while (all->env[i][j - 1] == key[j])
+		return (ft_itoa(all->completion_code));
+	}
+	i = 0;
+	while (key && all->env[i])
+	{
+		j = 0;
+		while (all->env[i][j] == key[j])
 			j++;
-		if (!key[j] && all->env[i][j - 1] == '=')
+		if (!key[j] && all->env[i][j] == '=')
 		{
-			value = ft_strdup(&all->env[i][j]);
+			value = ft_strdup(&all->env[i][j + 1]);
 			return (value);
 		}
 		i++;
@@ -60,7 +70,7 @@ int	get_arg_from_env(int i, t_all *all)
 	
 	key = get_key(i, all->line);
 	value = get_value(key, all);
-	size = ft_strlen(all->line) - ft_strlen(key) + ft_strlen(value) + 1;
+	size = ft_strlen(all->line) - ft_strlen(key) + ft_strlen(value);
 	result = (char *)ft_calloc(size, sizeof (char));
 	if (result)
 	{
@@ -70,7 +80,7 @@ int	get_arg_from_env(int i, t_all *all)
 			result[j] = all->line[j];
 			j++;
 		}
-		k = j + ft_strlen(key);
+		k = j + (int)ft_strlen(key) + 1;
 		while (value[j - i])
 		{
 			result[j] = value[j - i];
