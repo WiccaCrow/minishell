@@ -3,7 +3,8 @@
 /************************************
  * 			 exec_unset				*
  * **********************************
- * Description:
+*/
+/* Description:
  * 		Each variable or function 
  * 		specified by name shall be 
  * 		unset.
@@ -28,11 +29,8 @@ int	exec_unset(t_all *all)
 	env_new = (char **)malloc((i + 1) * sizeof(char *));
 	env_new[i] = NULL;
 	if (!env_new)
-	{
-		all->completion_code = 1;
-		write(STDOUT_FILENO, "unset: malloc error, try again\n", 32);
-	}
-	else
+		completion_code_malloc_error(&(all->completion_code), NULL, "unset");
+	if (all->completion_code == 0)
 	{
 		exec_unset_find_env_str(all, "unset");
 		exec_unset_do_new_env(all, env_new, i);
@@ -43,7 +41,8 @@ int	exec_unset(t_all *all)
 /************************************
  * 		 exec_unset_find_env_str	*
  * **********************************
- * Description:
+*/
+/* Description:
  * 		This function checks arguments 
  * 		for validity. In the env array, 
  * 		finds strings with these valid 
@@ -68,11 +67,13 @@ void	exec_unset_find_env_str(t_all *all, char *oper_name)
 	j = -1;
 	while (all->args[++j])
 	{
+printf("all->args[j] = %s\n", all->args[j]);
 		if (!check_valid_args(all, oper_name, j, 0))
 			continue;
 		index_env_str = find_env_str(all, oper_name, j);
 		if (all->env[index_env_str] != NULL)
 		{
+printf("all->env[index_env_str] = %s\n", all->env[index_env_str]);
 			free(all->env[index_env_str]);
 			all->env[index_env_str] = NULL;
 		}
@@ -82,7 +83,8 @@ void	exec_unset_find_env_str(t_all *all, char *oper_name)
 /************************************
  * 	  exec_unset_delete_env_str		*
  * **********************************
- * Description:
+*/
+/* Description:
  * 		The function replaces the old 
  * 		env array with the new env 
  * 		array (no deleted lines).

@@ -3,7 +3,8 @@
 /************************************
  * 				exec_cd				*
  * **********************************
- * Description:
+*/ 
+/* Description:
  * 		Change working directory.
  * 		Change env value: PWD, OLDPWD.
  * 
@@ -33,63 +34,85 @@ int	exec_cd(t_all *all)
 	}
 	else
 	{
-		i = change_pwd_oldpwd(all);
-		all->pwd = getcwd(NULL, 0);
-		if (i >= 0)
-			all->env[i] = ft_strjoin("PWD=", all->pwd);
+		change_oldpwd(all);
+		change_pwd(all);	
 	}
 	return (all->completion_code);
 }
 
 /************************************
- * 		  change_pwd_oldpwd			*
+ * 		 	 change_pwd				*
  * **********************************
- * Description:
- * 		The function finds PWD and OLDPWD strings 
- * 		in the all-> env array. Writes the full 
- * 		name of the working directory to the string 
- * 		OLDPWD before calling the cd command. Memory 
- * 		from under the PWD line frees and zeroes out.
- *
- * Return value:
- * 		int. If the PWD string was found in the 
- * 		all-> env array, returns the index of the PWD 
- * 		string in the all-> env array.
- * 		Otherwise, returns -1.
+ */
+/* Description:
+ * 		The function sets the new value of the 
+ * 		all->pwd variable.
+ * 		If the all->env array contains string with 
+ * 		PWD variable, the function change this value.
  */
 
-int	change_pwd_oldpwd(t_all *all)
+void	change_pwd(t_all *all)
 {
-	int	i;
-	int	j;
+	int		i;
+	char	*pwd_env;
 
-	i = get_my_env_index(all->env, "PWD=", 4);
-	j = get_my_env_index(all->env, "OLDPWD=", 7);
-	all->oldpwd = all->pwd;
-	if (all->env[j])
-	{
-		free(all->env[j]);
-		all->env[j] = NULL;
-		all->env[j] = ft_strjoin("OLDPWD=", all->pwd);
-	}
 	if (all->pwd)
 	{
 		free(all->pwd);
 		all->pwd = NULL;
 	}
+	all->pwd = getcwd(NULL, 0);
+	i = get_my_env_index(all->env, "PWD=", 4);
 	if (all->env[i])
 	{
-		free(all->env[i]);
-		all->env[i] = NULL;
-		return (i);
+		pwd_env = all->env[i];
+		all->env[i] = ft_strjoin("PWD=", all->pwd);
+		if (all->env[i] == NULL)
+		{
+			write(STDOUT_FILENO, "cd: malloc error, can't change PWD in env\n", 43);
+			all->env[i] = pwd_env;
+		}
+		else
+			free(pwd_env);
 	}
-	return (-1);
+}
+
+/************************************
+ * 		  change_oldpwd			*
+ * **********************************
+ */
+/* Description:
+ * 		The function finds OLDPWD strings 
+ * 		in the all-> env array. Writes the full 
+ * 		name of the working directory to the string 
+ * 		OLDPWD before calling the cd command.
+ */
+
+void	change_oldpwd(t_all *all)
+{
+	int		j;
+	char	*oldpwd_env;
+
+	j = get_my_env_index(all->env, "OLDPWD=", 7);
+	if (all->env[j])
+	{
+		oldpwd_env = all->env[j];
+		all->env[j] = ft_strjoin("OLDPWD=", all->pwd);
+		if (all->env[j] == NULL)
+		{
+			write(STDOUT_FILENO, "cd: malloc error, can't change OLDPWD in env\n", 46);
+			all->env[j] = oldpwd_env;
+		}
+		else
+			free(oldpwd_env);
+	}
 }
 
 /************************************
  * 		  get_my_env_index			*
  * **********************************
- * Description:
+*/
+/* Description:
  * 		the function finds the index of the string 
  * 		containing len_env_str bytes from the 
  * 		env_str string in the two-dimensional array 

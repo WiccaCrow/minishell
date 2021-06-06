@@ -119,11 +119,13 @@ void	start_all(t_all *all, char **env)
 	all->pipe_on_of = 0;
 	all->line = NULL;
 	all->commands = NULL;
+	all->pwd = getcwd(NULL, 0);
 	init_env(all, env);
 	all->history = get_history();
 	while (all->env[i] && ft_strncmp(all->env[i], "PWD=", 4))
 		++i;
-	all->pwd = ft_strdup(&all->env[i][4]);
+write(1, "test 8\n", 8);
+write(1, "test 9\n", 8);
 	init_commands(all);
 }
 
@@ -155,20 +157,35 @@ void	init_commands(t_all *all)
  * 		1.1.1. init_env     		*
  * **********************************
  *       do copy env;
+ * 		Function add OLDPWD and add PWD with 
+ * 		real pwd value if env don't contain 
+ * 		PWD or OLDPWD.
  */
 
 void	init_env(t_all *all, char **env)
 {
     int i;
+	int	index_oldpwd;
+	int	index_pwd;
 
     i = -1;
     while (env[++i])
 		;
+	index_oldpwd = get_my_env_index(env, "OLDPWD", 6);
+	index_pwd = get_my_env_index(env, "PWD", 3);
+	if (!env[index_oldpwd] && !env[index_pwd])
+		i +=2;
+	else if (!env[index_oldpwd] || !env[index_pwd])
+		i += 1;
     all->env = (char**)malloc(sizeof(char*) * (i + 1));
     all->env[i] = NULL;
 	i = -1;
     while (env[++i])
         all->env[i] = ft_strdup(env[i]);
+	if (env[index_oldpwd] == NULL)
+		all->env[i] = ft_strdup("OLDPWD");
+	if (env[index_pwd] == NULL)
+		all->env[++i] = ft_strjoin("PWD=", all->pwd);
 }
 
 /************************************

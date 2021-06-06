@@ -1,5 +1,7 @@
 #include "../includes/minishell.h"
 
+void	export_args_to_new_env(t_all *all, int j, char **env_new, int *i);
+
 /************************************
  * 				subjoin_env			*
  * **********************************
@@ -32,51 +34,35 @@
  * 
  * Contains functions:
  * 		1. count_lines;
- * 		2. check_valid_args;
- * 			checks the validity of the entered arguments, 
- * 			0/1 flag - print / no message about the 
- * 			validity of the arguments
- * 		3. check_double_args;
- * 			checks for the presence of the same argument 
- * 			among subsequent arguments 1 - repeats, 
- * 			0 - no repeats
- * 		4. find_env_str;
- * 			find and return the env index of the string 
- * 			or null.
- * 		5. change_env_str;
+ * 		2. export_args_to_new_env;
+ * 			Add new variable to my env array or
  * 			overwrites existing env variable with new 
  * 			value.
- * 		fibft. ft_strdup;
- * 		fibft. ft_strchr;
 */
 
 void	subjoin_env(t_all *all, int i, int j)
 {
 	char 	**env_new;
-	int		index;
 
 	i = count_lines(all, "export", i, j);
 	env_new = (char **)malloc((i + 1) * sizeof(char *));
 	env_new[i] = NULL;
-	while (all->args[++j])
+	if (!env_new)
 	{
-		if (!check_valid_args(all, "export", j, 0))
-			continue;
-		if (check_double_args(&(all->args[j])))
-			continue;
-		index = find_env_str(all, "export", j);
-		if (all->env[index] == NULL)
-			env_new[--i] = ft_strdup(all->args[j]);
-		else
-		{
-			if (ft_strchr(all->args[j], '=') != NULL)
-				change_env_str(all, j, index);
-		}
+		all->completion_code = 1;
+		write(STDOUT_FILENO, "export: malloc error, try again\n", 33);
+		return ;
 	}
-	while (--i >= 0)
-		env_new[i] = all->env[i];
-	free(all->env);
-	all->env = env_new;
+	export_args_to_new_env(all, j, env_new, &i);
+	if (all->completion_code == 0)
+	{
+		while (--i >= 0)
+			env_new[i] = all->env[i];
+		free(all->env);
+		all->env = env_new;
+	}
+	else
+		free(env_new);
 }
 
 /************************************
@@ -168,6 +154,64 @@ int	count_lines(t_all *all, char *oper_name, int nb_env_lines, int j)
 		}
 	}
 	return (nb_env_lines);
+}
+
+/************************************
+ * 		export_args_to_new_env		*
+ * **********************************
+*/
+
+/* Start variables value:
+ * 		export_args_to_new_env(all, j, env_new, &i);
+ * Description:
+ * 			Add new variable to my env array or
+ * 			overwrites existing env variable with new 
+ * 			value.
+ * 			Change index i if function add new 
+ * 			variable to my env array.
+ * 
+ * Contains functions:
+ * 		1. check_valid_args;
+ * 			checks the validity of the entered arguments, 
+ * 			0/1 flag - print / no message about the 
+ * 			validity of the arguments
+ * 		2. check_double_args;
+ * 			checks for the presence of the same argument 
+ * 			among subsequent arguments 1 - repeats, 
+ * 			0 - no repeats
+ * 		3. find_env_str;
+ * 			find and return the env index of the string 
+ * 			or null.
+ * 		4. change_env_str;
+ * 			overwrites existing env variable with new 
+ * 			value.
+ * 		fibft. ft_strdup;
+ * 		fibft. ft_strchr;
+*/
+
+void	export_args_to_new_env(t_all *all, int j, char **env_new, int *i)
+{
+	int		index;
+
+	while (all->args[++j] && all->completion_code == 0)
+	{
+		if (!check_valid_args(all, "export", j, 0))
+			continue;
+		if (check_double_args(&(all->args[j])))
+			continue;
+		index = find_env_str(all, "export", j);
+		if (all->env[index] == NULL)
+		{
+			env_new[--(*i)] = ft_strdup(all->args[j]);
+			if (env_new[*i] == NULL)
+				all->completion_code = 1;
+		}
+		else
+		{
+			if (ft_strchr(all->args[j], '=') != NULL)
+				change_env_str(all, j, index);
+		}
+	}
 }
 
 /************************************

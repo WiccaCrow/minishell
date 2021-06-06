@@ -49,7 +49,6 @@ typedef struct			s_all {
 	char				**env; // переменные окружения, внутрипрограммная копия
 	char				*all_commands[10];
 	char				*pwd;
-    char    			*oldpwd;
 	int					completion_code; // код возврата ошибки $? return заменила на completion
 	int					pipe_on_of; // exit срабатывает только если нет '|'
 	t_command			**commands;
@@ -74,10 +73,12 @@ enum e_command	get_command(t_all *all, int i);
 
 
 int 			executor(t_all *all);
+void completion_code_malloc_error(int	*code_to_on, char *array_null, char *open_name);
 int				exec_echo(t_all *all);
 int				exec_cd(t_all *all);
 int				get_my_env_index(char **my_env, char *env_str, size_t len_env_str);
-int				change_pwd_oldpwd(t_all *all);
+void			change_oldpwd(t_all *all);
+void			change_pwd(t_all *all);
 int				get_my_env_index(char **my_env, char *env_str, size_t len_env_str);
 void			exec_pwd(t_all *all);
 void			exec_env(t_all *all);
