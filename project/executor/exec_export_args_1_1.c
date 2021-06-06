@@ -16,7 +16,7 @@
  * 		libft. ft_strlen;
 */
 
-int	print_not_valid(char *args_name, char *operation_name, int flag_print)
+int	print_not_valid(t_all *all, char *args_name, char *operation_name, int flag_print)
 {
 	if (flag_print)
 	{
@@ -26,6 +26,7 @@ int	print_not_valid(char *args_name, char *operation_name, int flag_print)
 		write(STDOUT_FILENO, args_name, ft_strlen(args_name));
 		write(STDOUT_FILENO, "': not a valid identifier\n", 27);
 	}
+	all->completion_code = 1;
 	return (0);
 }
 

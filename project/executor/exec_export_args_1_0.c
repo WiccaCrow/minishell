@@ -204,7 +204,7 @@ int	check_valid_args(t_all *all, char *oper_name, int j, int flag_print)
 			all->args[j][i] == '_'))
 				++i;
 		else
-			return (print_not_valid(all->args[j], oper_name, flag_print));
+			return (print_not_valid(all, all->args[j], oper_name, flag_print));
 	}
 	return (1);
 }

@@ -21,13 +21,22 @@ int	exec_unset(t_all *all)
 	int		i;
 	int		j;
 
+	all->completion_code = 0;
 	j = -1;
 	i = count_env_lines(all);
 	i = count_lines(all, "unset", i, j);
 	env_new = (char **)malloc((i + 1) * sizeof(char *));
 	env_new[i] = NULL;
-	exec_unset_find_env_str(all, "unset");
-	exec_unset_do_new_env(all, env_new, i);
+	if (!env_new)
+	{
+		all->completion_code = 1;
+		write(STDOUT_FILENO, "unset: malloc error, try again\n", 32);
+	}
+	else
+	{
+		exec_unset_find_env_str(all, "unset");
+		exec_unset_do_new_env(all, env_new, i);
+	}
 	return (0);
 }
 
