@@ -34,7 +34,6 @@ char *get_value(const char *key, t_all *all)
 	int	j;
 	char *value;
 
-	printf("%s\n", key);
 	if (key && *key == '?')
 	{
 		return (ft_itoa(all->completion_code));
