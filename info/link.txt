@@ -45,3 +45,8 @@ ____________________________________
 
 Имена символов на английском
 https://www.prepressure.com/fonts/basics/character-names#semicolon
+
+____________________________________
+
+Чтение содержимого директорий diropen, readdir, closedir
+https://firststeps.ru/linux/r.php?20

@@ -18,27 +18,27 @@ int	exec_cd(t_all *all)
 	int		ret_chdir;
 	int		i;
 
-	ret_chdir = 0;
+	all->completion_code = 0;
 	i = 0;
 	if (all->args[0] == NULL)
-		return (0);
+		return (all->completion_code = 0);
 	ret_chdir = chdir(all->args[0]);
-
 	if (ret_chdir == -1)
 	{
 		write(STDERR_FILENO, "minishell: cd: ", 16);
 		char *err = strerror(errno);
 		write(STDERR_FILENO, err, ft_strlen(err));
 		write(STDERR_FILENO, "\n", 1);
+		all->completion_code = 1;
 	}
 	else
 	{
-			i = change_pwd_oldpwd(all);
-			all->pwd = getcwd(NULL, 0);
-			if (i >= 0)
-				all->env[i] = ft_strjoin("PWD=", all->pwd);
+		i = change_pwd_oldpwd(all);
+		all->pwd = getcwd(NULL, 0);
+		if (i >= 0)
+			all->env[i] = ft_strjoin("PWD=", all->pwd);
 	}
-	return (ret_chdir);
+	return (all->completion_code);
 }
 
 /************************************
