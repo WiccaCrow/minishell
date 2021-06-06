@@ -14,7 +14,7 @@
 
 int		show_prev_command(char **history, t_line *line)
 {
-	if (!(line->tmp_line))
+	if (!(line->tmp_line) && !history[line->hist_pos])
 	{
 		line->tmp_line = gnl_strjoin(NULL, line->curr_line);
 	}
@@ -47,31 +47,35 @@ int		show_prev_command(char **history, t_line *line)
 int		show_next_command(char **history, t_line *line)
 
 {
-	if (!(line->tmp_line))
+	if (!(line->tmp_line) && !history[line->hist_pos])
 	{
 		line->tmp_line = gnl_strjoin(NULL, line->curr_line);
 	}
 	while (line->pos && !tputs(cursor_left, 1, ft_putchar) && \
 					!tputs(tgetstr("ce", 0), 1, ft_putchar))
 		line->pos--;
-	if (line->hist_pos < history_len(history) - 1)
+	if (history[line->hist_pos + 1])
 	{
 		line->hist_pos++;
 		line->pos += write(STDOUT_FILENO, history[line->hist_pos],
 					  ft_strlen(history[line->hist_pos]));
 		free(line->curr_line);
-		line->curr_line = ft_strdup(history[line->hist_pos]);
+		line->curr_line = gnl_strjoin(NULL, history[line->hist_pos]);
 		return (1);
 	}
 	else if (line->tmp_line)
 	{
 		line->pos += write(STDOUT_FILENO, line->tmp_line, ft_strlen(line->tmp_line));
 		free(line->curr_line);
-		line->curr_line = line->tmp_line;
+		line->curr_line = gnl_strjoin(NULL, line->tmp_line);
 		return (1);
 	}
 	else
-		return (0);
+	{
+		free(line->curr_line);
+		line->curr_line = NULL;
+	}
+	return (0);
 }
 
 /**

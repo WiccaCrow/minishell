@@ -26,6 +26,7 @@ int		init_t_line(t_line *line, t_all *all)
 		line->tmp_line = NULL;
 		line->pos = 0;
 		line->hist_pos = history_len(all->history);
+		line->hist_len = line->hist_pos;
 		return (1);
 	}
 	return (0);

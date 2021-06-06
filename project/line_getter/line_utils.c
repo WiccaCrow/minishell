@@ -39,6 +39,9 @@ int 		add_chr_to_pos(t_line *line, char c)
 		while (size--)
 			tputs(cursor_left, 1, ft_putchar);
 		line->pos++;
+		line->hist_pos = line->hist_len;
+		free(line->tmp_line);
+		line->tmp_line = NULL;
 		return (1);
 	}
 	return (0);
@@ -79,6 +82,9 @@ int			remove_chr_from_pos(t_line *line)
 		free(line->curr_line);
 		line->curr_line = new_str;
 		line->pos--;
+		line->hist_pos = line->hist_len;
+		free(line->tmp_line);
+		line->tmp_line = NULL;
 		return (1);
 	}
 	return (0);
