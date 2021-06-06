@@ -54,7 +54,7 @@ int		show_next_command(char **history, t_line *line)
 	while (line->pos && !tputs(cursor_left, 1, ft_putchar) && \
 					!tputs(tgetstr("ce", 0), 1, ft_putchar))
 		line->pos--;
-	if (history[line->hist_pos + 1])
+	if (line->hist_pos < line->hist_len - 1)
 	{
 		line->hist_pos++;
 		line->pos += write(STDOUT_FILENO, history[line->hist_pos],
@@ -65,6 +65,7 @@ int		show_next_command(char **history, t_line *line)
 	}
 	else if (line->tmp_line)
 	{
+		line->hist_pos = line->hist_len;
 		line->pos += write(STDOUT_FILENO, line->tmp_line, ft_strlen(line->tmp_line));
 		free(line->curr_line);
 		line->curr_line = gnl_strjoin(NULL, line->tmp_line);
