@@ -28,8 +28,8 @@ int	exec_unset(t_all *all)
 	i = count_lines(all, "unset", i, j);
 	env_new = (char **)malloc((i + 1) * sizeof(char *));
 	env_new[i] = NULL;
-//	if (!env_new)
-//		completion_code_malloc_error(&(all->completion_code), NULL, "unset");
+	if (!env_new)
+		completion_code_malloc_error(&(all->completion_code), NULL, "unset");
 	if (all->completion_code == 0)
 	{
 		exec_unset_find_env_str(all, "unset");
