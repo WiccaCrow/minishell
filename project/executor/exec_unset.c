@@ -71,9 +71,9 @@ printf("all->args[j] = %s\n", all->args[j]);
 		if (!check_valid_args(all, oper_name, j, 0))
 			continue;
 		index_env_str = find_env_str(all, oper_name, j);
+printf("all->env[index_env_str] = %s\n", all->env[index_env_str]);
 		if (all->env[index_env_str] != NULL)
 		{
-printf("all->env[index_env_str] = %s\n", all->env[index_env_str]);
 			free(all->env[index_env_str]);
 			all->env[index_env_str] = NULL;
 		}
