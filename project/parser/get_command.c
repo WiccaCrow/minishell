@@ -53,7 +53,7 @@ static int	is_command(const char *str, const char *command, int i)
 	if (command_name && command)
 	{
 		k = 0;
-		j = i;
+		j = 0;
 		while (command_name[j] == command[k] && (command_name[j] && 
 		command[k++]))
 			j++;

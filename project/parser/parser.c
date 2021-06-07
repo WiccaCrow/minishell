@@ -96,6 +96,7 @@ int parser(t_all *all)
 	if (all->commands)
 	{
 		*all->commands = NULL;
+		i = skip_spaces(all->line, i);
 		while (all->line && all->line[i] && all->line[i] != ';')
 		{
 			i = parse_command(all, i);

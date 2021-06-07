@@ -45,33 +45,6 @@
 * Мэйн на термкапах
 */
 
-int main(int ac, char **av, char **env)
-{
-	t_all	all;
-
-	(void) ac;
-	(void) av;
-	start_all(&all, env);
-	while (1)
-	{
-		show_program_name();
-		if (line_getter(&all))
-		{
-			while (all.line && dollar_handler(&all) && parser(&all))
-				executor(&all);
-		}
-		else
-			break ;			
-		free(all.args);
-	}
-	exit_clean(&all, 0);
-	return (0);
-}
-
-/**
- * Мэйн на гетнекстлайне для дебага
- */
-
 //int main(int ac, char **av, char **env)
 //{
 //	t_all	all;
@@ -79,11 +52,10 @@ int main(int ac, char **av, char **env)
 //	(void) ac;
 //	(void) av;
 //	start_all(&all, env);
-//
 //	while (1)
 //	{
 //		show_program_name();
-//		if (fill_all(&all) != -1)
+//		if (line_getter(&all))
 //		{
 //			while (all.line && dollar_handler(&all) && parser(&all))
 //				executor(&all);
@@ -95,6 +67,34 @@ int main(int ac, char **av, char **env)
 //	exit_clean(&all, 0);
 //	return (0);
 //}
+
+/**
+ * Мэйн на гетнекстлайне для дебага
+ */
+
+int main(int ac, char **av, char **env)
+{
+	t_all	all;
+
+	(void) ac;
+	(void) av;
+	start_all(&all, env);
+
+	while (1)
+	{
+		show_program_name();
+		if (fill_all(&all) != -1)
+		{
+			while (all.line && dollar_handler(&all) && parser(&all))
+				executor(&all);
+		}
+		else
+			break ;			
+		free(all.args);
+	}
+	exit_clean(&all, 0);
+	return (0);
+}
 
 /************************************
  * 		1.1. start_all				*
