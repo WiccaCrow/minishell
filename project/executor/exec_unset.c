@@ -73,10 +73,7 @@ printf("all->args[j] = %s\n", all->args[j]);
 		index_env_str = find_env_str(all, oper_name, j);
 printf("all->env[index_env_str] = %s\n", all->env[index_env_str]);
 		if (all->env[index_env_str] != NULL)
-		{
-			free(all->env[index_env_str]);
-			all->env[index_env_str] = NULL;
-		}
+			all->env[index_env_str][0] = 0;
 	}
 }
 
@@ -99,8 +96,12 @@ void	exec_unset_do_new_env(t_all *all, char **env_new, int nb_lines)
 	i = 0;
 	while (++j < nb_lines)
 	{
-		while (all->env[j + i] == NULL)
+		while (all->env[j + i] != NULL && all->env[j + i][0] == 0)
+		{
+			free(all->env[j + i]);
+			all->env[j + i] = NULL;
 			++i;
+		}
 		env_new[j] = all->env[j + i];
 	}
 	free(all->env);

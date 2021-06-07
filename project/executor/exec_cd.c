@@ -138,20 +138,12 @@ int	get_my_env_index(char **my_env, char *env_str, size_t len_env_str)
 	int	i;
 	int	cmp;
 
-	i = 0;
-	cmp = ft_strncmp(my_env[i], env_str, len_env_str);
-	while (my_env[i] && cmp)
+	i = -1;
+	while (my_env[++i])
 	{
-		++i;
-		if (my_env[i])
-		{
-			cmp = ft_strncmp(my_env[i], env_str, len_env_str);
-			if (!cmp && ft_strchr(env_str, '=') == NULL)
-			{
-				if (my_env[i][len_env_str + 1] == '=' || my_env[i][len_env_str + 1] == '\0')
-				return (i);
-			}
-		}
+		cmp = ft_strncmp(my_env[i], env_str, len_env_str);
+		if (cmp == 0 && (my_env[i][len_env_str] == '=' || my_env[i][len_env_str] == '\0'))
+			break;
 	}
 	return (i);
 }
