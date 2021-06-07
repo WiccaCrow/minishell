@@ -3,7 +3,8 @@
 /************************************
  * 			free_sort_index			*
  * **********************************
- * Description:
+*/
+/* Description:
  * 		Print ready sort array.
  * Contains functions:
  * 		libft. ft_strlen;
@@ -38,7 +39,8 @@ void	print_export(char **sort_env_index)
 /************************************
  * 			free_sort_index			*
  * **********************************
- * Description:
+*/
+/* Description:
  * 		Free array of sort index.
 */
 

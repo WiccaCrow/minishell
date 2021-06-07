@@ -3,7 +3,8 @@
 /************************************
  * 				exec_export			*
  * **********************************
- * Description:
+*/
+/* Description:
  * 		If no arguments, print sort env array.
  * 		The shell shall give the export attribute 
  * 		to the variables corresponding to the 
@@ -35,7 +36,8 @@ int	exec_export(t_all *all)
 /************************************
  * 			count_env_lines			*
  * **********************************
- * Description:
+*/
+/* Description:
  * 		Counts the number of lines in
  * 		env array.
 */
@@ -53,7 +55,8 @@ int	count_env_lines(t_all *all)
 /************************************
  * 				sort_env			*
  * **********************************
- * Description:
+*/
+/* Description:
  * 		Sort env array for export.
  * Contains functions:
  * 	do_sort_index;
@@ -68,7 +71,7 @@ void	sort_env(t_all *all, int i, int k, int j)
 	char	**sort_env_index;
 	int		*sort;
 
-	all->completion_code = do_sort_index(&sort_env_index, &sort, i);
+	all->completion_code = do_sort_index(all, &sort_env_index, &sort, i);
 	if (all->completion_code)
 		return ;
 	j_zero = 0;
@@ -92,12 +95,13 @@ void	sort_env(t_all *all, int i, int k, int j)
 /************************************
  * 			do_sort_index			*
  * **********************************
- * Description:
+*/
+/* Description:
  * 		Do array for sort index.
  * 		The Sort array contains ascending indices of strings.
 */
 
-int	do_sort_index(char ***sort_env_index, int **sort, int i)
+int	do_sort_index(t_all *all, char ***sort_env_index, int **sort, int i)
 {
 	int	k;
 
@@ -109,17 +113,15 @@ int	do_sort_index(char ***sort_env_index, int **sort, int i)
 	while (++k < i)
 		(*sort)[k] = 1;
 	if (*sort_env_index == NULL || *sort == NULL)
-	{
-		write(STDOUT_FILENO, "Error: malloc error. Try again.\n", 33);
-		return (1);
-	}
-	return (0);
+		completion_code_malloc_error(&(all->completion_code), NULL, "export without arguments");
+	return (all->completion_code);
 }
 
 /************************************
  * 		ft_strcmp_s1_less_s2		*
  * **********************************
- * Description:
+*/ 
+/* Description:
  * 		Compare two strings.
  * Return value:
  * 		if str1 less str2 return 1,

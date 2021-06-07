@@ -1,5 +1,13 @@
 #include "../includes/minishell.h"
 
+/************************************
+ * 			all_args_free			*
+ * **********************************
+*/
+/* Description:
+ * Free all->args memory.
+*/
+
 void	all_args_free(t_all *all)
 {
 	int	i;
@@ -16,6 +24,8 @@ void	all_args_free(t_all *all)
 /************************************
  * 		1.4.1. command_not_found	*
  * **********************************
+*/
+/* Description:
  * Prints the result or error to standard 
  * output as needed. Bash standart erorr $? sets 127.
  * 
@@ -41,6 +51,8 @@ int command_not_found(t_all *all)
 /************************************
  * 		1.4. executor				*
  * **********************************
+*/
+/* Description:
  * Checks the command flag (enum) and sends the 
  * command for execution.
  * Prints the result or error to standard output as
@@ -79,7 +91,9 @@ int executor(t_all *all)
 	else if (all->flag_command == unset)
 		exec_unset(all);
 	else
-		return (write(1, "other command\n", 15));
+		write(1, "other command\n", 15);
+	all->flag_command = start;
+	all_args_free(all);
 	return (1);
 }
 

@@ -1,7 +1,5 @@
 #include "../includes/minishell.h"
 
-void	export_args_to_new_env(t_all *all, int j, char **env_new, int *i);
-
 /************************************
  * 				subjoin_env			*
  * **********************************
@@ -49,8 +47,7 @@ void	subjoin_env(t_all *all, int i, int j)
 	env_new[i] = NULL;
 	if (!env_new)
 	{
-		all->completion_code = 1;
-		write(STDOUT_FILENO, "export: malloc error, try again\n", 33);
+		completion_code_malloc_error(&(all->completion_code), NULL, "export with arguments");
 		return ;
 	}
 	export_args_to_new_env(all, j, env_new, &i);
@@ -204,7 +201,7 @@ void	export_args_to_new_env(t_all *all, int j, char **env_new, int *i)
 		{
 			env_new[--(*i)] = ft_strdup(all->args[j]);
 			if (env_new[*i] == NULL)
-				all->completion_code = 1;
+				completion_code_malloc_error(&(all->completion_code), NULL, "export with arguments");
 		}
 		else
 		{

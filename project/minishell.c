@@ -3,6 +3,8 @@
 /************************************
  * 		1. main						*
  * **********************************
+*/
+/* Description:
  * The start of the program begins in the minishell.c 
  * file with the main () function.
  */
@@ -99,10 +101,12 @@ int main(int ac, char **av, char **env)
 /************************************
  * 		1.1. start_all				*
  * **********************************
+*/
+/* Description:
  * Start program with zero-structure (example, all 
  * pointers = NULL, int variables = 0, flag command = 0).
  *
- * function:
+ * Contain functions:
  *  1.1.1. init_env;
  *          do copy env
  *  1.1.2. init_commands;
@@ -114,7 +118,7 @@ void	start_all(t_all *all, char **env)
 	int	i;
 
 	i = 0;
-	all->flag_command = 0;
+	all->flag_command = start;
 	all->completion_code = 0;
 	all->pipe_on_of = 0;
 	all->line = NULL;
@@ -124,17 +128,17 @@ void	start_all(t_all *all, char **env)
 	all->history = get_history();
 	while (all->env[i] && ft_strncmp(all->env[i], "PWD=", 4))
 		++i;
-write(1, "test 8\n", 8);
-write(1, "test 9\n", 8);
 	init_commands(all);
 }
 
 /************************************
  * 		1.1.2. init_commands		*
  * **********************************
+*/
+/* Description:
  * init our shell commands.
  *
- * function:
+ * Contain functions:
  *  libft. init_env;
  *          do copy env.
  */
@@ -156,6 +160,8 @@ void	init_commands(t_all *all)
 /************************************
  * 		1.1.1. init_env     		*
  * **********************************
+*/
+/* Description:
  *       do copy env;
  * 		Function add OLDPWD and add PWD with 
  * 		real pwd value if env don't contain 
@@ -191,6 +197,8 @@ void	init_env(t_all *all, char **env)
 /************************************
  * 		1.2. show_program_name		*
  * **********************************
+*/
+/* Description:
  * 	Prints the name of the program to standard 
  * output (terminal). In our program, this will 
  * happen every time the shell is waiting for a 
@@ -208,6 +216,8 @@ int show_program_name(void)
 /************************************
  * 		1.5. exit_clean				*
  * **********************************
+*/
+/* Description:
  * 	Clean exit.
 */
 

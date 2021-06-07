@@ -3,6 +3,8 @@
 /************************************
  * 		1.4.2.1. echo_check_flag_n	*
  * **********************************
+*/
+/* Description:
  * check flag '-n'.
 */
 
@@ -29,12 +31,14 @@ void	echo_check_flag_n(t_all *all, int *i, int *flag_n)
 /************************************
  * 		1.4.2. exec_echo			*
  * **********************************
+*/
+/* Description:
  * execution command 'echo'.
  * 
  * function:
  * 1.4.2.1. echo_check_flag_n;
  * 			check flag '-n'.
- * 1.4.2.2. echo_write_args;
+ * libft. ft_strlen.
 */
 
 int exec_echo(t_all *all)
@@ -43,6 +47,7 @@ int exec_echo(t_all *all)
 	int ret;
 	int	flag_n;
 
+	all->completion_code = 0;
 	ret = 0;
 	echo_check_flag_n(all, &i, &flag_n);
 	while (all->args[i])
@@ -54,5 +59,4 @@ int exec_echo(t_all *all)
 	if (flag_n)
 		ret += write(STDOUT_FILENO, "\n", 1);
 	return (ret > 0);
-	all_args_free(all);
 }

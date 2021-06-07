@@ -48,5 +48,5 @@ void	change_env_str(t_all *all, int j, int index)
 	free(all->env[index]);
 	all->env[index] = NULL;
 	all->env[index] = ft_strdup(all->args[j]);
-	completion_code_malloc_error(&all->completion_code, all->env[index], "export");
+	completion_code_malloc_error(&all->completion_code, all->env[index], "export with arguments");
 }
