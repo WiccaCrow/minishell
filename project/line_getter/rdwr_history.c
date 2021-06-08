@@ -13,7 +13,7 @@ char	**get_history(void)
 	char	*history_line;
 	char	**history;
 
-	fd = open(HIST_FILE, O_CREAT | O_RDWR, 0644);
+	fd = open(HIST_FILE, O_CREAT | O_RDONLY, 0644);
 	if (fd > 0)
 	{
 		history_line = read_history(fd);

@@ -48,12 +48,17 @@ void show_parse_result(t_all *all)
 int parse_command(t_all *all, int i)
 {
 	t_command	*command;
+	t_list		**list;
 	
 	command = (t_command *)malloc(sizeof (t_command));
 	if (command)
 	{
-		command->flag_command = get_command(all, i);
-		i = get_args(all, command, i);
+		command->redirect_type = 0;
+		command->input_fd = STDIN_FILENO;
+		command->output_fd = STDOUT_FILENO;
+		list = NULL;
+		i = get_list(all, i, &list);
+		parse_list(command, list);
 		if (all->line[i] == ';')
 			command->end_flag = SEMICOLON;
 		else if (all->line[i] == '|')
@@ -104,6 +109,7 @@ int parser(t_all *all)
 		}
 		set_command_to_all(all);
 		show_parse_result(all);
+		
 		if (all->flag_command)
 			crop_line(&(all->line));
 	}

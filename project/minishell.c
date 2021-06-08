@@ -1,4 +1,4 @@
-#include "./includes/minishell.h"
+#include "minishell.h"
 
 /************************************
  * 		1. main						*
@@ -59,7 +59,7 @@
 //		show_program_name();
 //		if (line_getter(&all))
 //		{
-//			while (all.line && dollar_handler(&all) && parser(&all))
+//			while (all.line && dollar_handler(&all) && parser_bad(&all))
 //				executor(&all);
 //		}
 //		else
@@ -87,11 +87,12 @@ int main(int ac, char **av, char **env)
 		show_program_name();
 		if (fill_all(&all) != -1)
 		{
+//			parser2(&all);
 			while (all.line && dollar_handler(&all) && parser(&all))
 				executor(&all);
 		}
 		else
-			break ;			
+			break ;
 		free(all.args);
 	}
 	exit_clean(&all, 0);

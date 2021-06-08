@@ -39,6 +39,9 @@ typedef struct			s_command {
 	enum e_command		flag_command;
 	char 				**args; // аргументы комманды
 	int					end_flag;
+	int					input_fd;
+	int					output_fd;
+	int					redirect_type;
 	int					return_code; // код возврата ошибки $?
 	struct s_command	*next;
 }						t_command;

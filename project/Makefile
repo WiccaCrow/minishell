@@ -2,13 +2,15 @@ NAME		=	minishell
 LIBFT		=	libft.a
 CCF			=	gcc $(CFLAGS)
 RM			=	rm -f
-CFLAGS		=	-Wall -Wextra -Werror -g
+CFLAGS		=	-Wall -Wextra -Werror -g -I./includes/
 LG_PATH		=	line_getter/
 LG_SRCS		=	line_getter.c line_utils.c history_handler.c term_switch.c key_handlers.c \
 				rdwr_history.c
 PARSER_PATH	=	parser/
 PARSER_SRCS	=	parser.c get_args.c get_next_arg.c dollar_handler.c \
 				add_command.c crop_line.c get_command.c
+PARSER2_PATH	=	parser2/
+PARSER2_SRCS	=	parser.c
 EXEC_PATH	=	executor/
 EXEC_SRCS	=	executor.c \
 				exec_echo.c exec_cd.c exec_pwd.c exec_env.c \
