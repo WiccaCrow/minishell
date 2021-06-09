@@ -1,5 +1,15 @@
 #include "../includes/minishell.h"
 
+/************************************
+ * 			args_is_digit			*
+ * **********************************
+*/
+/*
+ * Description:
+ * 		Check first argument of exec_exit function.
+ * 		Is the first argument a number?
+*/
+
 static int	args_is_digit(char *args)
 {
 	int i;
@@ -12,6 +22,15 @@ static int	args_is_digit(char *args)
 	return (args[i] != '\0');
 }
 
+/************************************
+ * 				exit				*
+ * **********************************
+*/
+/*
+ * Description:
+ * 		Exit with completion code.
+*/
+
 void	exec_exit(t_all *all)
 {
 	write(STDOUT_FILENO, "exit\n", 6);
@@ -20,6 +39,15 @@ void	exec_exit(t_all *all)
 		exit_clean(all, all->completion_code);
 	all->pipe_on_of = 0;
 }
+
+/************************************
+ * 				exit_code			*
+ * **********************************
+*/
+/*
+ * Description:
+ * 		Set completion code.
+*/
 
 int	exit_code(t_all *all)
 {
