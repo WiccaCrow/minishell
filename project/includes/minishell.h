@@ -79,6 +79,7 @@ enum e_command	get_command(t_all *all, int i);
 
 
 int 			executor(t_all *all);
+void			command_not_found(t_all *all);
 void 			completion_code_malloc_error(int	*code_to_on, char *array_null, char *open_name);
 int				exec_echo(t_all *all);
 int				exec_cd(t_all *all);
@@ -110,5 +111,7 @@ void			exec_unset_do_new_env(t_all *all, char **env_new, int nb_lines);
 void			all_args_free(t_all *all);
 void			exec_exit(t_all *all);
 int				exit_code(t_all *all);
+
+int				executable(t_all *all);
 
 #endif

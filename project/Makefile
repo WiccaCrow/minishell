@@ -16,7 +16,8 @@ EXEC_SRCS	=	executor.c \
 				exec_echo.c exec_cd.c exec_pwd.c exec_env.c \
 				exec_export_args_0_0.c exec_export_args_0_1.c \
 				exec_export_args_1_0.c exec_export_args_1_1.c \
-				exec_unset.c exec_exit.c completion_code.c
+				exec_unset.c exec_exit.c completion_code.c \
+				executable/executable.c
 GNL_PATH	=	gnl_dir/
 GNL_SRCS	=	get_next_line.c get_next_line_utils.c
 SRCS		=	minishell.c fill_all.c \

@@ -33,10 +33,13 @@ void	all_args_free(t_all *all)
  * libft. ft_strlen;
 */
 
-int command_not_found(t_all *all)
+void command_not_found(t_all *all)
 {
 	int ret;
 
+	all->completion_code = 0;
+	if (executable(all) == 0)
+		return ;
 	write(1, "minishell: ", 12);
 	ret = 0;
 	while (all->line[ret] && all->line[ret] != ' ')
@@ -45,7 +48,7 @@ int command_not_found(t_all *all)
 	ret += (int) write(STDOUT_FILENO, COM_NOT_FOUND, ft_strlen(COM_NOT_FOUND));
 	free(all->line);
 	all->line = NULL;
-	return (127);
+	all->completion_code = 127;
 }
 
 /************************************
@@ -75,7 +78,7 @@ int command_not_found(t_all *all)
 int executor(t_all *all)
 {
 	if (all->flag_command == not_found)
-		return (all->completion_code = command_not_found(all));
+		command_not_found(all);
 	else if (all->flag_command == exit_shell)
 		exec_exit(all);
 	else if (all->flag_command == echo)
