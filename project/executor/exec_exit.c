@@ -34,7 +34,8 @@ int	exit_code(t_all *all)
 		write(STDOUT_FILENO, "bash: exit: ", 13);
 		write(STDOUT_FILENO, all->args[0], ft_strlen(all->args[0]));
 		write(STDOUT_FILENO, ": numeric argument required\n", 29);
-		return (255);
+		all->completion_code = 255;
+		exit_clean(all, all->completion_code);
 	}
 	if (all->args[1]!= NULL)
 	{
