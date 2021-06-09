@@ -142,7 +142,7 @@ int	get_my_env_index(char **my_env, char *env_str, size_t len_env_str)
 	while (my_env[++i])
 	{
 		cmp = ft_strncmp(my_env[i], env_str, len_env_str);
-		if (cmp == 0 && (my_env[i][len_env_str] == '=' || my_env[i][len_env_str] == '\0'))
+		if (cmp == 0 && (my_env[i][len_env_str] == '+' || my_env[i][len_env_str] == '=' || my_env[i][len_env_str] == '\0'))
 			break;
 	}
 	return (i);

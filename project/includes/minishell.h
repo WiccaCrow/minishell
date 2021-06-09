@@ -56,6 +56,7 @@ typedef struct			s_all {
 	char				*pwd;
 	int					completion_code; // код возврата ошибки $? return заменила на completion
 	int					pipe_on_of; // exit срабатывает только если нет '|'
+	int					len_env_str;
 	t_command			**commands;
 }						t_all;
 
@@ -99,7 +100,8 @@ int				count_lines(t_all *all, char *oper_name, int nb_env_lines, int j);
 void			export_args_to_new_env(t_all *all, int j, char **env_new, int *i);
 int				check_valid_args(t_all *all, char *oper_name, int j, int flag_print);
 int				print_not_valid(t_all *all, char *args_name, char *operation_name, int flag_print);
-int				check_double_args(char **args);
+int				check_double_args(char **args, int find_plus);
+int				find_next_double_arg(char **args, int find_plus, int nb_args, int i);
 int				find_env_str(t_all *all, char *oper_name, int j);
 void			change_env_str(t_all *all, int j, int index);
 int				exec_unset(t_all *all);

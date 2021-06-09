@@ -4,7 +4,6 @@
  * 				subjoin_env			*
  * **********************************
 */
-
 /* Start variables value:
  * 		subjoin_env(all, i, -1);
  * Variables description, code comments:
@@ -66,10 +65,9 @@ void	subjoin_env(t_all *all, int i, int j)
  * 			count_lines				*
  * **********************************
 */
-
 /* Description:
  *		Determines the number of strings in the 
- *		future E array.
+ *		future env array.
  * Start variables value:
  * 		count_lines(all, "export", i, j);
  * Variables description, code comments:
@@ -111,7 +109,6 @@ void	subjoin_env(t_all *all, int i, int j)
  * 		the future number of lines in the new env array will 
  * 		decrease.
 */
-
 /* Contains functions:
  * 		1. check_valid_args;
  * 			checks the validity of the entered arguments, 
@@ -136,8 +133,9 @@ int	count_lines(t_all *all, char *oper_name, int nb_env_lines, int j)
 	{
 		if (!check_valid_args(all, oper_name, j, 1))
 			continue;
-		if (check_double_args(&(all->args[j])))
+		if (check_double_args(&(all->args[j]), 1))
 			continue;
+printf("args[j] = %s\n", all->args[j]);
 		index = find_env_str(all, oper_name, j);
 		if (!ft_strncmp(oper_name, "export", ft_strlen(oper_name)))
 		{
@@ -150,6 +148,7 @@ int	count_lines(t_all *all, char *oper_name, int nb_env_lines, int j)
 				--nb_env_lines;
 		}
 	}
+printf("nb_env_lines = %d\n", nb_env_lines);
 	return (nb_env_lines);
 }
 
@@ -157,7 +156,6 @@ int	count_lines(t_all *all, char *oper_name, int nb_env_lines, int j)
  * 		export_args_to_new_env		*
  * **********************************
 */
-
 /* Start variables value:
  * 		export_args_to_new_env(all, j, env_new, &i);
  * Description:
@@ -189,16 +187,23 @@ int	count_lines(t_all *all, char *oper_name, int nb_env_lines, int j)
 void	export_args_to_new_env(t_all *all, int j, char **env_new, int *i)
 {
 	int		index;
+	int		str_new_change;
 
 	while (all->args[++j] && all->completion_code == 0)
 	{
 		if (!check_valid_args(all, "export", j, 0))
 			continue;
-		if (check_double_args(&(all->args[j])))
+		str_new_change = check_double_args(&(all->args[j]), 0);
+		if (str_new_change)
 			continue;
 		index = find_env_str(all, "export", j);
-		if (all->env[index] == NULL)
+		if (all->env[index] == NULL && str_new_change == 1)
 		{
+			if (all->args[j][all->len_env_str--] == '+')
+			{
+				while (all->args[j][++all->len_env_str])
+					all->args[j][all->len_env_str] = all->args[j][all->len_env_str + 1];
+			}
 			env_new[--(*i)] = ft_strdup(all->args[j]);
 			if (env_new[*i] == NULL)
 				completion_code_malloc_error(&(all->completion_code), NULL, "export with arguments");
@@ -215,7 +220,6 @@ void	export_args_to_new_env(t_all *all, int j, char **env_new, int *i)
  * 		check_valid_args			*
  * **********************************
 */
- 
 /* Variables description, code comments:
  * 		flag_print. 0/1 flag print/no message about the 
  * 			validity of the arguments.
@@ -236,7 +240,8 @@ int	check_valid_args(t_all *all, char *oper_name, int j, int flag_print)
 	i = 0;
 	while (all->args[j][i] != '\0')
 	{
-		if (all->args[j][i] == '=' && !ft_strncmp(oper_name, "export", 6))
+		if ((all->args[j][i] == '=' && !ft_strncmp(oper_name, "export", 6)) ||
+			(all->args[j][i] == '+' && all->args[j][i + 1] == '=' && !ft_strncmp(oper_name, "export", 6)))
 			break;
 		if (!(all->args[j][i] == '=' && !ft_strncmp(oper_name, "unset", 6)) &&
 			((all->args[j][i] >= 'a' && all->args[j][i] <= 'z') ||
@@ -254,7 +259,6 @@ int	check_valid_args(t_all *all, char *oper_name, int j, int flag_print)
  * 		check_double_args			*
  * **********************************
 */
-
 /* Description:
  * 		The function iterates over all subsequent arguments 
  * 		as long as there are arguments or until the first 
@@ -265,89 +269,27 @@ int	check_valid_args(t_all *all, char *oper_name, int j, int flag_print)
  * 		If the desired variable is found in the subsequent 
  * 		arguments, the function returns 1.
  * Contains functions:
- * 		libft. ft_strncmp;
+ * 		find_next_double_arg;
+ * 		libft. ft_strchr;
+ * 		libft. ft_strlen;
 */
 
-int	check_double_args(char **args)
+int	check_double_args(char **args, int find_plus)
 {
-	int	i;
-	int	nb_args;
+	int		i;
+	int		nb_args;
+	char	*tmp;
 
 	i = 0;
-	while (args[0][i] != '=' && args[0][i])
-		++i;
-	nb_args = 0;
-	while (args[++nb_args])
+	tmp = ft_strchr(args[0], '=');
+	if (tmp)
 	{
-		if (!ft_strncmp(args[0], args[nb_args], i))
-		{
-			if (args[nb_args][i] == '=' || args[nb_args][i] == '\0')
-				return (1);
-		}
+		i = tmp - args[0];
+		if (args[0][i - 1] == '+')
+			--i;
 	}
-	return (0);
-}
-
-/************************************
- * 			find_env_str			*
- * **********************************
-*/
-
-/* Start variables value:
- * 		find_env_str(all, oper_name, j);
- * 			j is number of argument.
- * Variables description, code comments:
- *	1.	if (!ft_strncmp(oper_name, "unset", 5))
- * 			len_env_str = ft_strlen(all->args[j]);
- * 			If the function is called for command 
- * 			"unset", the length of the part of the 
- * 			string being compared is equal to the 
- * 			length of the argument.
- *  2.	else if (!ft_strncmp(oper_name, "export", 6) 
- * 		&& ft_strchr(all->args[j], '=') == NULL)
- * 		If command is unset and argument don't contain '=':
- *  2.1. len_env_str = ft_strlen(all->args[j]);
- * 		the length of the part of the string being 
- * 		compared is equal to the length of the argument.
- *  3. else
- * 		len_env_str = ft_strchr(all->args[j], '=') 
- * 			- all->args[j];
- * 		the length of the part of the string being 
- * 		compared is equal to the length of the argument 
- * 		up to the letter '='
- * 	4. index = get_my_env_index(all->env, all->args[j], 
- * 		len_env_str);
- * 		return (index);
- * 		Determines the index of the search string, if it 
- * 		exists in the array.
- * Description:
- *		Find and return the index of the string which 
- * 		contain variable from all->args[j] in the 
- * 		two-dimensional array my_env, if this variable
- * 		is among all->env. Otherwise, it returns the 
- * 		index of the NULL row in the all->env array.
-*/
-
-/* Contains functions:
- * 		1. get_my_env_index;
- * 			Determines the index of the search string, 
- * 			if it exists in the array.
- * 		fibft. ft_strncmp;
- * 		fibft. ft_strlen;
- * 		fibft. ft_strchr;
-*/
-
-int	find_env_str(t_all *all, char *oper_name, int j)
-{
-	size_t	len_env_str;
-	int		index;
-
-	if (!ft_strncmp(oper_name, "unset", 5))
-		len_env_str = ft_strlen(all->args[j]);
-	else if (!ft_strncmp(oper_name, "export", 6) && ft_strchr(all->args[j], '=') == NULL)
-		len_env_str = ft_strlen(all->args[j]);
 	else
-		len_env_str = ft_strchr(all->args[j], '=') - all->args[j];
-	index = get_my_env_index(all->env, all->args[j], len_env_str);
-	return (index);
+		i = ft_strlen(args[0]);
+	nb_args = 0;
+	return (find_next_double_arg(args, find_plus, nb_args, i));
 }
