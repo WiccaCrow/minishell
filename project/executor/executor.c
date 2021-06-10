@@ -38,8 +38,8 @@ void command_not_found(t_all *all)
 	int ret;
 
 	all->completion_code = 0;
-	if (executable(all) == 0)
-		return ;
+	// if (executable(all) == 0)
+	// 	return ;
 	write(1, "minishell: ", 12);
 	ret = 0;
 	while (all->line[ret] && all->line[ret] != ' ')
@@ -77,7 +77,7 @@ void command_not_found(t_all *all)
 
 int executor(t_all *all)
 {
-	if (all->flag_command == not_found)
+	if (all->line && all->flag_command == not_found)
 		command_not_found(all);
 	else if (all->flag_command == exit_shell)
 		exec_exit(all);
@@ -97,6 +97,8 @@ int executor(t_all *all)
 		write(1, "other command\n", 15);
 	all->flag_command = start;
 	all_args_free(all);
+	free(all->line);
+	all->line = NULL;
 	return (1);
 }
 

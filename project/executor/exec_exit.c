@@ -4,8 +4,7 @@
  * 			args_is_digit			*
  * **********************************
 */
-/*
- * Description:
+/* Description:
  * 		Check first argument of exec_exit function.
  * 		Is the first argument a number?
 */
@@ -26,8 +25,7 @@ static int	args_is_digit(char *args)
  * 				exit				*
  * **********************************
 */
-/*
- * Description:
+/* Description:
  * 		Exit with completion code.
 */
 
