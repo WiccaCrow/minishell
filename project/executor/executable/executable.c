@@ -3,35 +3,35 @@
 #include <sys/types.h>//DIR *opendir(const char *name);
 #include <dirent.h>//DIR *opendir(const char *name);
 
+int	check_command_sourse(t_all *all, char *com_name);
 int	path_to_executable(t_all *all);
 char *command_name(t_all *all);
 int	find_file(t_all *all, char *com_name);
 int		fork_execve(t_all *all, char *com_name);
+char	**path_env(t_all *all);
+int	find_file_in_dir(t_all *all, char *directory, char *command_name);
+char	*join_directory_and_command(char *directory, char *command_name);
 
 int	executable(t_all *all)
 {
-	// char	**path;//путь для исполняемого файла
+	char	**path_from_env;//путь для исполняемого файла
 	int		i;//итератор для path
-	// int		ret;//значение возврата от fork
 	int		path;//указан ли путь до файла
+	char	*com_name;
 
-	i = 0;
 	all->completion_code = 0;
 	path = path_to_executable(all);//путь до файла
-	// if (!path && !all->completion_code)//если файл задан без пути, прохожусь по PATH
-	// {
-	// 	path = path_env(all);
-	// 	ret = -1;
-	// 	while (ret == -1 && path[i])//пока выполнение процесса не произошло, пробую запустить с разных путей (перенести внутрь форка на возврат от execve)
-	// 	{
-	// 		ret = fork_executable(all);
-	// 		++i;
-	// 	}
-	// }
-
-	if (all)
+	if (path && all->completion_code)
 		return (0);
-	return (0);
+	path_from_env = path_env(all);
+	if (path_from_env == NULL)
+		return (1);
+	com_name = command_name(all);
+	i = 0;
+	path = 0;
+	while (path_from_env[i] && path == 0)
+		path = find_file_in_dir(all, path_from_env[i++], com_name);
+	return (!path);
 }
 
 char *command_name(t_all *all)
@@ -49,46 +49,36 @@ char *command_name(t_all *all)
 	return (com_name);
 }
 
-// int	fork_executable(t_all *all)
-// {
-// 	int	ret;
+int	check_command_sourse(t_all *all, char *com_name)
+{
+	int	i;
 
-// 	  pid_t pid;
-//   int rv;
-//   switch(pid=fork()) {
-//   case -1:
-//           perror("fork"); /* произошла ошибка */
-//           exit(1); /*выход из родительского процесса*/
-//   case 0:
-//           printf(" CHILD: Это процесс-потомок!\n");
-//           printf(" CHILD: Мой PID -- %d\n", getpid());
-//           printf(" CHILD: PID моего родителя -- %d\n",
-//               getppid());
-//           printf(" CHILD: Введите мой код возврата (как можно меньше):");
-//           scanf(" %d");
-//           printf(" CHILD: Выход!\n");
-//           exit(rv);
-//   default:
-//           printf("PARENT: Это процесс-родитель!\n");
-//           printf("PARENT: Мой PID -- %d\n", getpid());
-//           printf("PARENT: PID моего потомка %d\n",pid);
-//           printf("PARENT: Я жду, пока потомок не вызовет exit()...\n");
-//         wait(pid);
-//           printf("PARENT: Код возврата потомка:%d\n",
-//                    WEXITSTATUS(rv));
-//           printf("PARENT: Выход!\n");
-//   }
-// 	return (ret);
-// }
+	i = 0;
+	if (com_name[0] == '.' && com_name[1] == '\0')
+	{
+		write(STDOUT_FILENO, "minishell: This command is missing from the subject.\n", 54);
+		write(STDOUT_FILENO, "In the shell, . is a builtin command ", 38);
+		write(STDOUT_FILENO, "in its own right, an alias for 'source',", 41);
+		write(STDOUT_FILENO, "which is used to read in a shell script ", 41);
+		write(STDOUT_FILENO, "and execute its commands in the current ", 41);
+		write(STDOUT_FILENO, "shell rather than spawning a subshell, t", 41);
+		write(STDOUT_FILENO, "ypically used for scripts that set envir", 41);
+		write(STDOUT_FILENO, "onment variables that you want to use later.\n", 46);
+		return (all->completion_code = 1);
+	}
+	if (!ft_strchr(com_name, '/'))
+		return (1);
+	return (0);
+}
 
 int	path_to_executable(t_all *all)
 {
-	// char	**path;
-	// int		i;
 	char	*com_name;
 	DIR 	*does_dir;
 
 	com_name = command_name(all);
+	if (check_command_sourse(all, com_name))
+		return (1);
 	does_dir = opendir(com_name);
 	if (does_dir)
 	{
@@ -97,7 +87,7 @@ int	path_to_executable(t_all *all)
 		write(STDOUT_FILENO, ": is a directory\n", 18);
 		closedir(does_dir);
 		all->completion_code = 126;
-		return (0);
+		return (1);
 	}
 	else
 	{
@@ -107,9 +97,42 @@ int	path_to_executable(t_all *all)
 			write(STDOUT_FILENO, com_name, ft_strlen(com_name));
 			write(STDOUT_FILENO, ": No such file or directory\n", 29);
 			all->completion_code = 126;
-			return (0);
+			return (1);
 		}
 	}
+	return (1);
+}
+
+int	find_file_in_dir(t_all *all, char *directory, char *command_name)
+{
+	DIR 			*does_dir;
+	struct dirent	*entry;
+	int				cmp;
+
+	does_dir = opendir(directory);
+	if (!does_dir)
+		return (all->completion_code = 126);
+	entry = readdir(does_dir);
+	cmp = 1;
+			//найти файл
+    while (cmp && entry != NULL)
+	{
+		cmp = ft_strncmp(entry->d_name, command_name, ft_strlen(command_name));
+		if (!cmp && entry->d_name[ft_strlen(command_name)])
+			cmp = 1;			
+		if (cmp)
+			entry = readdir(does_dir);
+   	}
+	// попробовать файл открыть fork execve
+	if (!cmp)
+	{
+		command_name = join_directory_and_command(directory, command_name);
+		completion_code_malloc_error(&all->completion_code, command_name, all->line);
+		fork_execve(all, command_name);
+	}
+	closedir(does_dir);
+	if (!cmp)
+		return (1);
 	return (0);
 }
 
@@ -124,6 +147,7 @@ int	find_file(t_all *all, char *com_name)
 	i = ft_strlen(com_name);
 	while (i && com_name[i] != '/')
 		--i;
+	cmp = 0;
 	if (com_name[i] == '/')
 	{
 		c = com_name[i + 1];
@@ -133,7 +157,7 @@ int	find_file(t_all *all, char *com_name)
 		if (!does_dir)
 			return (all->completion_code = 126);
 		entry = readdir(does_dir);
-		cmp = 1;
+		cmp = 1;// 0 файл найден, не 0 не найден файл
 			//найти файл
     	while (cmp && entry != NULL)
 		{
@@ -147,58 +171,73 @@ int	find_file(t_all *all, char *com_name)
 			fork_execve(all, com_name);
 		closedir(does_dir);
 	}
-	return (0);
+	return (cmp);
 }
 
 int		fork_execve(t_all *all, char *com_name)
 {
-	printf("\n");
 	int		ret;
 	pid_t	pid;
-//   int rv;
-printf("lalala  %s\n", com_name);
+	int		rv;
+
+	ret = 2;
 	pid = fork();
 	if (pid == 0)
 	{
 		ret = execve(com_name, all->args, all->env);
 		if (ret == -1)
 		{
-			exit(1);
+			exit(rv = 2);
 		}
 	}
-	else
+	else if (pid < 0)
 	{
 		printf("pid %d\n", pid);
 		write(STDOUT_FILENO, "minishell: fork error. try again\n", 34);
 		all->completion_code = 1;
-		exit (1);
+		return (1);
 	}
 	// wait(&pid);
 	wait(NULL);
-	return (0);
+// printf("\nfork_execve  |%s|%d|\n", com_name, WEXITSTATUS(rv));
 
+	return (!ret);
+}
 
-//   switch(pid=fork()) {
-//   case -1:
-//           perror("fork"); /* произошла ошибка */
-//           exit(1); /*выход из родительского процесса*/
-//   case 0:
-//           printf(" CHILD: Это процесс-потомок!\n");
-//           printf(" CHILD: Мой PID -- %d\n", getpid());
-//           printf(" CHILD: PID моего родителя -- %d\n",
-//               getppid());
-//           printf(" CHILD: Введите мой код возврата (как можно меньше):");
-//           scanf(" %d");
-//           printf(" CHILD: Выход!\n");
-//           exit(rv);
-//   default:
-//           printf("PARENT: Это процесс-родитель!\n");
-//           printf("PARENT: Мой PID -- %d\n", getpid());
-//           printf("PARENT: PID моего потомка %d\n",pid);
-//           printf("PARENT: Я жду, пока потомок не вызовет exit()...\n");
-//         wait(pid);
-//           printf("PARENT: Код возврата потомка:%d\n",
-//                    WEXITSTATUS(rv));
-//           printf("PARENT: Выход!\n");
-//   }
+char	**path_env(t_all *all)
+{
+	int		i;
+	char	*path_env_value;
+	char	**path_env;
+
+	i = get_my_env_index(all->env, "PATH", 4);
+	if (all->env[i] == NULL)
+		return (NULL);
+	path_env_value = ft_strchr(all->env[i], '=');
+	path_env = ft_split(++path_env_value, ':');
+	if (path_env == NULL)
+	{
+		all->completion_code = 1;
+		write(STDOUT_FILENO, "minishell: ", 12);
+		write(STDOUT_FILENO, all->line, ft_strlen(all->line));
+		write(STDOUT_FILENO, ": malloc error. Try again.\n", 28);
+	}
+	return (path_env);
+}
+
+char	*join_directory_and_command(char *directory, char *command_name)
+{
+	char	*tmp;
+
+	tmp = command_name;
+	command_name = ft_strjoin("/", command_name);
+	if (command_name)
+	{
+		free(tmp);
+		tmp = command_name;
+		command_name = ft_strjoin(directory, command_name);
+		if (command_name)
+			free(tmp);
+	}
+	return (command_name);
 }

@@ -38,8 +38,8 @@ void command_not_found(t_all *all)
 	int ret;
 
 	all->completion_code = 0;
-	// if (executable(all) == 0)
-	// 	return ;
+	if (executable(all) == 0)
+		return ;
 	write(1, "minishell: ", 12);
 	ret = 0;
 	while (all->line[ret] && all->line[ret] != ' ')
