@@ -112,6 +112,14 @@ void			all_args_free(t_all *all);
 void			exec_exit(t_all *all);
 int				exit_code(t_all *all);
 
-int				executable(t_all *all);
+int			executable(t_all *all);
+int			check_command_sourse(t_all *all, char *com_name);
+int			path_to_executable(t_all *all);
+char		*command_name(t_all *all);
+int			find_file(t_all *all, char *com_name);
+int			fork_execve(t_all *all, char *com_name);
+char		**path_env(t_all *all);
+int			find_file_in_dir(t_all *all, char *directory, char *command_name);
+char		*join_directory_and_command(char *directory, char *command_name);
 
 #endif

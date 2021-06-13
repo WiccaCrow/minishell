@@ -3,25 +3,58 @@
 #include <sys/types.h>//DIR *opendir(const char *name);
 #include <dirent.h>//DIR *opendir(const char *name);
 
-int	check_command_sourse(t_all *all, char *com_name);
-int	path_to_executable(t_all *all);
-char *command_name(t_all *all);
-int	find_file(t_all *all, char *com_name);
-int		fork_execve(t_all *all, char *com_name);
-char	**path_env(t_all *all);
-int	find_file_in_dir(t_all *all, char *directory, char *command_name);
-char	*join_directory_and_command(char *directory, char *command_name);
+/************************************
+ * 			1. executable			*
+ * **********************************
+*/
+/* Description:
+ * 		Function do search and do launch the right 
+ * 		executable (based on the PATH variable or by 
+ * 		using relative or absolute path).
+ * Return value:
+ * 		The function returns 1 if the name of the 
+ * 		executable file was entered (with an absolute, 
+ * 		relative path, or the file lies in one of the 
+ * 		paths in env-variable PATH) or a path was specified.
+ * 		Otherwise, 0 will be returned.
+ * Variables description, code comments:
+ * 		1. pointer to struct t_all all with variables:
+ * 			all->completion_code;
+ * 			all->env. Env-variables array (for PATH);
+ * 			all->line. Input line with executable.
+ * 		2. function variables:
+ * 			path_from_env. Path for the executable file.
+ * 			i. Iterator for path.
+ * 			path. Flag. Can be 1 or 0.
+ * 				path = path_to_executable(all). If 0 - 
+ * 					the file is running.
+ * 					if 1 and all->completion_code not zero,
+ * 						it was not command.
+ * 				path = find_file_in_dir(); Seach file in 
+ * 					path from env-variable PATH. If 0 - 
+ * 					the file is running. if P is not equal 
+ * 					to 0, then the entered line is neither 
+ * 					a command nor an executable file.
+ * 			com_name. Command name or executable name.
+ * Contains functions:
+ * 		1.1. path_to_executable;
+ * 		1.2. path_env;
+ * 		1.3. command_name;
+ * 		1.4. find_file_in_dir;
+*/
 
 int	executable(t_all *all)
 {
-	char	**path_from_env;//путь для исполняемого файла
-	int		i;//итератор для path
-	int		path;//указан ли путь до файла
+	char	**path_from_env;
+	int		i;
+	int		path;
 	char	*com_name;
 
 	all->completion_code = 0;
-	path = path_to_executable(all);//путь до файла
+	path = path_to_executable(all);
 	if (path && all->completion_code)
+		return (0);
+	if (!path)
 		return (0);
 	path_from_env = path_env(all);
 	if (path_from_env == NULL)
@@ -33,6 +66,69 @@ int	executable(t_all *all)
 		path = find_file_in_dir(all, path_from_env[i++], com_name);
 	return (!path);
 }
+
+/************************************
+ * 		1.1. path_to_executable		*
+ * **********************************
+*/
+/* Description:
+ * 		The function checks if the path contains the 
+ * 		entered string (checks for the / character).
+ * 		If the string consists entirely of a path, 
+ * 		the message "is a directory" is displayed.
+ * 		If the path in the string is found and not the 
+ * 		entire string is a directory (are there characters 
+ * 		after the last '/'), the function tries to follow 
+ * 		the specified path. 
+ * 		If the path does not exist or there is no file 
+ * 		with the specified name at the end of the path, 
+ * 		the message "No such file or directory" is displayed.
+ * 		If the path is specified, it was possible to follow 
+ * 		it, the function tries to start the executable file.
+ * Return value:
+ * 		1 if executable was find and running.
+ * 		In other cases 0.
+ * Contains functions:
+ * 		1.1.1. check_command_sourse;
+ * 		1.1.2. find_file;
+ * 		1.3. command_name;
+ * 		libft. ft_strlen;
+*/
+
+int	path_to_executable(t_all *all)
+{
+	char	*com_name;
+	DIR 	*does_dir;
+
+	com_name = command_name(all);
+	if (check_command_sourse(all, com_name))
+		return (1);
+	does_dir = opendir(com_name);
+	if (does_dir)
+	{
+		write(STDOUT_FILENO, "minishell: ", 12);
+		write(STDOUT_FILENO, com_name, ft_strlen(com_name));
+		write(STDOUT_FILENO, ": is a directory\n", 18);
+		closedir(does_dir);
+		all->completion_code = 126;
+		return (1);
+	}
+	else
+	{
+		if (find_file(all, com_name))
+		{
+			write(STDOUT_FILENO, "minishell: ", 12);
+			write(STDOUT_FILENO, com_name, ft_strlen(com_name));
+			write(STDOUT_FILENO, ": No such file or directory\n", 29);
+			all->completion_code = 126;
+			return (1);
+		}
+		else
+			return (0);
+	}
+	return (1);
+}
+
 
 char *command_name(t_all *all)
 {
@@ -69,38 +165,6 @@ int	check_command_sourse(t_all *all, char *com_name)
 	if (!ft_strchr(com_name, '/'))
 		return (1);
 	return (0);
-}
-
-int	path_to_executable(t_all *all)
-{
-	char	*com_name;
-	DIR 	*does_dir;
-
-	com_name = command_name(all);
-	if (check_command_sourse(all, com_name))
-		return (1);
-	does_dir = opendir(com_name);
-	if (does_dir)
-	{
-		write(STDOUT_FILENO, "minishell: ", 12);
-		write(STDOUT_FILENO, com_name, ft_strlen(com_name));
-		write(STDOUT_FILENO, ": is a directory\n", 18);
-		closedir(does_dir);
-		all->completion_code = 126;
-		return (1);
-	}
-	else
-	{
-		if (find_file(all, com_name))
-		{
-			write(STDOUT_FILENO, "minishell: ", 12);
-			write(STDOUT_FILENO, com_name, ft_strlen(com_name));
-			write(STDOUT_FILENO, ": No such file or directory\n", 29);
-			all->completion_code = 126;
-			return (1);
-		}
-	}
-	return (1);
 }
 
 int	find_file_in_dir(t_all *all, char *directory, char *command_name)
