@@ -55,7 +55,6 @@ typedef struct			s_all {
 	char				*all_commands[10];
 	char				*pwd;
 	int					completion_code; // код возврата ошибки $? return заменила на completion
-	int					pipe_on_of; // exit срабатывает только если нет '|'
 	int					len_env_str;
 	int					parse_error;
 	t_command			**commands;
