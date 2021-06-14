@@ -147,13 +147,15 @@ int get_next_command(t_all *all, int i)
 	char 		*curr_line;
 	t_list		**args;
 
-	command = (t_command *)malloc(sizeof (t_command));
+	command = (t_command *)ft_calloc(1, sizeof (t_command));
 	if (command)
 	{
 		args = (t_list **) ft_calloc(1, sizeof(t_list *));
 		if (args)
 		{
 			command->redirect_type = 0;
+			command->input_fd = 0;
+			command->output_fd = 1;
 			while (all->line[i] && all->line[i] != ';' && all->line[i] != '|')
 			{
 				curr_line = NULL;

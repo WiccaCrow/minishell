@@ -82,20 +82,12 @@ int main(int ac, char **av, char **env)
 	(void) av;
 	start_all(&all, env);
 
-	show_program_name();
-	if (fill_all(&all) != -1)
-	{
-			if (parser2(&all))
-//		while (all.line && dollar_handler(&all) && parser2(&all))
-			executor(&all);
-	}
 	while (1)
 	{
 		show_program_name();
 		if (fill_all(&all) != -1)
 		{
-//			parser2(&all);
-			while (all.line && dollar_handler(&all) && parser(&all))
+			while (all.line && dollar_handler(&all) && parser2(&all))
 				executor(&all);
 		}
 		else
