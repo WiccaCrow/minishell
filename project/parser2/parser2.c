@@ -133,8 +133,6 @@ int parse_word(char *word, t_command *command, t_list **args)
 			else
 				return (2);
 		}
-		else if (!command->flag_command)
-			command->flag_command = get_command2(word);
 		else
 			ft_lstadd_back(args, ft_lstnew(ft_strdup(word)));
 	}
@@ -153,8 +151,6 @@ int get_next_command(t_all *all, int i)
 		args = (t_list **) ft_calloc(1, sizeof(t_list *));
 		if (args)
 		{
-			command->redirect_type = 0;
-			command->input_fd = 0;
 			command->output_fd = 1;
 			while (all->line[i] && all->line[i] != ';' && all->line[i] != '|')
 			{
@@ -165,6 +161,9 @@ int get_next_command(t_all *all, int i)
 					all->parse_error = 1;
 				free(curr_line);
 			}
+			command->flag_command = get_command2((char *)(*args)->content);
+			if (command->flag_command)
+				remove_first(args);
 			args_list_to_arr2(args, command);
 			clear_list2(args);
 			if (all->line[i] == ';')
@@ -200,8 +199,7 @@ int parser2(t_all *all)
 		}
 		show_commands(all->commands);
 		set_command_to_all(all);
-		if (all->flag_command)
-			crop_line(&(all->line));
+		crop_line(&(all->line));
 		if (all->parse_error == 0)
 			return (1);
 	}

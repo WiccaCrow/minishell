@@ -16,6 +16,7 @@ int		skip_command(const char *line, int i);
 int 	crop_line(char **line);
 char	*add_chr(char *str, char c);
 int		clear_list2(t_list **args);
+int 	remove_first(t_list **args);
 
 
 

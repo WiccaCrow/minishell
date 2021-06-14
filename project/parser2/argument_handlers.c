@@ -51,3 +51,20 @@ int clear_list2(t_list **args)
 	free(args);
 	return (0);
 }
+
+int remove_first(t_list **args)
+{
+	t_list *tmp;
+	
+	if (args)
+	{
+		tmp = *args;
+		if (tmp)
+		{
+			*args = tmp->next;
+			free(tmp->content);
+			free(tmp);
+		}		
+	}
+	return (0);
+}
