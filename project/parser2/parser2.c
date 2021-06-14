@@ -78,11 +78,11 @@ int 	set_redirect(const char *word)
 				return (LIM_READ | NO_FILENAME);
 		if (word[0] == '>' && word[1] != 0)
 				return (WRITE);
-		if (word[0] == '>' && word[2] == 0)
+		if (word[0] == '>' && word[1] == 0)
 				return (WRITE | NO_FILENAME);
 		if (word[0] == '<' && word[1] != 0)
 				return (READ);
-		if (word[0] == '<' && word[2] == 0)
+		if (word[0] == '<' && word[1] == 0)
 				return (READ | NO_FILENAME);
 	}
 	return (0);
@@ -198,10 +198,10 @@ int parser2(t_all *all)
 			i = get_next_command(all, i);
 			i = skip_spaces(all->line, i);
 		}
-//		if (all->flag_command == not_found)
-//			crop_line(&(all->line));
 		show_commands(all->commands);
 		set_command_to_all(all);
+		if (all->flag_command)
+			crop_line(&(all->line));
 		if (all->parse_error == 0)
 			return (1);
 	}
