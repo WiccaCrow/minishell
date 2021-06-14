@@ -85,7 +85,7 @@ int main(int ac, char **av, char **env)
 	show_program_name();
 	if (fill_all(&all) != -1)
 	{
-			parser2(&all);
+			if (parser2(&all))
 //		while (all.line && dollar_handler(&all) && parser2(&all))
 			executor(&all);
 	}
@@ -129,6 +129,7 @@ void	start_all(t_all *all, char **env)
 	all->flag_command = start;
 	all->completion_code = 0;
 	all->pipe_on_of = 0;
+	all->parse_error = 0;
 	all->line = NULL;
 	all->commands = NULL;
 	all->pwd = getcwd(NULL, 0);

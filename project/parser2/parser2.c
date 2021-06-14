@@ -11,6 +11,9 @@ int show_commands(t_command **commands)
 		while (tmp)
 		{
 			printf("command flag = %d\n", tmp->flag_command);
+			printf("redirect flag = %d\n", tmp->redirect_type);
+			printf("input fd = %d\n", tmp->input_fd);
+			printf("output fd = %d\n", tmp->output_fd);
 			printf("end flag = %d\n", tmp->end_flag);
 			i = 0;
 			if (tmp->args)
@@ -106,15 +109,7 @@ int parse_redirect(t_command *command, char *word)
 		filename = get_filename(word);
 		if (filename)
 		{
-			if (command->redirect_type & APPEND)
-				command->output_fd = open(filename, O_CREAT | O_WRONLY |
-													O_APPEND, 0644);
-			if (command->redirect_type & WRITE)
-				command->output_fd = open(filename, O_CREAT | O_WRONLY |
-													O_TRUNC, 0644);
-			if (command->redirect_type & READ || \
-				command->redirect_type & LIM_READ)
-				command->input_fd = open(filename, O_RDONLY);
+			open_file(command, filename);
 			return (1);
 		}
 	}
@@ -125,16 +120,8 @@ int parse_word(char *word, t_command *command, t_list **args)
 {
 	if (command->redirect_type && (command->redirect_type & NO_FILENAME))
 	{
-		if (command->redirect_type & APPEND)
-			command->output_fd = open(word, O_CREAT | O_WRONLY |
-												O_APPEND, 0644);
-		if (command->redirect_type & WRITE)
-			command->output_fd = open(word, O_CREAT | O_WRONLY |
-												O_TRUNC, 0644);
-		if (command->redirect_type & READ || \
-				command->redirect_type & LIM_READ)
-			command->input_fd = open(word, O_RDONLY);
-		command->redirect_type = command->redirect_type & ~(NO_FILENAME);
+		if (open_file(command, word) < 0)
+			return (-1);
 	}
 	else
 	{
@@ -172,7 +159,8 @@ int get_next_command(t_all *all, int i)
 				curr_line = NULL;
 				i = get_next_word(all->line, i, &curr_line);
 				i = skip_spaces(all->line, i);
-				parse_word(curr_line, command, args);
+				if ((parse_word(curr_line, command, args) < 0))
+					all->parse_error = 1;
 				free(curr_line);
 			}
 			args_list_to_arr2(args, command);
@@ -212,7 +200,8 @@ int parser2(t_all *all)
 			crop_line(&(all->line));
 		show_commands(all->commands);
 		set_command_to_all(all);
-
+		if (all->parse_error == 0)
+			return (1);
 	}
-	return (1);
+	return (0);
 }

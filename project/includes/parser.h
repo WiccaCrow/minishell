@@ -18,4 +18,5 @@ char	*add_chr(char *str, char c);
 int		clear_list2(t_list **args);
 
 
+
 #endif 
