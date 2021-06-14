@@ -198,7 +198,7 @@ int parser2(t_all *all)
 			i = get_next_command(all, i);
 			i = skip_spaces(all->line, i);
 		}
-		if (all->flag_command)
+		if (all->flag_command == not_found)
 			crop_line(&(all->line));
 		show_commands(all->commands);
 		set_command_to_all(all);
