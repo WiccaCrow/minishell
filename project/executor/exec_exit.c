@@ -31,11 +31,15 @@ static int	args_is_digit(char *args)
 
 void	exec_exit(t_all *all)
 {
+	int	pipe_on_of;
+
+	pipe_on_of = 0;
+	if ((*(all->commands))->end_flag && PIPE)
+		pipe_on_of = 1;
 	write(STDOUT_FILENO, "exit\n", 6);
 	all->completion_code = exit_code(all);
-	if (((all->args[0] && !all->args[1]) || !all->args[0]) && !all->pipe_on_of)
+	if (((all->args[0] && !all->args[1]) || !all->args[0]) && !pipe_on_of)
 		exit_clean(all, all->completion_code);
-	all->pipe_on_of = 0;
 }
 
 /************************************

@@ -60,8 +60,8 @@ int exec_echo(t_all *all)
 			// ret += write(STDOUT_FILENO, " ", 1);
 	}
 	if (flag_n)
-		// ret += write((*(all->commands))->output_fd, "\n", 1);
-		ret += write(STDOUT_FILENO, "\n", 1);
+		ret += write((*(all->commands))->output_fd, "\n", 1);
+		// ret += write(STDOUT_FILENO, "\n", 1);
 	if ((*(all->commands))->output_fd != 1)
 		close((*(all->commands))->output_fd);
 	return (ret > 0);

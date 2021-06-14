@@ -118,9 +118,7 @@ void	start_all(t_all *all, char **env)
 	int	i;
 
 	i = 0;
-	all->flag_command = start;
 	all->completion_code = 0;
-	all->pipe_on_of = 0;
 	all->parse_error = 0;
 	all->line = NULL;
 	all->commands = NULL;

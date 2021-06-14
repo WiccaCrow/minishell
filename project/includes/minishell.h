@@ -30,9 +30,7 @@ enum e_command
 	ctrl_c,
 	ctrl_d,
 	ctrl_slash,
-	exit_shell,
-	other,
-	start
+	exit_shell
 };
 
 typedef struct			s_command {
@@ -55,7 +53,6 @@ typedef struct			s_all {
 	char				*all_commands[10];
 	char				*pwd;
 	int					completion_code; // код возврата ошибки $? return заменила на completion
-	int					pipe_on_of; // exit срабатывает только если нет '|'
 	int					len_env_str;
 	int					parse_error;
 	t_command			**commands;
@@ -122,9 +119,10 @@ int				exit_code(t_all *all);
 int			executable(t_all *all);
 int			check_command_sourse(t_all *all, char *com_name);
 int			path_to_executable(t_all *all);
-int	executable_error_print(int	*code_to_on, char *com_name, char *error_message, int error_code);
+int			executable_error_print(int	*code_to_on, char *com_name, char *error_message, int error_code);
 char		*command_name(char *string, char stop_copy);
 int			find_file(t_all *all, char *com_name);
+int			split_name_directory(t_all *all, char **directory, char **com_name);
 int			fork_execve(t_all *all, char *com_name);
 char		**path_env(t_all *all);
 int			find_file_in_dir(t_all *all, char *directory, char *command_name, char *tmp_com_name);
