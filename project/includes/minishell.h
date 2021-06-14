@@ -71,10 +71,14 @@ int				show_program_name(void);
 int 			line_getter(t_all *all);
 
 int 			parser(t_all *all);
+int 			parser2(t_all *all);
 int				get_args(t_all *all, t_command *command, int i);
 int				dollar_handler(t_all *all);
 int				add_command(t_all *all, t_command *command);
 enum e_command	get_command(t_all *all, int i);
+enum e_command	get_command2(char *word);
+int				args_list_to_arr2(t_list **args, t_command *command);
+int 			set_command_to_all(t_all *all);
 
 
 
