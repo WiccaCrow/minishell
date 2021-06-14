@@ -113,7 +113,7 @@ int	do_sort_index(t_all *all, char ***sort_env_index, int **sort, int i)
 	while (++k < i)
 		(*sort)[k] = 1;
 	if (*sort_env_index == NULL || *sort == NULL)
-		completion_code_malloc_error(&(all->completion_code), NULL, "export without arguments");
+		completion_code_malloc_error(&(all->completion_code), NULL, "export without arguments: ");
 	return (all->completion_code);
 }
 

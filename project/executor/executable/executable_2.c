@@ -62,7 +62,20 @@ int	executable_error_print(int	*code_to_on, char *com_name, char *error_message,
 	return (1);
 }
 
-int	split_name_directory(char **directory, char **com_name)
+/************************************
+ * 	1.1.2. split_name_directory	*
+ * **********************************
+*/
+/* Description:
+ * 		Set value error_code to *code_to_on.
+ * 		Print error message error_message for 
+ * 		input string com_name (command, directory,
+ * 		executable, etc.).
+ * Return value:
+ * 		Integer 1.
+*/
+
+int	split_name_directory(t_all *all, char **directory, char **com_name)
 {
 	int		i;
 	int		cmp;
@@ -80,9 +93,28 @@ int	split_name_directory(char **directory, char **com_name)
 		(*com_name)[i + 1] = c;
 		*com_name = ft_strdup(&((*com_name)[i + 1]));
 		cmp = 1;
+		if (*directory == NULL || *com_name == NULL)
+			completion_code_malloc_error(&(all->completion_code), NULL, "executable (split_name_directory): ");
 	}
 	return (cmp);
 }
+
+/************************************
+ * 			1.1.3. find_file		*
+ * **********************************
+*/
+/* Description:
+ * 		The function searches for the specified 
+ * 		file "com_name" inside the directory, 
+ * 		the path to which is specified before 
+ * 		the file name.
+ * 		If the file was found, the function tries 
+ * 		to run it.
+ * Return value:
+ * 		Integer 0. If the file was found and the 
+ * 		function launched it.
+ * 		Else return not zero (1 or compiletion code).
+*/
 
 int	find_file(t_all *all, char *com_name)
 {
@@ -92,10 +124,20 @@ int	find_file(t_all *all, char *com_name)
 
 	cmp = 0;
 	tmp_com_name = com_name;
-	if (split_name_directory(&directory, &com_name))
-		return (find_file_in_dir(all, directory, com_name, tmp_com_name));
+	if (split_name_directory(all, &directory, &com_name))
+	{
+		if (!all->completion_code)
+			return (find_file_in_dir(all, directory, com_name, tmp_com_name));
+		else
+			return (all->completion_code);
+	}
 	return (cmp);
 }
+
+/************************************
+ * 				fork_execve			*
+ * **********************************||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+*/
 
 int		fork_execve(t_all *all, char *com_name)
 {
@@ -123,9 +165,20 @@ printf("fork_execve test 1\n");
 	// wait(&pid);
 	wait(NULL);
 // printf("\nfork_execve  |%s|%d|\n", com_name, WEXITSTATUS(rv));
-
 	return (!ret);
 }
+
+/************************************
+ * 				 path_env			*
+ * **********************************
+*/
+/* Description:
+ * 		The function splits the PATH-variable string in env-array into a two-dimensional array of strings when each character PPRRP is encountered.
+ * Return value:
+ * 		Integer 0. If the file was found and the 
+ * 		function launched it.
+ * 		Else return not zero (1 or compiletion code).
+*/
 
 char	**path_env(t_all *all)
 {

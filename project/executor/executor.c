@@ -94,7 +94,6 @@ int executor(t_all *all)
 		exec_unset(all);
 	else
 		write(1, "other command\n", 15);
-	all->flag_command = start;
 	all_args_free(all);
 	if (all->line)
 	{
