@@ -46,8 +46,6 @@ void command_not_found(t_all *all)
 		++ret;
 	write(1, all->line, ret);
 	ret += (int) write(STDOUT_FILENO, COM_NOT_FOUND, ft_strlen(COM_NOT_FOUND));
-	free(all->line);
-	all->line = NULL;
 	all->completion_code = 127;
 }
 
@@ -77,6 +75,7 @@ void command_not_found(t_all *all)
 
 int executor(t_all *all)
 {
+	printf("all->line |%s| \n&& all->flag_command |%d|\n__________________\n", all->line, all->flag_command);
 	if (all->line && all->flag_command == not_found)
 		command_not_found(all);
 	else if (all->flag_command == exit_shell)
@@ -97,8 +96,11 @@ int executor(t_all *all)
 		write(1, "other command\n", 15);
 	all->flag_command = start;
 	all_args_free(all);
-	free(all->line);
-	all->line = NULL;
+	if (all->line)
+	{
+		free(all->line);
+		all->line = NULL;
+	}
 	return (1);
 }
 
