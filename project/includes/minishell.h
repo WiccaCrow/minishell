@@ -114,6 +114,7 @@ void			exec_unset_find_env_str(t_all *all, char *oper_name);
 void			exec_unset_do_new_env(t_all *all, char **env_new, int nb_lines);
 void			all_args_free(t_all *all);
 void			exec_exit(t_all *all);
+int				args_is_digit(char *args);
 int				exit_code(t_all *all);
 
 int			executable(t_all *all);

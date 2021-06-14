@@ -16,7 +16,10 @@ void	all_args_free(t_all *all)
 	while (all->args[i])
 	{
 		if (all->args[i] != NULL)
+		{
+			free(all->args[i]);
 			all->args[i] = NULL;
+		}
 		++i;
 	}
 }
@@ -35,17 +38,12 @@ void	all_args_free(t_all *all)
 
 void command_not_found(t_all *all)
 {
-	int ret;
-
 	all->completion_code = 0;
 	if (executable(all) == 0)
 		return ;
 	write(1, "minishell: ", 12);
-	ret = 0;
-	while (all->line[ret] && all->line[ret] != ' ')
-		++ret;
-	write(1, all->line, ret);
-	ret += (int) write(STDOUT_FILENO, COM_NOT_FOUND, ft_strlen(COM_NOT_FOUND));
+	write(1, all->args[0], ft_strlen(all->args[0]));
+	write(STDOUT_FILENO, COM_NOT_FOUND, ft_strlen(COM_NOT_FOUND));
 	all->completion_code = 127;
 }
 
@@ -75,8 +73,7 @@ void command_not_found(t_all *all)
 
 int executor(t_all *all)
 {
-	printf("all->line |%s| \n&& all->flag_command |%d|\n__________________\n", all->line, all->flag_command);
-	if (all->line && all->flag_command == not_found)
+	if (all->flag_command == not_found)
 		command_not_found(all);
 	else if (all->flag_command == exit_shell)
 		exec_exit(all);
@@ -95,11 +92,6 @@ int executor(t_all *all)
 	else
 		write(1, "other command\n", 15);
 	all_args_free(all);
-	if (all->line)
-	{
-		free(all->line);
-		all->line = NULL;
-	}
 	return (1);
 }
 

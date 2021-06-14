@@ -39,8 +39,7 @@
  * Contains functions:
  * 		1.1. path_to_executable;
  * 		1.2. path_env;
- * 		1.3. command_name;
- * 		1.4. find_file_in_dir;
+ * 		1.3. find_file_in_dir;
 */
 
 int	executable(t_all *all)
@@ -48,22 +47,21 @@ int	executable(t_all *all)
 	char	**path_from_env;
 	int		i;
 	int		path;
-	char	*com_name;
+	// char	*com_name;
 
 	all->completion_code = 0;
 	path = path_to_executable(all);
-	if (path && all->completion_code)
-		return (0);
-	if (!path)
+	if (path && all->completion_code == 127)
+		return (1);
+	if (!path || (path && all->completion_code))
 		return (0);
 	path_from_env = path_env(all);
 	if (path_from_env == NULL)
 		return (1);
-	com_name = command_name(all->line, ' ');
 	i = 0;
 	path = 0;
 	while (path_from_env[i] && path == 0)
-		path = find_file_in_dir(all, path_from_env[i++], com_name, NULL);
+		path = find_file_in_dir(all, path_from_env[i++], all->args[0], NULL);
 	return (!path);
 }
 
@@ -92,28 +90,25 @@ int	executable(t_all *all)
  * 		1.1.1. check_command_sourse;
  * 		1.1.2. executable_error_print;
  * 		1.1.3. find_file;
- * 		1.3. command_name;
  * 		libft. ft_strlen;
 */
 
 int	path_to_executable(t_all *all)
 {
-	char	*com_name;
 	DIR 	*does_dir;
 
-	com_name = command_name(all->line, ' ');
-	if (check_command_sourse(all, com_name))
+	if (check_command_sourse(all, all->args[0]))
 		return (1);
-	does_dir = opendir(com_name);
+	does_dir = opendir(all->args[0]);
 	if (does_dir)
 	{
 		closedir(does_dir);
-		return (executable_error_print(&all->completion_code, com_name, ": is a directory\n", 126));
+		return (executable_error_print(&all->completion_code, all->args[0], ": is a directory\n", 126));
 	}
 	else
 	{
-		if (find_file(all, com_name))
-			return (executable_error_print(&all->completion_code, com_name, ": No such file or directory\n", 126));
+		if (find_file(all, all->args[0]))
+			return (executable_error_print(&all->completion_code, all->args[0], ": No such file or directory\n", 126));
 		else
 			return (0);
 	}
@@ -121,30 +116,14 @@ int	path_to_executable(t_all *all)
 }
 
 /************************************
- * 			1.3. command_name		*
+ * 			1.3. find_file_in_dir		*
  * **********************************
 */
 /* Description:
- * 		The function makes a copy of the 
- * 		string up to a specific character.
+ * 		
  * Return value:
- * 		New string.
+ * 		
 */
-
-char *command_name(char *string, char stop_copy)
-{
-	int		i;
-	char	*com_name;
-
-	i = 0;
-	while (string[i] && string[i] != stop_copy)
-		++i;
-	com_name = (char*)malloc(sizeof(char) * (i + 1));
-	com_name[i] = '\0';
-	while (i--)
-		com_name[i] = string[i];
-	return (com_name);
-}
 
 int	find_file_in_dir(t_all *all, char *directory, char *com_name, char *tmp_com_name)
 {
@@ -172,11 +151,11 @@ int	find_file_in_dir(t_all *all, char *directory, char *com_name, char *tmp_com_
 		if (!tmp_com_name)
 		{
 			com_name = join_directory_and_command(directory, com_name);
-			completion_code_malloc_error(&all->completion_code, com_name, all->line);
+			completion_code_malloc_error(&all->completion_code, com_name, all->args[0]);
 			fork_execve(all, com_name);
 		}
 		else
-			fork_execve(all, tmp_com_name);
+			fork_execve(all, all->args[0]);
 	}
 	closedir(does_dir);
 	if (!cmp && !tmp_com_name)
