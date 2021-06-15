@@ -94,6 +94,7 @@ int main(int ac, char **av, char **env)
 		else
 			break ;
 		free(all.args);
+		all.args = NULL;
 	}
 	exit_clean(&all, 0);
 	return (0);
