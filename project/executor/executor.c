@@ -13,11 +13,14 @@ void	all_args_free(t_all *all)
 	int	i;
 
 	i = 0;
-	while (all->args[i])
+	if (all && all->args)
 	{
-		if (all->args[i] != NULL)
-			all->args[i] = NULL;
-		++i;
+		while (all->args[i])
+		{
+			if (all->args[i] != NULL)
+				all->args[i] = NULL;
+			++i;
+		}
 	}
 }
 
