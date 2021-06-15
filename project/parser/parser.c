@@ -76,8 +76,13 @@ int parse_command(t_all *all, int i)
 
 int set_command_to_all(t_all *all)
 {
-	all->flag_command = (*all->commands)->flag_command;
-	all->args = (*all->commands)->args;
+	if (all->commands && *all->commands)
+	{
+		all->flag_command = (*all->commands)->flag_command;
+		all->args = (*all->commands)->args;
+	}
+	else
+		all->flag_command = not_found;
 	return (0);
 }
 
