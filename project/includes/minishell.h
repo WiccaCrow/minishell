@@ -68,6 +68,9 @@ int				show_program_name(void);
 
 int 			line_getter(t_all *all);
 
+int				check_line(t_all *all);
+
+
 int 			parser(t_all *all);
 int 			parser2(t_all *all);
 int				get_args(t_all *all, t_command *command, int i);

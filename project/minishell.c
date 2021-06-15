@@ -89,12 +89,14 @@ int main(int ac, char **av, char **env)
 		show_program_name();
 		if (fill_all(&all) != -1)
 		{
-			while (all.line && *all.line && dollar_handler(&all) && parser2
-			(&all))
+			while (all.line && *all.line && check_line(&all) && \
+			dollar_handler(&all) && parser2(&all))
 				executor(&all);
 		}
 		else
 			break ;
+		free(all.line);
+		all.line = NULL;
 		free(all.args);
 		all.args = NULL;
 	}

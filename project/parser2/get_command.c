@@ -8,7 +8,7 @@ static int	is_command(const char *word, const char *command)
 {
 	int i;
 	
-	if (word && command)
+	if (command)
 	{
 		i = 0;
 		while (word[i] && command[i] && (command[i] == word[i]))

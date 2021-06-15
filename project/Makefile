@@ -6,9 +6,8 @@ CFLAGS		=	-Wall -Wextra -Werror -g -I./includes/
 LG_PATH		=	line_getter/
 LG_SRCS		=	line_getter.c line_utils.c history_handler.c term_switch.c key_handlers.c \
 				rdwr_history.c
-PARSER_PATH	=	parser/
-PARSER_SRCS	=	parser.c get_args.c get_next_arg.c dollar_handler.c \
-				add_command.c crop_line.c get_command.c
+LC_PATH		=	line_checker/
+LC_SRCS		=	line_checker.c
 PARSER2_PATH	=	parser2/
 PARSER2_SRCS	=	parser2.c get_command.c argument_handlers.c open_file.c get_command_utils.c \
                     add_command.c crop_line.c dollar_handler.c
@@ -23,6 +22,7 @@ GNL_PATH	=	gnl_dir/
 GNL_SRCS	=	get_next_line.c get_next_line_utils.c
 SRCS		=	minishell.c fill_all.c \
 				$(addprefix $(PARSER2_PATH), $(PARSER2_SRCS)) \
+				$(addprefix $(LC_PATH), $(LC_SRCS)) \
 				$(addprefix $(EXEC_PATH), $(EXEC_SRCS)) \
 				$(addprefix $(LG_PATH), $(LG_SRCS)) \
 				$(addprefix $(GNL_PATH), $(GNL_SRCS))
