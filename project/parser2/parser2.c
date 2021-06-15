@@ -37,29 +37,29 @@ int get_next_word(char *line, int i, char **tmp_line)
 	flag = 0;
 	while (line[i])
 	{
-		if (line[i] == '\\' && !(flag & QUOTE))
+		if (line[i] == '\\' && !(flag & QUOTE) && !(flag & SHIELD))
 		{
-			flag = flag & SHIELD;
+			flag = flag | SHIELD;
 			i++;
 		}
-		if (line[i] == '\"' && !(flag & SHIELD) && !(flag & QUOTE))
+		else if (line[i] == '\"' && !(flag & SHIELD) && !(flag & QUOTE))
 		{
 			flag = flag ^ DOUBLE_QUOTE;
 			i++;
 		}
-		if (line[i] == '\'' && !(flag & SHIELD) && !(flag & DOUBLE_QUOTE))
+		else if (line[i] == '\'' && !(flag & SHIELD) && !(flag & DOUBLE_QUOTE))
 		{
 			flag = flag ^ QUOTE;
 			i++;
 		}
-		if (line[i] && ((line[i] != ' ' && line[i] != ';' && line[i] != '|')
-						|| flag))
-			*tmp_line = add_chr(*tmp_line, line[i]);
+		else if ((line[i] != ' ' && line[i] != ';' && line[i] != '|') || flag)
+		{
+			*tmp_line = add_chr(*tmp_line, line[i++]);
+			if (line[i])
+				flag = flag & ~(SHIELD);
+		}
 		else
 			return (i);
-		i++;
-		if (line[i])
-			flag = flag & ~(SHIELD);
 	}
 	return (i);
 }
