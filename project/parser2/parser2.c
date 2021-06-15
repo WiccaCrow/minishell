@@ -175,7 +175,6 @@ int get_next_command(t_all *all, int i)
 			} else
 				command->end_flag = 0;
 			command->next = NULL;
-//		if (check_command(command))
 			add_command(all, command);
 		}
 	}
