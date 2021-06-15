@@ -178,7 +178,8 @@ int get_next_command(t_all *all, int i)
 					all->parse_error = 1;
 				free(curr_line);
 			}
-			command->flag_command = get_command2((char *)(*args)->content);
+			if (*args)
+				command->flag_command = get_command2((char *)(*args)->content);
 			if (command->flag_command)
 				remove_first(args);
 			args_list_to_arr2(args, command);
