@@ -5,11 +5,12 @@
  * **********************************
 */
 /* Description:
- * 		Check first argument of exec_exit function.
- * 		Is the first argument a number?
+ * 		Check args.	Is the args a number?
+ * Return value:
+ * 		0 if args a number.
 */
 
-static int	args_is_digit(char *args)
+int	args_is_digit(char *args)
 {
 	int i;
 
