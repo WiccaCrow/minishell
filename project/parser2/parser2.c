@@ -1,5 +1,22 @@
 #include "minishell.h"
 
+/**
+ * Первый элемент из листа комманд пишет в старую структуру, где есть место 
+ * только для одной комманды
+*/
+
+int set_command_to_all(t_all *all)
+{
+	if (all->commands && *all->commands)
+	{
+		all->flag_command = (*all->commands)->flag_command;
+		all->args = (*all->commands)->args;
+	}
+	else
+		all->flag_command = not_found;
+	return (0);
+}
+
 int show_commands(t_command **commands)
 {
 	t_command *tmp;

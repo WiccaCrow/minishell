@@ -10,7 +10,8 @@ PARSER_PATH	=	parser/
 PARSER_SRCS	=	parser.c get_args.c get_next_arg.c dollar_handler.c \
 				add_command.c crop_line.c get_command.c
 PARSER2_PATH	=	parser2/
-PARSER2_SRCS	=	parser2.c get_command.c argument_handlers.c open_file.c
+PARSER2_SRCS	=	parser2.c get_command.c argument_handlers.c open_file.c get_command_utils.c \
+                    add_command.c crop_line.c dollar_handler.c
 EXEC_PATH	=	executor/
 EXEC_SRCS	=	executor.c \
 				exec_echo.c exec_cd.c exec_pwd.c exec_env.c \
@@ -21,7 +22,6 @@ EXEC_SRCS	=	executor.c \
 GNL_PATH	=	gnl_dir/
 GNL_SRCS	=	get_next_line.c get_next_line_utils.c
 SRCS		=	minishell.c fill_all.c \
-				$(addprefix $(PARSER_PATH), $(PARSER_SRCS)) \
 				$(addprefix $(PARSER2_PATH), $(PARSER2_SRCS)) \
 				$(addprefix $(EXEC_PATH), $(EXEC_SRCS)) \
 				$(addprefix $(LG_PATH), $(LG_SRCS)) \
