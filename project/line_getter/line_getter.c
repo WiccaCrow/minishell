@@ -62,7 +62,10 @@ char	*get_line(t_all *all)
 			else if (!strcmp(buff, KEY_LEFT))
 				key_left_handle(&line);
 			else if (!strcmp(buff, "\4"))
-				break ;
+			{
+				if (control_d_handle(&line) && line.main_line)
+					break ;					
+			}
 			else if (!strcmp(buff, "\n"))
 			{
 				if (enter_handle(&line) && \

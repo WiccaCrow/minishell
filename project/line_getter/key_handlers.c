@@ -92,3 +92,24 @@ int 	key_left_handle(t_line *line)
 	}
 	return (0);
 }
+
+int		control_d_handle(t_line *line)
+{
+	if (line)
+	{
+		if (line->curr_line && *line->curr_line)
+			return (0);
+		else if (line->main_line && *line->main_line)
+		{
+			write(STDOUT_FILENO, UNEXP_EOF, 94);
+			return (1);
+		}
+		else
+		{	
+			write(STDOUT_FILENO, "exit", 4);
+			line->main_line = ft_strdup("exit");
+		}
+		return (2);
+	}
+	return (0);
+}

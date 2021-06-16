@@ -13,6 +13,8 @@
 # define GOLD "\033[40;33m"
 # define COM_NOT_FOUND ": command not found\n"
 # define SYN_ERR "minishell: syntax error near unexpected token `"
+# define UNEXP_EOF "bash: unexpected EOF while looking for matching " \
+"`\"\'\nbash: syntax error: unexpected end of file"
 # define QUOTE 1
 # define DOUBLE_QUOTE 2
 # define SHIELD 4

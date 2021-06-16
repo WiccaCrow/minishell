@@ -32,6 +32,7 @@ int 		ft_putchar(int c);
 int 		add_chr_to_pos(t_line *line, char c);
 int			remove_chr_from_pos(t_line *line);
 int			enter_handle(t_line *line);
+int			control_d_handle(t_line *line);
 int 		key_right_handle(t_line *line);
 int 		key_left_handle(t_line *line);
 char 		*read_history(int fd);
