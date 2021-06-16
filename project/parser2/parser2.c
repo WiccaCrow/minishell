@@ -107,12 +107,13 @@ int 	set_redirect(const char *word)
 
 char *get_filename(char *word)
 {
-	
 	if (word)
 	{
-		while (*word && ft_strchr("<>", *word))
-			word++;
-		return (ft_strdup(word));
+		if ((word[0] == '>' && word[1] == '>') || \
+			(word[0] == '<' && word[1] == '<'))
+			return (ft_strdup(word + 2));
+		if (word[0] == '>' || word[0] == '<')
+			return (ft_strdup(word + 1));
 	}
 	return (NULL);
 }
@@ -180,6 +181,16 @@ int get_next_command(t_all *all, int i)
 			}
 			if (*args)
 				command->flag_command = get_command2((char *)(*args)->content);
+			else if (command->flag_command == not_found || 
+			command->redirect_type & NO_FILENAME)
+			{
+				all->parse_error = 1;
+				if (command->redirect_type & NO_FILENAME)
+				{
+					write(STDOUT_FILENO, SYN_ERR, 47);
+					write(STDOUT_FILENO, "newline\'\n", 9);
+				}
+			}
 			if (command->flag_command)
 				remove_first(args);
 			args_list_to_arr2(args, command);
@@ -205,6 +216,7 @@ int parser2(t_all *all)
 
 	i = 0;
 	all->commands = (t_command **)malloc(sizeof (t_command *));
+	all->parse_error = 0;
 	if (all->commands)
 	{
 		*all->commands = NULL;

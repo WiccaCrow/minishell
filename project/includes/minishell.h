@@ -12,6 +12,7 @@
 # define NONECOLOR "\x1B[0m"
 # define GOLD "\033[40;33m"
 # define COM_NOT_FOUND ": command not found\n"
+# define SYN_ERR "minishell: syntax error near unexpected token `"
 # define QUOTE 1
 # define DOUBLE_QUOTE 2
 # define SHIELD 4
@@ -54,7 +55,7 @@ typedef struct			s_all {
 	char				*pwd;
 	int					completion_code; // код возврата ошибки $? return заменила на completion
 	int					len_env_str;
-	int					parse_error;
+	char				parse_error;
 	t_command			**commands;
 }						t_all;
 

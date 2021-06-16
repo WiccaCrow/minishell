@@ -10,15 +10,13 @@ int check_line(t_all *all)
 		{
 			if (all->line[1] == ';')
 			{
-				write(STDOUT_FILENO, "minishell: syntax error near unexpected "
-									 "token `", 47);
+				write(STDOUT_FILENO, SYN_ERR, 47);
 				write(STDOUT_FILENO, ";;\'\n", 4);
 				return (0);
 			}
 			else
 			{
-				write(STDOUT_FILENO, "minishell: syntax error near unexpected "
-									 "token `", 47);
+				write(STDOUT_FILENO, SYN_ERR, 47);
 				write(STDOUT_FILENO, ";\'\n", 3);
 				return (0);
 			}
@@ -27,15 +25,13 @@ int check_line(t_all *all)
 		{
 			if (all->line[1] == '|')
 			{
-				write(STDOUT_FILENO, "minishell: syntax error near unexpected "
-									 "token `", 47);
+				write(STDOUT_FILENO, SYN_ERR, 47);
 				write(STDOUT_FILENO, "||\'\n", 4);
 				return (0);
 			}
 			else
 			{
-				write(STDOUT_FILENO, "minishell: syntax error near unexpected "
-									 "token `", 47);
+				write(STDOUT_FILENO, SYN_ERR, 47);
 				write(STDOUT_FILENO, "|\'\n", 3);
 				return (0);
 			}

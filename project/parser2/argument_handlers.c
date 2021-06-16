@@ -46,9 +46,13 @@ int clear_list2(t_list **args)
 	{
 		tmp2 = tmp;
 		tmp = tmp->next;
+//		free(tmp->content);
+//		tmp->content = NULL;
 		free(tmp2);
+		tmp2 = NULL;
 	}
 	free(args);
+	args = NULL;
 	return (0);
 }
 
