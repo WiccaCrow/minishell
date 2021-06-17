@@ -46,8 +46,8 @@ int		enter_handle(t_line *line)
 	if (line->main_line)
 		line->main_line = gnl_strjoin(line->main_line, "\n");
 	line->main_line = gnl_strjoin(line->main_line, line->curr_line);
-	if (line->main_line)
-	{
+//	if (line->main_line)
+//	{
 		free(line->curr_line);
 		line->curr_line = NULL;
 		if (check_end_of_input(line->main_line))
@@ -56,7 +56,7 @@ int		enter_handle(t_line *line)
 		{
 			line->pos = 0;
 			write(STDOUT_FILENO, "\n> ", 3);
-		}
+//		}
 	}
 	return (0);
 }

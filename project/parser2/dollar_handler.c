@@ -112,7 +112,7 @@ int	dollar_handler(t_all *all)
 	flag = 0;
 	while (all->line[i] && all->line[i] != ';')
 	{
-		if (all->line[i] == '\\' && !(flag & QUOTE))
+		if (all->line[i] == '\\' && !(flag))
 		{
 			flag = flag | SHIELD;
 			i++;
@@ -122,15 +122,17 @@ int	dollar_handler(t_all *all)
 			flag = flag ^ QUOTE;
 			i++;
 		}
-		if (all->line[i] == '$' && !flag)
+		else if (all->line[i] == '$' && !flag)
 		{
 			get_arg_from_env(i, all);
 			i = 0;
 		}
 		else
+		{
+			if ((flag & SHIELD) && all->line[i])
+				flag = flag & ~(SHIELD);
 			i++;
-		if ((flag & SHIELD) && all->line[i])
-			flag = flag & ~(SHIELD);
+		}
 	}
 	return(1);
 	
