@@ -9,6 +9,7 @@
 # define READ 4
 # define LIM_READ 8
 # define NO_FILENAME 16
+# define TMP_FILE ".tmp_file"
 
 int		get_next_arg(char *line, int i, char **tmp_line);
 int		skip_spaces(const char *line, int i);
