@@ -135,4 +135,6 @@ char		**path_env(t_all *all);
 int			find_file_in_dir(t_all *all, char *directory, char *command_name, char *tmp_com_name);
 char		*join_directory_and_command(char *directory, char *command_name);
 
+void	shlvl_increase(t_all *all);
+
 #endif

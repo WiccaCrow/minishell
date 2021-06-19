@@ -262,7 +262,7 @@ printf("fork_execve test 1\n");
 	pid = fork();
 	if (pid == 0)
 	{
-		shlvl_increase(all);
+		// shlvl_increase(all);
 		printf("|%s|\n", com_name);
 		ret = execve(com_name, all->args, all->env);
 		if (ret == -1)
