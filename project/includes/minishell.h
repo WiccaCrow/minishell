@@ -135,6 +135,10 @@ char		**path_env(t_all *all);
 int			find_file_in_dir(t_all *all, char *directory, char *command_name, char *tmp_com_name);
 char		*join_directory_and_command(char *directory, char *command_name);
 
-void	shlvl_increase(t_all *all);
+void	shlvl_set(t_all *all);
+void	env_shlvl_null_create(t_all *all, int i);
+void	env_shlvl_set_0or1(t_all *all, int index, int shlvl);
+void	env_shlvl_increase_1part(t_all *all, int index);
+void	env_shlvl_increase_2part(t_all *all, int index, int nb, char **env_new_shlvl);
 
 #endif

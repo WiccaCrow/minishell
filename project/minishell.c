@@ -131,7 +131,7 @@ void	start_all(t_all *all, char **env)
 	all->commands = NULL;
 	all->pwd = getcwd(NULL, 0);
 	init_env(all, env);
-	shlvl_increase(all);
+	shlvl_set(all);
 	all->history = get_history();
 	while (all->env[i] && ft_strncmp(all->env[i], "PWD=", 4))
 		++i;
