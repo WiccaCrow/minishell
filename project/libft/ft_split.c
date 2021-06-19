@@ -41,8 +41,13 @@ static size_t	ft_wrdlen(char *s, char c)
 static void	ft_freeresult(char **res, size_t count)
 {
 	while (count > 0)
-		free(res[count--]);
+	{
+		free(res[count]);
+		res[count] = NULL;
+		count--;
+	}
 	free(res);
+	res = NULL;
 }
 
 static void	ft_fillarr(char **result, char *str, size_t size, char c)

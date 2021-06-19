@@ -67,7 +67,9 @@ int remove_first(t_list **args)
 		{
 			*args = tmp->next;
 			free(tmp->content);
+			tmp->content = NULL;
 			free(tmp);
+			tmp = NULL;
 		}		
 	}
 	return (0);

@@ -43,12 +43,12 @@ void	subjoin_env(t_all *all, int i, int j)
 
 	i = count_lines(all, "export", i, j);
 	env_new = (char **)malloc((i + 1) * sizeof(char *));
-	env_new[i] = NULL;
 	if (!env_new)
 	{
 		completion_code_malloc_error(&(all->completion_code), NULL, "export with arguments");
 		return ;
 	}
+	env_new[i] = NULL;
 	export_args_to_new_env(all, j, env_new, &i);
 	if (all->completion_code == 0)
 	{

@@ -46,7 +46,10 @@ char	 *add_chr(char *str, char c)
 		new_str[i] = 0;
 	}
 	if (str && *str)
+	{
 		free(str);
+		str = NULL;
+	}
 	return (new_str);
 }
 

@@ -178,6 +178,7 @@ int get_next_command(t_all *all, int i)
 				if ((parse_word(curr_line, command, args) < 0))
 					all->parse_error = 1;
 				free(curr_line);
+				curr_line = NULL;
 			}
 			if (*args)
 				command->flag_command = get_command2((char *)(*args)->content);

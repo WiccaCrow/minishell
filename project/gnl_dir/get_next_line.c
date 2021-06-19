@@ -72,6 +72,7 @@ int	get_next_line(int fd, char **line)
 				return (1);
 		}
 		free(buff);
+		buff = NULL;
 		return (-1);
 	}
 	*line = gnl_strjoin(buff, "\0");

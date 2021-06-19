@@ -11,17 +11,16 @@
 void	all_args_free(t_all *all)
 {
 	int	i;
-
+write(1, "Befor all_args_free\n", 21);
 	i = 0;
 	while (all->args[i])
 	{
-		if (all->args[i] != NULL)
-		{
-			free(all->args[i]);
-			all->args[i] = NULL;
-		}
+printf("all->args[%d] = |%s|\n", i, all->args[i]);
+		free(all->args[i]);
+		all->args[i] = NULL;
 		++i;
 	}
+write(1, "After executor\n", 16);
 }
 
 /************************************

@@ -21,6 +21,9 @@
 # define PIPE 1
 # define SEMICOLON 2
 
+#include <sys/types.h>//DIR *opendir(const char *name);
+#include <dirent.h>//DIR *opendir(const char *name);
+
 enum e_command
 {
 	not_found,
@@ -133,6 +136,7 @@ int			split_name_directory(t_all *all, char **directory, char **com_name);
 int			fork_execve(t_all *all, char *com_name);
 char		**path_env(t_all *all);
 int			find_file_in_dir(t_all *all, char *directory, char *command_name, char *tmp_com_name);
+int			file_search(DIR *does_dir, char *com_name);
 char		*join_directory_and_command(char *directory, char *command_name);
 
 void	shlvl_set(t_all *all);

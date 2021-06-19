@@ -1,8 +1,5 @@
 #include "../../includes/minishell.h"//"minishell.h"
 
-#include <sys/types.h>//DIR *opendir(const char *name);
-#include <dirent.h>//DIR *opendir(const char *name);
-
 /************************************
  * 	1.1.1. check_command_sourse		*
  * **********************************
@@ -138,7 +135,14 @@ int	find_file(t_all *all, char *com_name)
 
 /************************************
  * 				fork_execve			*
- * **********************************||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+ * **********************************
+*/
+/* Description:
+ * 		A function runs an executable using functions fork() and execve().
+ * Return value:
+ * 		Integer 0. If the file was found and the 
+ * 		function launched it.
+ * 		Else return not zero (1 or compiletion code).
 */
 
 int		fork_execve(t_all *all, char *com_name)
@@ -146,13 +150,11 @@ int		fork_execve(t_all *all, char *com_name)
 	int		ret;
 	pid_t	pid;
 	int		rv;
-printf("fork_execve test 1\n");
+
 	ret = 2;
 	pid = fork();
 	if (pid == 0)
 	{
-		// shlvl_increase(all);
-		printf("|%s|\n", com_name);
 		ret = execve(com_name, all->args, all->env);
 		if (ret == -1)
 		{
@@ -161,68 +163,10 @@ printf("fork_execve test 1\n");
 	}
 	else if (pid < 0)
 	{
-		printf("pid %d\n", pid);
 		write(STDOUT_FILENO, "minishell: fork error. try again\n", 34);
 		all->completion_code = 1;
 		return (1);
 	}
-	// wait(&pid);
 	wait(NULL);
-// printf("\nfork_execve  |%s|%d|\n", com_name, WEXITSTATUS(rv));
 	return (!ret);
-}
-
-/************************************
- * 				 path_env			*
- * **********************************
-*/
-/* Description:
- * 		The function splits the PATH-variable string 
- * 		in env-array into a two-dimensional array of 
- * 		strings when each character ':' is encountered.
- * Return value:
- * 		Two-dimensional array of path-strings.
-*/
-
-char	**path_env(t_all *all)
-{
-	int		i;
-	char	*path_env_value;
-	char	**path_env;
-
-	i = get_my_env_index(all->env, "PATH", 4);
-	if (all->env[i] == NULL)
-		return (NULL);
-	path_env_value = ft_strchr(all->env[i], '=');
-	path_env = ft_split(++path_env_value, ':');
-	if (path_env == NULL)
-	{
-		all->completion_code = 1;
-		write(STDOUT_FILENO, "minishell: ", 12);
-		write(STDOUT_FILENO, all->args[0], ft_strlen(all->args[0]));
-		write(STDOUT_FILENO, ": malloc error. Try again.\n", 28);
-	}
-	return (path_env);
-}
-
-/************************************
- * 		join_directory_and_command	*
- * **********************************||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-*/
-
-char	*join_directory_and_command(char *directory, char *command_name)
-{
-	char	*tmp;
-
-	tmp = command_name;
-	command_name = ft_strjoin("/", command_name);
-	if (command_name)
-	{
-		free(tmp);
-		tmp = command_name;
-		command_name = ft_strjoin(directory, command_name);
-		if (command_name)
-			free(tmp);
-	}
-	return (command_name);
 }

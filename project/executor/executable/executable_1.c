@@ -1,8 +1,5 @@
 #include "../../includes/minishell.h"//"minishell.h"
 
-#include <sys/types.h>//DIR *opendir(const char *name);
-#include <dirent.h>//DIR *opendir(const char *name);
-
 /************************************
  * 			1. executable			*
  * **********************************
@@ -47,7 +44,6 @@ int	executable(t_all *all)
 	char	**path_from_env;
 	int		i;
 	int		path;
-	// char	*com_name;
 
 	all->completion_code = 0;
 	path = path_to_executable(all);
@@ -116,35 +112,47 @@ int	path_to_executable(t_all *all)
 }
 
 /************************************
- * 			1.3. find_file_in_dir		*
+ * 		1.3. find_file_in_dir		*
  * **********************************
 */
-/* Description:
- * 		
+/* Start variables value:
+ * 	int	find_file_in_dir(t_all *all, 
+ * 		char *directory, char *com_name, 
+ * 		char *tmp_com_name)
+ * 			directory. Name of directory to 
+ * 				find executable.
+ * 			com_name. Executable name without 
+ * 				path to executable.
+ * 			tmp_com_name. If the executable 
+ * 				file was without a path to it, 
+ * 				this pointer points to NULL. 
+ * 				Else it is a string with 
+ * 				executable with path to it.
+ * 	Description:
+ * 		The function searches for a file in the 
+ * 		specified directory. If the file is found, 
+ * 		an attempt is made to run the file. If 
+ * 		successful, the file is started, and the 
+ * 		function returns 0. If the file is not found 
+ * 		or is not running (for example, it is not an 
+ * 		executable file), the function returns 1.
  * Return value:
- * 		
+ * 		0 - executable run.
+ * 		1 - this executable file is not in the directory, 
+ * 			or this file is not executable.
+ *  Contains functions:
+ * 		file_search;
 */
 
 int	find_file_in_dir(t_all *all, char *directory, char *com_name, char *tmp_com_name)
 {
-	DIR 			*does_dir;
-	struct dirent	*entry;
-	int				cmp;
+	DIR	*does_dir;
+	int	cmp;
 
 	does_dir = opendir(directory);
 	if (!does_dir)
 		return (all->completion_code = 126);
-	entry = readdir(does_dir);
-	cmp = 1;
-			//найти файл
-    while (cmp && entry != NULL)
-	{
-		cmp = ft_strncmp(entry->d_name, com_name, ft_strlen(com_name));
-		if (!cmp && entry->d_name[ft_strlen(com_name)])
-			cmp = 1;			
-		if (cmp)
-			entry = readdir(does_dir);
-   	}
+	cmp = file_search(does_dir, com_name);
 	// попробовать файл открыть fork execve
 	if (!cmp)
 	{
@@ -163,4 +171,42 @@ int	find_file_in_dir(t_all *all, char *directory, char *com_name, char *tmp_com_
 	if (cmp && tmp_com_name)
 		return (1);
 	return (0);
+}
+
+/************************************
+ * 				 file_search		*
+ * **********************************
+*/
+/* Description:
+ * 		does_dir - pointer to directory stream.
+ * 			This is the value that was returned 
+ * 			by the opendir() function as a result 
+ * 			of opening the directory.
+ * 		com_name - name of file.
+ * 		The function searches for a file in an 
+ * 		open directory.
+ * Return value:
+ * 		0 - if the file was found.
+ * 		1 - if the file was not found.
+ * Contains functions:
+ * 		libft. ft_strlen;
+ * 		libft. ft_strncmp;
+*/
+
+int	file_search(DIR *does_dir, char *com_name)
+{
+	int	cmp;
+	struct dirent	*entry;
+
+	entry = readdir(does_dir);
+	cmp = 1;
+    while (cmp && entry != NULL)
+	{
+		cmp = ft_strncmp(entry->d_name, com_name, ft_strlen(com_name));
+		if (!cmp && entry->d_name[ft_strlen(com_name)])
+			cmp = 1;			
+		if (cmp)
+			entry = readdir(does_dir);
+   	}
+	return (cmp);
 }

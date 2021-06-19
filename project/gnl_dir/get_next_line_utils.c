@@ -35,7 +35,10 @@ char	*gnl_strjoin(char *s1, char *s2)
 		res[gnl_strlen(s1) + j] = 0;
 	}
 	if (s1)
+	{
 		free(s1);
+		s1=NULL;
+	}
 	return (res);
 }
 
@@ -58,7 +61,10 @@ char	*buff_trim(char *buff, size_t len)
 		result[i] = 0;
 	}
 	if (buff)
+	{
 		free(buff);
+		buff = NULL;
+	}
 	return (result);
 }
 
