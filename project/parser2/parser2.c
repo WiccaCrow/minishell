@@ -216,6 +216,8 @@ int parser2(t_all *all)
 	int			i;
 
 	i = 0;
+//	if (all->commands)
+//		free_commands(all->commands);
 	all->commands = (t_command **)malloc(sizeof (t_command *));
 	all->parse_error = 0;
 	if (all->commands)

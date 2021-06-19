@@ -107,7 +107,7 @@ int		add_to_history(char *line, char ***history)
 		if (history_line)
 			history_line = gnl_strjoin(history_line, "\n");
 		history_line = gnl_strjoin(history_line, line);
-		if (history_line && clean_history(*history))
+		if (history_line && free_char_array(*history))
 		{
 			*history = ft_split(history_line, '\n');
 			return (1);

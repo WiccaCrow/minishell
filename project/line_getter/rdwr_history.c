@@ -68,7 +68,7 @@ char 		*read_history(int fd)
  * на 1 символ, позоция курсора также сдвигается на 1 позицию вправо
 */
 
-int	clean_history(char **history)
+int	free_char_array(char **history)
 {
 	int i;
 
@@ -76,7 +76,10 @@ int	clean_history(char **history)
 	{
 		i = -1;
 		while (history[++i])
+		{
 			free(history[i]);
+			history[i] = NULL;
+		}
 		free(history);
 		history = NULL;
 		return (1);
@@ -105,7 +108,7 @@ int		write_history(char **history)
 			ret += (int)write(fd, "\n", 1);
 		}
 		close(fd);
-		clean_history(history);
+		free_char_array(history);
 	}
 	else
 		write(STDOUT_FILENO, "Create/open file error\n", 23);

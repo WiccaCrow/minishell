@@ -37,7 +37,7 @@ int 		key_right_handle(t_line *line);
 int 		key_left_handle(t_line *line);
 char 		*read_history(int fd);
 int		    write_history(char **history);
-int         clean_history(char **history);
+int         free_char_array(char **history);
 int         add_to_history(char *line, char ***history);
 int			history_len(char **history);
 

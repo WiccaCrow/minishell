@@ -10,7 +10,7 @@ LC_PATH		=	line_checker/
 LC_SRCS		=	line_checker.c
 PARSER2_PATH	=	parser2/
 PARSER2_SRCS	=	parser2.c get_command.c argument_handlers.c open_file.c get_command_utils.c \
-                    add_command.c crop_line.c dollar_handler.c
+                    add_command.c crop_line.c dollar_handler.c command_list_utils.c
 EXEC_PATH	=	executor/
 EXEC_SRCS	=	executor.c \
 				exec_echo.c exec_cd.c exec_pwd.c exec_env.c \
