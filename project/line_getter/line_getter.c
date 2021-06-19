@@ -89,15 +89,8 @@ char	*get_line(t_all *all)
 
 int	line_getter(t_all *all)
 {
-	char	*line;
-	
-	line = NULL;
-	line = get_line(all);
-	if (line)
-	{
-		all->line = line;
-		write(STDOUT_FILENO, "\n", 1);
-		return (1);
-	}
-	return(0);
+	all->line = get_line(all);
+	write(STDOUT_FILENO, "\n", 1);
+	return (1);
+
 }

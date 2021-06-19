@@ -112,8 +112,9 @@ int		add_to_history(char *line, char ***history)
 			*history = ft_split(history_line, '\n');
 			return (1);
 		}
+		return (0);
 	}
-	return (0);
+	return (1);
 }
 
 /**
