@@ -236,5 +236,7 @@ void	exit_clean(t_all *all, int code)
 		free(all->line);
 		all->line = NULL;
 	}
+	close_fd_output_input(all);
+	all_args_free(all);
 	exit(all->completion_code = code);
 }

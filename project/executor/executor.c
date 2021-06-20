@@ -88,12 +88,30 @@ int executor(t_all *all)
 		exec_unset(all);
 	else
 		write(1, "other command\n", 15);
-	if ((*(all->commands))->output_fd != 1)
-		close((*(all->commands))->output_fd);
-	if ((*(all->commands))->input_fd != 0)
-		close((*(all->commands))->input_fd);
 	all_args_free(all);
 	return (1);
+}
+
+/************************************
+ * 		close_fd_output_input		*
+ * **********************************
+*/
+/* Description:
+ * close fd and set it to 1 and 0.
+*/
+
+void	close_fd_output_input(t_all *all)
+{
+	if ((*(all->commands))->output_fd != 1)
+	{
+		close((*(all->commands))->output_fd);
+		(*(all->commands))->output_fd = 1;
+	}
+	if ((*(all->commands))->input_fd != 0)
+	{
+		close((*(all->commands))->input_fd);
+		(*(all->commands))->input_fd = 0;
+	}
 }
 
 //echo m$PWD$USER$

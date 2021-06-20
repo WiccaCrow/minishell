@@ -128,6 +128,7 @@ void			all_args_free(t_all *all);
 void			exec_exit(t_all *all);
 int				args_is_digit(char *args);
 int				exit_code(t_all *all);
+void			close_fd_output_input(t_all *all);
 
 int			executable(t_all *all);
 int			check_command_sourse(t_all *all, char *com_name);
