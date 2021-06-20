@@ -69,7 +69,7 @@ void	change_pwd(t_all *all)
 		all->env[i] = ft_strjoin("PWD=", all->pwd);
 		if (all->env[i] == NULL)
 		{
-			write(STDOUT_FILENO, "cd: malloc error, can't change PWD in env\n", 43);
+			write((*(all->commands))->output_fd, "cd: malloc error, can't change PWD in env\n", 43);
 			all->env[i] = pwd_env;
 		}
 		else
@@ -100,7 +100,7 @@ void	change_oldpwd(t_all *all)
 		all->env[j] = ft_strjoin("OLDPWD=", all->pwd);
 		if (all->env[j] == NULL)
 		{
-			write(STDOUT_FILENO, "cd: malloc error, can't change OLDPWD in env\n", 46);
+			write((*(all->commands))->output_fd, "cd: malloc error, can't change OLDPWD in env\n", 46);
 			all->env[j] = oldpwd_env;
 		}
 		else

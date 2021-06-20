@@ -11,7 +11,7 @@
  * 		libft. ft_strchr;
 */
 
-void	print_export(char **sort_env_index)
+void	print_export(t_all *all, char **sort_env_index)
 {
 	int		i;
 	char	*len_equal;
@@ -19,19 +19,19 @@ void	print_export(char **sort_env_index)
 	i = -1;
 	while (sort_env_index[++i])
 	{
-		write(STDOUT_FILENO, "declare -x ", ft_strlen("declare -x "));
+		write((*(all->commands))->output_fd, "declare -x ", ft_strlen("declare -x "));
 		len_equal = ft_strchr(sort_env_index[i], '=');
 		if (len_equal++)
 		{
-			write(STDOUT_FILENO, sort_env_index[i], len_equal - sort_env_index[i]);
-			write(STDOUT_FILENO, "\"", 1);
-			write(STDOUT_FILENO, len_equal, ft_strlen(len_equal));
-			write(STDOUT_FILENO, "\"\n", 2);
+			write((*(all->commands))->output_fd, sort_env_index[i], len_equal - sort_env_index[i]);
+			write((*(all->commands))->output_fd, "\"", 1);
+			write((*(all->commands))->output_fd, len_equal, ft_strlen(len_equal));
+			write((*(all->commands))->output_fd, "\"\n", 2);
 		}
 		else
 		{
-			write(STDOUT_FILENO, sort_env_index[i], ft_strlen(sort_env_index[i]));
-			write(STDOUT_FILENO, "\n", 1);
+			write((*(all->commands))->output_fd, sort_env_index[i], ft_strlen(sort_env_index[i]));
+			write((*(all->commands))->output_fd, "\n", 1);
 		}
 	}
 }

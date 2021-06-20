@@ -67,7 +67,7 @@ void	exec_unset_find_env_str(t_all *all, char *oper_name)
 	{
 		if (!check_valid_args(all, oper_name, j, 0))
 			continue;
-		index_env_str = find_env_str(all, oper_name, j);
+		index_env_str = find_env_str(all, oper_name, j, all->env);
 		if (all->env[index_env_str] != NULL)
 			all->env[index_env_str][0] = 0;
 	}

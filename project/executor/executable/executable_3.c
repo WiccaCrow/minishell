@@ -26,9 +26,9 @@ char	**path_env(t_all *all)
 	if (path_env == NULL)
 	{
 		all->completion_code = 1;
-		write(STDOUT_FILENO, "minishell: ", 12);
-		write(STDOUT_FILENO, all->args[0], ft_strlen(all->args[0]));
-		write(STDOUT_FILENO, ": malloc error. Try again.\n", 28);
+		write(STDERR_FILENO, "minishell: ", 12);
+		write(STDERR_FILENO, all->args[0], ft_strlen(all->args[0]));
+		write(STDERR_FILENO, ": malloc error. Try again.\n", 28);
 	}
 	return (path_env);
 }
@@ -43,19 +43,17 @@ char	**path_env(t_all *all)
  * Return value:
  * 		New strings.
 */
+
 char	*join_directory_and_command(char *directory, char *command_name)
 {
 	char	*tmp;
 
-	tmp = command_name;
-	command_name = ft_strjoin("/", command_name);
-	if (command_name)
+	tmp = ft_strjoin("/", command_name);
+	if (tmp)
 	{
+		command_name = ft_strjoin(directory, tmp);
 		free(tmp);
-		tmp = command_name;
-		command_name = ft_strjoin(directory, command_name);
-		if (command_name)
-			free(tmp);
+		tmp = NULL;
 	}
 	return (command_name);
 }

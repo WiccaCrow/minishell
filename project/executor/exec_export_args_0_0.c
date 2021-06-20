@@ -88,7 +88,7 @@ void	sort_env(t_all *all, int i, int k, int j)
 		sort_env_index[--i] = all->env[j];
 		sort[j] = 0;
 	}
-	print_export(sort_env_index);
+	print_export(all, sort_env_index);
 	free_sort_index(sort_env_index, sort);
 }
 

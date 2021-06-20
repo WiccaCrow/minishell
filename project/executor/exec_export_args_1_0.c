@@ -40,25 +40,36 @@
 void	subjoin_env(t_all *all, int i, int j)
 {
 	char 	**env_new;
+	int		count;
 
-	i = count_lines(all, "export", i, j);
-	env_new = (char **)malloc((i + 1) * sizeof(char *));
+	i = count_lines(all, "export", i, j);// подсчет количества строк в новом массиве
+	env_new = (char **)malloc((i + 1) * sizeof(char *));// создание нового массива
 	if (!env_new)
 	{
 		completion_code_malloc_error(&(all->completion_code), NULL, "export with arguments");
 		return ;
 	}
-	env_new[i] = NULL;
-	export_args_to_new_env(all, j, env_new, &i);
+	env_new[i] = NULL;// зануляю окончание нового массива
+	count = -1;
+	while (all->env[++count])// заполняю новый массив строками из старого массива
+		env_new[count] = all->env[count];
+	env_new[count] = NULL;
+	export_args_to_new_env(all, j, env_new);// заполняю новый массив аргументами
 	if (all->completion_code == 0)
 	{
-		while (--i >= 0)
-			env_new[i] = all->env[i];
 		free(all->env);
 		all->env = env_new;
 	}
 	else
-		free(env_new);
+	{
+		if (env_new)
+		{
+			i = 0;
+			while (env_new[i])
+				free(env_new[i++]);
+			free(env_new);
+		}
+	}
 }
 
 /************************************
@@ -90,7 +101,7 @@ void	subjoin_env(t_all *all, int i, int j)
  * 		subsequent arguments.
  * 		If argument is repeat among next arguments go to 
  * 		next argument.
- * 	1.3. index = find_env_str(all, oper_name, j);
+ * 	1.3. index = find_env_str(all, oper_name, j, env);
  * 		find the env index of the string or null if env array
  * 		don't contain matching string.
  * 	1.4. if (!ft_strncmp(oper_name, "export", ft_strlen(oper_name)))
@@ -136,7 +147,7 @@ int	count_lines(t_all *all, char *oper_name, int nb_env_lines, int j)
 		if (check_double_args(&(all->args[j]), 1))
 			continue;
 printf("args[j] = %s\n", all->args[j]);
-		index = find_env_str(all, oper_name, j);
+		index = find_env_str(all, oper_name, j, all->env);
 		if (!ft_strncmp(oper_name, "export", ft_strlen(oper_name)))
 		{
 			if (all->env[index] == NULL)
@@ -157,7 +168,7 @@ printf("nb_env_lines = %d\n", nb_env_lines);
  * **********************************
 */
 /* Start variables value:
- * 		export_args_to_new_env(all, j, env_new, &i);
+ * 		export_args_to_new_env(all, j, env_new);
  * Description:
  * 			Add new variable to my env array or
  * 			overwrites existing env variable with new 
@@ -184,35 +195,28 @@ printf("nb_env_lines = %d\n", nb_env_lines);
  * 		fibft. ft_strchr;
 */
 
-void	export_args_to_new_env(t_all *all, int j, char **env_new, int *i)
+void	export_args_to_new_env(t_all *all, int j, char **env_new)
 {
-	int		index;
 	int		str_new_change;
+	int		i_env_old;
+	int		i_env_new;
 
+	i_env_old = count_env_lines(all);
 	while (all->args[++j] && all->completion_code == 0)
 	{
 		if (!check_valid_args(all, "export", j, 0))
 			continue;
-		str_new_change = check_double_args(&(all->args[j]), 0);
-		if (str_new_change)
-			continue;
-		index = find_env_str(all, "export", j);
-		if (all->env[index] == NULL && str_new_change == 1)
+		if (check_double_args(&(all->args[j]), 0))
+			continue;// проверяю на последующее повторение аргумента с = без + (возврат 1)
+		str_new_change = check_double_args(&(all->args[j]), 1);// проверяю на последующее повторение аргумента с += (возврат 2) или без значения (возврат 3)
+		i_env_new = find_env_str(all, "export", j, env_new);// 1) проверяю, есть ли уже такая переменная в новом массиве
+		if (env_new[i_env_new])// да - дополняю ее
 		{
-			if (all->args[j][all->len_env_str--] == '+')
-			{
-				while (all->args[j][++all->len_env_str])
-					all->args[j][all->len_env_str] = all->args[j][all->len_env_str + 1];
-			}
-			env_new[--(*i)] = ft_strdup(all->args[j]);
-			if (env_new[*i] == NULL)
-				completion_code_malloc_error(&(all->completion_code), NULL, "export with arguments");
+			if (ft_strchr(all->args[j], '=') != NULL)//если встретилось =
+				change_env_str(all, j, i_env_new, env_new);
 		}
-		else
-		{
-			if (ft_strchr(all->args[j], '=') != NULL)
-				change_env_str(all, j, index);
-		}
+		else// нет - создаю новую переменную
+			create_env_str(all, j, env_new, &i_env_old);
 	}
 }
 
@@ -238,6 +242,9 @@ int	check_valid_args(t_all *all, char *oper_name, int j, int flag_print)
 	int		i;
 
 	i = 0;
+	if ((all->args[j][i] == '+' && all->args[j][i + 1] == '=') ||
+		all->args[j][i] == '=')
+		return (print_not_valid(all, all->args[j], oper_name, flag_print));
 	while (all->args[j][i] != '\0')
 	{
 		if ((all->args[j][i] == '=' && !ft_strncmp(oper_name, "export", 6)) ||

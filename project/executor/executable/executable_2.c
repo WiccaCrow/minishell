@@ -22,14 +22,14 @@ int	check_command_sourse(t_all *all, char *com_name)
 	i = 0;
 	if (com_name[0] == '.' && com_name[1] == '\0')
 	{
-		write(STDOUT_FILENO, "minishell: This command is missing from the subject.\n", 54);
-		write(STDOUT_FILENO, "In the shell, . is a builtin command ", 38);
-		write(STDOUT_FILENO, "in its own right, an alias for 'source',", 41);
-		write(STDOUT_FILENO, "which is used to read in a shell script ", 41);
-		write(STDOUT_FILENO, "and execute its commands in the current ", 41);
-		write(STDOUT_FILENO, "shell rather than spawning a subshell, t", 41);
-		write(STDOUT_FILENO, "ypically used for scripts that set envir", 41);
-		write(STDOUT_FILENO, "onment variables that you want to use later.\n", 46);
+		write(STDERR_FILENO, "minishell: This command is missing from the subject.\n", 54);
+		write(STDERR_FILENO, "In the shell, . is a builtin command ", 38);
+		write(STDERR_FILENO, "in its own right, an alias for 'source',", 41);
+		write(STDERR_FILENO, "which is used to read in a shell script ", 41);
+		write(STDERR_FILENO, "and execute its commands in the current ", 41);
+		write(STDERR_FILENO, "shell rather than spawning a subshell, t", 41);
+		write(STDERR_FILENO, "ypically used for scripts that set envir", 41);
+		write(STDERR_FILENO, "onment variables that you want to use later.\n", 46);
 		return (all->completion_code = 1);
 	}
 	if (com_name[0] == '.' && com_name[1] == '.' && com_name[2] == '\0')
@@ -54,24 +54,29 @@ int	check_command_sourse(t_all *all, char *com_name)
 
 int	executable_error_print(int	*code_to_on, char *com_name, char *error_message, int error_code)
 {
-	write(STDOUT_FILENO, "minishell: ", 12);
-	write(STDOUT_FILENO, com_name, ft_strlen(com_name));
-	write(STDOUT_FILENO, error_message, ft_strlen(error_message));
+	write(STDERR_FILENO, "minishell: ", 12);
+	write(STDERR_FILENO, com_name, ft_strlen(com_name));
+	write(STDERR_FILENO, error_message, ft_strlen(error_message));
 	*code_to_on = error_code;
 	return (1);
 }
 
 /************************************
- * 	1.1.2. split_name_directory	*
+ * 	1.1.2. split_name_directory		*
  * **********************************
 */
 /* Description:
- * 		Set value error_code to *code_to_on.
- * 		Print error message error_message for 
- * 		input string com_name (command, directory,
- * 		executable, etc.).
+ * 		The function divides the PPPP into two parts. 
+ * 		The first part is written to the 'directory' 
+ * 		line and contains the path to the executable 
+ * 		file. The second line is written to the 
+ * 		'com_name' line and contains the name of the 
+ * 		executable file.
  * Return value:
- * 		Integer 1.
+ * 		Integer 1. If com_name contains at least one 
+ * 			character '/'.
+ * 		Integer 0. If com_name not contains at least 
+ * 			character '/'.
 */
 
 int	split_name_directory(t_all *all, char **directory, char **com_name)
@@ -163,7 +168,7 @@ int		fork_execve(t_all *all, char *com_name)
 	}
 	else if (pid < 0)
 	{
-		write(STDOUT_FILENO, "minishell: fork error. try again\n", 34);
+		write(STDERR_FILENO, "minishell: fork error. try again\n", 34);
 		all->completion_code = 1;
 		return (1);
 	}

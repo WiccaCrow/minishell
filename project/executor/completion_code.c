@@ -16,11 +16,11 @@
  * 			that called malloc.
 */
 
-void completion_code_malloc_error(int	*code_to_on, char *array_null, char *open_name)
+void completion_code_malloc_error(int *code_to_on, char *array_null, char *open_name)
 {
 	if (array_null)
 		return ;
 	*code_to_on = 1;
-	write(STDOUT_FILENO, open_name, ft_strlen(open_name));
-	write(STDOUT_FILENO, ": malloc error. Try again.\n", 28);
+	write(STDERR_FILENO, open_name, ft_strlen(open_name));
+	write(STDERR_FILENO, ": malloc error. Try again.\n", 28);
 }

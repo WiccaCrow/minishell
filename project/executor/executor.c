@@ -11,16 +11,14 @@
 void	all_args_free(t_all *all)
 {
 	int	i;
-write(1, "Befor all_args_free\n", 21);
+
 	i = 0;
 	while (all->args[i])
 	{
-printf("all->args[%d] = |%s|\n", i, all->args[i]);
 		free(all->args[i]);
 		all->args[i] = NULL;
 		++i;
 	}
-write(1, "After executor\n", 16);
 }
 
 /************************************
@@ -40,9 +38,9 @@ void command_not_found(t_all *all)
 	all->completion_code = 0;
 	if (executable(all) == 0)
 		return ;
-	write(1, "minishell: ", 12);
-	write(1, all->args[0], ft_strlen(all->args[0]));
-	write(STDOUT_FILENO, COM_NOT_FOUND, ft_strlen(COM_NOT_FOUND));
+	write((*(all->commands))->output_fd, "minishell: ", 12);
+	write((*(all->commands))->output_fd, all->args[0], ft_strlen(all->args[0]));
+	write((*(all->commands))->output_fd, COM_NOT_FOUND, ft_strlen(COM_NOT_FOUND));
 	all->completion_code = 127;
 }
 
@@ -72,24 +70,28 @@ void command_not_found(t_all *all)
 
 int executor(t_all *all)
 {
-	if (all->flag_command == not_found)
+	if ((*(all->commands))->flag_command == not_found)
 		command_not_found(all);
-	else if (all->flag_command == exit_shell)
+	else if ((*(all->commands))->flag_command == exit_shell)
 		exec_exit(all);
-	else if (all->flag_command == echo)
+	else if ((*(all->commands))->flag_command == echo)
 		exec_echo(all);
-	else if (all->flag_command == cd)
+	else if ((*(all->commands))->flag_command == cd)
 		exec_cd(all);
-	else if (all->flag_command == pwd)
+	else if ((*(all->commands))->flag_command == pwd)
 		exec_pwd(all);
-	else if (all->flag_command == env)
+	else if ((*(all->commands))->flag_command == env)
 		exec_env(all);
-	else if (all->flag_command == export)
+	else if ((*(all->commands))->flag_command == export)
 		exec_export(all);
-	else if (all->flag_command == unset)
+	else if ((*(all->commands))->flag_command == unset)
 		exec_unset(all);
 	else
 		write(1, "other command\n", 15);
+	if ((*(all->commands))->output_fd != 1)
+		close((*(all->commands))->output_fd);
+	if ((*(all->commands))->input_fd != 0)
+		close((*(all->commands))->input_fd);
 	all_args_free(all);
 	return (1);
 }

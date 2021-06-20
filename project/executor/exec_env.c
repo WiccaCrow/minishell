@@ -20,8 +20,8 @@ void	exec_env(t_all *all)
 	all->completion_code = 0;
 	if (all->args[0])
 	{
-		write(STDOUT_FILENO, "env: must be without any ", 26);
-		write(STDOUT_FILENO, "options and any arguments\n", 27);
+		write((*(all->commands))->output_fd, "env: must be without any ", 26);
+		write((*(all->commands))->output_fd, "options and any arguments\n", 27);
 		all->completion_code = 127;
 	}
 	else
@@ -29,8 +29,8 @@ void	exec_env(t_all *all)
 		{
 			if (ft_strchr(all->env[i], '='))
 			{
-				write(STDOUT_FILENO, all->env[i], ft_strlen(all->env[i]));
-				write(STDOUT_FILENO, "\n", 1);
+				write((*(all->commands))->output_fd, all->env[i], ft_strlen(all->env[i]));
+				write((*(all->commands))->output_fd, "\n", 1);
 			}
 		}
 }

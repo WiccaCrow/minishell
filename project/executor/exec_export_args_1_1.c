@@ -20,11 +20,11 @@ int	print_not_valid(t_all *all, char *args_name, char *operation_name, int flag_
 {
 	if (flag_print)
 	{
-		write(STDOUT_FILENO, "minishell: ", 12);
-		write(STDOUT_FILENO, operation_name, ft_strlen(operation_name));
-		write(STDOUT_FILENO, ": `", 4);
-		write(STDOUT_FILENO, args_name, ft_strlen(args_name));
-		write(STDOUT_FILENO, "': not a valid identifier\n", 27);
+		write((*(all->commands))->output_fd, "minishell: ", 12);
+		write((*(all->commands))->output_fd, operation_name, ft_strlen(operation_name));
+		write((*(all->commands))->output_fd, ": `", 4);
+		write((*(all->commands))->output_fd, args_name, ft_strlen(args_name));
+		write((*(all->commands))->output_fd, "': not a valid identifier\n", 27);
 	}
 	all->completion_code = 1;
 	return (0);
@@ -43,28 +43,29 @@ int	print_not_valid(t_all *all, char *args_name, char *operation_name, int flag_
  * 		(all->args[j]).
 */
 
-void	change_env_str(t_all *all, int j, int index)
+void	change_env_str(t_all *all, int j, int index, char **env)
 {
 	char	*tmp;
 
-	tmp = all->env[index];
+	tmp = env[index];
 	if (all->args[j][all->len_env_str] == '+')
 	{
-		if (all->env[index][all->len_env_str] == '=')
-			all->env[index] = ft_strjoin(all->env[index], &all->args[j][all->len_env_str + 2]);
+		if (env[index][all->len_env_str] == '=')
+			env[index] = ft_strjoin(env[index], &all->args[j][all->len_env_str + 2]);
 		else
-			all->env[index] = ft_strjoin(all->env[index], &all->args[j][all->len_env_str + 1]);
+			env[index] = ft_strjoin(env[index], &all->args[j][all->len_env_str + 1]);
 	}
 	else
-		all->env[index] = ft_strdup(all->args[j]);
-	completion_code_malloc_error(&all->completion_code, all->env[index], "export with arguments");
+		env[index] = ft_strdup(all->args[j]);
+	completion_code_malloc_error(&all->completion_code, env[index], "export with arguments");
 	if (all->completion_code == 0)
 	{
-		free(tmp);
+		if (tmp)
+			free(tmp);
 		tmp = NULL;
 	}
 	else
-		all->env[index] = tmp;
+		env[index] = tmp;
 }
 
 /************************************
@@ -72,7 +73,7 @@ void	change_env_str(t_all *all, int j, int index)
  * **********************************
 */
 /* Start variables value:
- * 		find_env_str(all, oper_name, j);
+ * 		find_env_str(all, oper_name, j, env);
  * 			j is number of argument.
  * Variables description, code comments:
  *	1.	if (!ft_strncmp(oper_name, "unset", 5))
@@ -114,7 +115,7 @@ void	change_env_str(t_all *all, int j, int index)
  * 		fibft. ft_strchr;
 */
 
-int	find_env_str(t_all *all, char *oper_name, int j)
+int	find_env_str(t_all *all, char *oper_name, int j, char **env)
 {
 	size_t	len_env_str;
 	int		index;
@@ -132,7 +133,7 @@ int	find_env_str(t_all *all, char *oper_name, int j)
 			--len_env_str;
 	}
 	all->len_env_str = len_env_str;
-	index = get_my_env_index(all->env, all->args[j], len_env_str);
+	index = get_my_env_index(env, all->args[j], len_env_str);
 	return (index);
 }
 
@@ -177,12 +178,44 @@ int	find_next_double_arg(char **args, int find_plus, int nb_args, int i)
 		if (!ft_strncmp(args[0], args[nb_args], i))
 		{
 			if (args[nb_args][i] == '=')
-				return (1);
+				return (1);// если среди последующих аргументов есть =
 			else if (find_plus && (args[nb_args][i] == '+' && args[nb_args][i + 1] == '='))
-				return (2);
+				return (2);// если среди последующих аргументов есть +=
 			else if (find_plus && args[nb_args][i] == '\0')
-				return (3);
+				return (3);// если среди последующих аргументов есть аргумент без значения и без =
 		}
 	}
-	return (0);
+	return (0);// если аргумент больше не повторяется
+}
+
+/************************************
+ * 			create_env_str			*
+ * **********************************
+*/
+/* Description:
+ * 		The function create a new string.
+ * 		If in argument after variable followed the '+' 
+ * 		'=' sequence, the new line will consist of the 
+ * 		variable name, the '=' symbol and the variable 
+ * 		value that followed the '+' '=' sequence.
+ * Contains functions:
+ * 		completion_code_malloc_error;
+ * 		fibft. ft_strdup;
+ * 		fibft. ft_strchr;
+*/
+
+void	create_env_str(t_all *all, int j, char **env, int *i)
+{
+	if (all->args[j][all->len_env_str] == '+')
+	{
+		while (all->args[j][all->len_env_str])// если я встретила +=, смещаю все после + на 1 символ влево
+		{
+			all->args[j][all->len_env_str] = all->args[j][all->len_env_str + 1];
+			++all->len_env_str;
+		}
+	}
+	env[*i] = ft_strdup(all->args[j]);
+	if (env[*i] == NULL)
+		completion_code_malloc_error(&(all->completion_code), NULL, "export with arguments");
+	env[++(*i)] = NULL;
 }
