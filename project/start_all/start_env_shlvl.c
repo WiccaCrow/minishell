@@ -58,9 +58,9 @@ void	env_shlvl_increase_2part(t_all *all, int index, int nb, char **env_new_shlv
 		*env_new_shlvl = ft_strdup("SHLVL=");
 	if (nb > 1000)
 	{
-		write(STDOUT_FILENO, "minishell: warning: shell level (", 34);
-		ft_putnbr_fd(nb, STDOUT_FILENO);
-		write(STDOUT_FILENO, ") too high, resetting to 1\n", 28);
+		write(STDERR_FILENO, "minishell: warning: shell level (", 34);
+		ft_putnbr_fd(nb, STDERR_FILENO);
+		write(STDERR_FILENO, ") too high, resetting to 1\n", 28);
 		*env_new_shlvl = ft_strdup("SHLVL=1");
 	}
 	if (*env_new_shlvl)
@@ -69,7 +69,7 @@ void	env_shlvl_increase_2part(t_all *all, int index, int nb, char **env_new_shlv
 		all->env[index] = *env_new_shlvl;
 	}
 	else
-		write(STDOUT_FILENO, "Executable SHLVL: malloc error. Don't create new SHLVL\n", 56);
+		write(STDERR_FILENO, "Executable SHLVL: malloc error. Don't create new SHLVL\n", 56);
 }
 
 /************************************
@@ -94,7 +94,7 @@ void	env_shlvl_set_0or1(t_all *all, int index, int shlvl)
 		shlvl_new = ft_strdup("SHLVL=0");
 	if (shlvl_new == NULL)
 	{
-		write(STDOUT_FILENO, "Executable SHLVL: malloc error. Don't create new SHLVL\n", 56);
+		write(STDERR_FILENO, "Executable SHLVL: malloc error. Don't create new SHLVL\n", 56);
 		return ;
 	}
 	free(all->env[index]);
@@ -126,7 +126,7 @@ void	env_shlvl_null_create(t_all *all, int i)
 		env_new[i] = ft_strdup("SHLVL=1");
 		if (env_new[i] == NULL)
 		{
-			write(STDOUT_FILENO, "Executable SHLVL: malloc error. Don't create new SHLVL\n", 56);
+			write(STDERR_FILENO, "Executable SHLVL: malloc error. Don't create new SHLVL\n", 56);
 			free(env_new);
 		}
 		else
@@ -138,7 +138,7 @@ void	env_shlvl_null_create(t_all *all, int i)
 		}
 	}
 	else
-		write(STDOUT_FILENO, "Executable SHLVL: malloc error. Don't create new SHLVL\n", 56);
+		write(STDERR_FILENO, "Executable SHLVL: malloc error. Don't create new SHLVL\n", 56);
 }
 
 /************************************
