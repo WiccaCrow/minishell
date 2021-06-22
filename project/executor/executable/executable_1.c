@@ -18,35 +18,33 @@
  * 		1. pointer to struct t_all all with variables:
  * 			all->completion_code;
  * 			all->env. Env-variables array (for PATH);
- * 			all->line. Input line with executable.
+ * 			all->args. Input line to check and run if it is executable.
  * 		2. function variables:
  * 			path_from_env. Path for the executable file.
  * 			i. Iterator for path.
+ * 			path.
  * 			path. Flag. Can be 1 or 0.
  * 				path = path_to_executable(all). If 0 - 
  * 					the file is running.
- * 					if 1 and all->completion_code not zero,
- * 						it was not command.
- * 				path = find_file_in_dir(); Seach file in 
- * 					path from env-variable PATH. If 0 - 
- * 					the file is running. if P is not equal 
- * 					to 0, then the entered line is neither 
- * 					a command nor an executable file.
+ * 					if path not 0 and all->completion_code not zero,
+ * 						it was not file and not command.
  * 			com_name. Command name or executable name.
  * Contains functions:
- * 		1.1. path_to_executable;
+ * 		1.1. executable_check_and_run;
  * 		1.2. path_env;
- * 		1.3. find_file_in_dir;
+ * 		1.3. join_directory_and_command;
+ * 		1.4. completion_code_malloc_error;
 */
 
 int	executable(t_all *all)
 {
 	char	**path_from_env;
+	char    *com_name;
 	int		i;
 	int		path;
 
 	all->completion_code = 0;
-	path = path_to_executable(all);
+	path = executable_check_and_run(all, all->args[0], 1);
 	if (path && all->completion_code == 127)
 		return (1);
 	if (!path || (path && all->completion_code))
@@ -54,15 +52,19 @@ int	executable(t_all *all)
 	path_from_env = path_env(all);
 	if (path_from_env == NULL)
 		return (1);
-	i = 0;
-	path = 0;
-	while (path_from_env[i] && path == 0)
-		path = find_file_in_dir(all, path_from_env[i++], all->args[0], NULL);
-	return (!path);
+	i = -1;
+	path = -1;
+	while (path_from_env[++i] && path == -1 && 0 == all->completion_code)
+	{
+        com_name = join_directory_and_command(path_from_env[i], all->args[0]);
+        completion_code_malloc_error(&all->completion_code, com_name, all->args[0]);
+        path = executable_check_and_run(all, com_name, 0);
+    }
+	return (path == -1);
 }
 
 /************************************
- * 		1.1. path_to_executable		*
+ * 	1.1. executable_check_and_run	*
  * **********************************
 */
 /* Description:
@@ -80,133 +82,131 @@ int	executable(t_all *all)
  * 		If the path is specified, it was possible to follow 
  * 		it, the function tries to start the executable file.
  * Return value:
- * 		1 if executable was find and running.
- * 		In other cases 0.
+ * 		0 if executable was find and running.
+ * 		-1 if file was find and not executable.
+ * 		In other cases 1.
  * Contains functions:
  * 		1.1.1. check_command_sourse;
  * 		1.1.2. executable_error_print;
- * 		1.1.3. find_file;
- * 		libft. ft_strlen;
 */
 
-int	path_to_executable(t_all *all)
+int	executable_check_and_run(t_all *all, char *filename_with_path, int have_path)
 {
-	DIR 	*does_dir;
+    struct stat buf;
 
-	if (check_command_sourse(all, all->args[0]))
+	if (check_command_sourse(all, filename_with_path))
 		return (1);
-	does_dir = opendir(all->args[0]);
-	if (does_dir)
-	{
-		closedir(does_dir);
-		return (executable_error_print(&all->completion_code, all->args[0], ": is a directory\n", 126));
-	}
-	else
-	{
-		if (find_file(all, all->args[0]))
-			return (executable_error_print(&all->completion_code, all->args[0], ": No such file or directory\n", 126));
-		else
-			return (0);
-	}
+    if (stat(filename_with_path, &buf) == 0 && buf.st_mode&S_IFDIR)
+        return (executable_error_print(&all->completion_code, filename_with_path, ": is a directory\n", 126));
+    else if (stat(filename_with_path, &buf) == 0 && buf.st_mode & S_IXUSR)
+        return (fork_execve(all, filename_with_path));
+    else if (stat(filename_with_path, &buf) == 0)
+        return (executable_error_print(&all->completion_code, filename_with_path, ": Permission denied\n", 126));
+    else if (stat(filename_with_path, &buf) == -1)
+    {
+        if (have_path)
+            return (executable_error_print(&all->completion_code, filename_with_path, ": No such file or directory\n", 126));
+        else
+            return (-1);
+    }
 	return (1);
 }
 
 /************************************
- * 		1.3. find_file_in_dir		*
- * **********************************
-*/
-/* Start variables value:
- * 	int	find_file_in_dir(t_all *all, 
- * 		char *directory, char *com_name, 
- * 		char *tmp_com_name)
- * 			directory. Name of directory to 
- * 				find executable.
- * 			com_name. Executable name without 
- * 				path to executable.
- * 			tmp_com_name. If the executable 
- * 				file was without a path to it, 
- * 				this pointer points to NULL. 
- * 				Else it is a string with 
- * 				executable with path to it.
- * 	Description:
- * 		The function searches for a file in the 
- * 		specified directory. If the file is found, 
- * 		an attempt is made to run the file. If 
- * 		successful, the file is started, and the 
- * 		function returns 0. If the file is not found 
- * 		or is not running (for example, it is not an 
- * 		executable file), the function returns 1.
- * Return value:
- * 		0 - executable run.
- * 		1 - this executable file is not in the directory, 
- * 			or this file is not executable.
- *  Contains functions:
- * 		file_search;
-*/
-
-int	find_file_in_dir(t_all *all, char *directory, char *com_name, char *tmp_com_name)
-{
-	DIR	*does_dir;
-	int	cmp;
-
-	does_dir = opendir(directory);
-	if (!does_dir)
-		return (all->completion_code = 126);
-	cmp = file_search(does_dir, com_name);
-	// попробовать файл открыть fork execve
-	if (!cmp)
-	{
-		if (!tmp_com_name)
-		{
-			com_name = join_directory_and_command(directory, com_name);
-			completion_code_malloc_error(&all->completion_code, com_name, all->args[0]);
-			fork_execve(all, com_name);
-		}
-		else
-			fork_execve(all, all->args[0]);
-	}
-	closedir(does_dir);
-	if (!cmp && !tmp_com_name)
-		return (1);
-	if (cmp && tmp_com_name)
-		return (1);
-	return (0);
-}
-
-/************************************
- * 				 file_search		*
+ * 	1.1.1. check_command_sourse		*
  * **********************************
 */
 /* Description:
- * 		does_dir - pointer to directory stream.
- * 			This is the value that was returned 
- * 			by the opendir() function as a result 
- * 			of opening the directory.
- * 		com_name - name of file.
- * 		The function searches for a file in an 
- * 		open directory.
+ * 		1) The function looks for the '/' character.
+ * 		2) The function checks if only the '.'
+ * 			Character has been entered.
+ * 			If yes, completion code is set to 1.
  * Return value:
- * 		0 - if the file was found.
- * 		1 - if the file was not found.
- * Contains functions:
- * 		libft. ft_strlen;
- * 		libft. ft_strncmp;
+ * 		If the string com_name contain '/' character or
+ * 		contain only '.', return 1.
+ * 		else it return 0.
 */
 
-int	file_search(DIR *does_dir, char *com_name)
+int	check_command_sourse(t_all *all, char *com_name)
 {
-	int	cmp;
-	struct dirent	*entry;
+    int	i;
 
-	entry = readdir(does_dir);
-	cmp = 1;
-    while (cmp && entry != NULL)
-	{
-		cmp = ft_strncmp(entry->d_name, com_name, ft_strlen(com_name));
-		if (!cmp && entry->d_name[ft_strlen(com_name)])
-			cmp = 1;			
-		if (cmp)
-			entry = readdir(does_dir);
-   	}
-	return (cmp);
+    i = 0;
+    if (com_name[0] == '.' && com_name[1] == '\0')
+    {
+        write(STDERR_FILENO, "minishell: This command is missing from the subject.\n", 54);
+        write(STDERR_FILENO, "In the shell, . is a builtin command ", 38);
+        write(STDERR_FILENO, "in its own right, an alias for 'source',", 41);
+        write(STDERR_FILENO, "which is used to read in a shell script ", 41);
+        write(STDERR_FILENO, "and execute its commands in the current ", 41);
+        write(STDERR_FILENO, "shell rather than spawning a subshell, t", 41);
+        write(STDERR_FILENO, "ypically used for scripts that set envir", 41);
+        write(STDERR_FILENO, "onment variables that you want to use later.\n", 46);
+        return (all->completion_code = 1);
+    }
+    if (com_name[0] == '.' && com_name[1] == '.' && com_name[2] == '\0')
+        return (all->completion_code = 127);
+    if (!ft_strchr(com_name, '/'))
+        return (1);
+    return (0);
+}
+
+/************************************
+ * 	1.1.2. executable_error_print	*
+ * **********************************
+*/
+/* Description:
+ * 		Set value error_code to *code_to_on.
+ * 		Print error message error_message for
+ * 		input string com_name (command, directory,
+ * 		executable, etc.).
+ * Return value:
+ * 		Integer 1.
+*/
+
+int	executable_error_print(int	*code_to_on, char *com_name, char *error_message, int error_code)
+{
+    write(STDERR_FILENO, "minishell: ", 12);
+    write(STDERR_FILENO, com_name, ft_strlen(com_name));
+    write(STDERR_FILENO, error_message, ft_strlen(error_message));
+    *code_to_on = error_code;
+    return (1);
+}
+
+/************************************
+ * 				fork_execve			*
+ * **********************************
+*/
+/* Description:
+ * 		A function runs an executable using functions fork() and execve().
+ * Return value:
+ * 		Integer 0. If the file was found and the
+ * 		function launched it.
+ * 		Else return not zero (1 or compiletion code).
+*/
+
+int		fork_execve(t_all *all, char *com_name)
+{
+    int		ret;
+    pid_t	pid;
+    int		rv;
+
+    ret = 2;
+    pid = fork();
+    if (pid == 0)
+    {
+        ret = execve(com_name, all->args, all->env);
+        if (ret == -1)
+        {
+            exit(rv = 2);
+        }
+    }
+    else if (pid < 0)
+    {
+        write(STDERR_FILENO, "minishell: fork error. try again\n", 34);
+        all->completion_code = 1;
+        return (1);
+    }
+    wait(NULL);
+    return (!ret);
 }

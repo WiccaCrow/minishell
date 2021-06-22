@@ -131,16 +131,11 @@ int				exit_code(t_all *all);
 void			close_fd_output_input(t_all *all);
 
 int			executable(t_all *all);
+int	        executable_check_and_run(t_all *all, char *filename_with_path, int have_path);
 int			check_command_sourse(t_all *all, char *com_name);
-int			path_to_executable(t_all *all);
 int			executable_error_print(int	*code_to_on, char *com_name, char *error_message, int error_code);
-char		*command_name(char *string, char stop_copy);
-int			find_file(t_all *all, char *com_name);
-int			split_name_directory(t_all *all, char **directory, char **com_name);
 int			fork_execve(t_all *all, char *com_name);
 char		**path_env(t_all *all);
-int			find_file_in_dir(t_all *all, char *directory, char *command_name, char *tmp_com_name);
-int			file_search(DIR *does_dir, char *com_name);
 char		*join_directory_and_command(char *directory, char *command_name);
 
 void	shlvl_set(t_all *all);
