@@ -37,6 +37,24 @@
  * 			value.
 */
 
+void    check_arg_pwd(t_all *all)
+{
+    int i;
+    int cmp;
+
+    i = 0;
+    while (all->args[++i])
+    {
+        cmp = ft_strncmp(all->args[i], "PWD", 3);
+        if (!cmp && (all->args[i][3] == '=' || (all->args[i][3] == '+' && all->args[i][4] == '=')))
+            break;
+    }
+    if (all->args[i] == NULL)
+        i = get_my_env_index(all->env, "PWD", 3);
+    if (all->env[i] && all->env[i][3] == '\0')
+        change_pwd(all);
+}
+
 void	subjoin_env(t_all *all, int i, int j)
 {
 	char 	**env_new;
@@ -70,6 +88,7 @@ void	subjoin_env(t_all *all, int i, int j)
 			free(env_new);
 		}
 	}
+	check_arg_pwd(all);
 }
 
 /************************************

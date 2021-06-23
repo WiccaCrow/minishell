@@ -83,29 +83,31 @@ void	change_pwd(t_all *all)
  */
 /* Description:
  * 		The function finds OLDPWD strings 
- * 		in the all-> env array. Writes the full 
- * 		name of the working directory to the string 
+ * 		in the all-> env array. Writes the value PWD to
  * 		OLDPWD before calling the cd command.
+ * 		If string PWD dont't exist, set empty value OLDPWD.
  */
 
 void	change_oldpwd(t_all *all)
 {
 	int		j;
 	char	*oldpwd_env;
+	int     i;
 
-	j = get_my_env_index(all->env, "OLDPWD", 6);
-	if (all->env[j])
-	{
-		oldpwd_env = all->env[j];
-		all->env[j] = ft_strjoin("OLDPWD=", all->pwd);
-		if (all->env[j] == NULL)
-		{
-			write((*(all->commands))->output_fd, "cd: malloc error, can't change OLDPWD in env\n", 46);
-			all->env[j] = oldpwd_env;
-		}
-		else
-			free(oldpwd_env);
-	}
+    i = get_my_env_index(all->env, "PWD", 3);
+    j = get_my_env_index(all->env, "OLDPWD", 6);
+    oldpwd_env = all->env[j];
+    if (all->env[i] && all->env[j])
+        all->env[j] = ft_strjoin("OLD", all->env[i]);
+	else if (all->env[j])
+		all->env[j] = ft_strdup("OLDPWD=");
+    if (oldpwd_env && all->env[j] == NULL)
+    {
+        write(STDERR_FILENO, "cd: malloc error, can't change OLDPWD in env\n", 46);
+        all->env[j] = oldpwd_env;
+    }
+    else
+        free(oldpwd_env);
 }
 
 /************************************
@@ -142,7 +144,6 @@ int	get_my_env_index(char **my_env, char *env_str, size_t len_env_str)
 	while (my_env[++i])
 	{
 		cmp = ft_strncmp(my_env[i], env_str, len_env_str);
-//        if (cmp == 0 && (my_env[i][len_env_str] == '+' || my_env[i][len_env_str] == '=' || my_env[i][len_env_str] == '\0'))
         if (cmp == 0 && (my_env[i][len_env_str] == '=' || my_env[i][len_env_str] == '\0'))
 			break;
 	}
