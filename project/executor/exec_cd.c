@@ -62,7 +62,7 @@ void	change_pwd(t_all *all)
 		all->pwd = NULL;
 	}
 	all->pwd = getcwd(NULL, 0);
-	i = get_my_env_index(all->env, "PWD=", 4);
+	i = get_my_env_index(all->env, "PWD", 3);
 	if (all->env[i])
 	{
 		pwd_env = all->env[i];
@@ -93,7 +93,7 @@ void	change_oldpwd(t_all *all)
 	int		j;
 	char	*oldpwd_env;
 
-	j = get_my_env_index(all->env, "OLDPWD=", 7);
+	j = get_my_env_index(all->env, "OLDPWD", 6);
 	if (all->env[j])
 	{
 		oldpwd_env = all->env[j];
@@ -142,7 +142,8 @@ int	get_my_env_index(char **my_env, char *env_str, size_t len_env_str)
 	while (my_env[++i])
 	{
 		cmp = ft_strncmp(my_env[i], env_str, len_env_str);
-		if (cmp == 0 && (my_env[i][len_env_str] == '+' || my_env[i][len_env_str] == '=' || my_env[i][len_env_str] == '\0'))
+//        if (cmp == 0 && (my_env[i][len_env_str] == '+' || my_env[i][len_env_str] == '=' || my_env[i][len_env_str] == '\0'))
+        if (cmp == 0 && (my_env[i][len_env_str] == '=' || my_env[i][len_env_str] == '\0'))
 			break;
 	}
 	return (i);
