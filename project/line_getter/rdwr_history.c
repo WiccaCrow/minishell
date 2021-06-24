@@ -16,7 +16,7 @@ char	**get_history(void)
 	fd = open(HIST_FILE, O_CREAT | O_RDONLY, 0644);
 	if (fd > 0)
 	{
-		history_line = read_history(fd);
+		history_line = rd_history(fd);
 		if (history_line)
 		{
 			history = ft_split(history_line, '\n');
@@ -37,7 +37,7 @@ char	**get_history(void)
  * Функция читает файл в строку 
 */
 
-char 		*read_history(int fd)
+char 		*rd_history(int fd)
 {
 	char	*history_line;
 	char	*line;
@@ -91,7 +91,7 @@ int	free_char_array(char **history)
  * Функция пишет истоию в файл
 */
 
-int		write_history(char **history)
+int		wr_history(char **history)
 {
 	int i;
 	int ret;
