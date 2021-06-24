@@ -34,10 +34,11 @@ int open_tmp_file(char *stop_str)
 	return (fd);
 }
 
-int open_file(t_command *command, char *filename)
+int open_file(t_command *command, char *filename, char *pwd)
 {
-	if (command && filename)
+	if (command && filename && pwd)
 	{
+		filename = gnl_strjoin(pwd, filename);
 		if (command->redirect_type & APPEND)
 		{
 			if (command->output_fd > 1)
@@ -62,7 +63,6 @@ int open_file(t_command *command, char *filename)
 		{
 			if (command->input_fd > 1)
 				close(command->input_fd);
-//			command->input_fd = open(filename, O_RDONLY);
 			command->input_fd = open_tmp_file(filename);
 		}
 		command->redirect_type = command->redirect_type & ~(NO_FILENAME);

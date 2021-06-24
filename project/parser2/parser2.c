@@ -118,7 +118,7 @@ char *get_filename(char *word)
 	return (NULL);
 }
 
-int parse_redirect(t_command *command, char *word)
+int parse_redirect(t_command *command, char *word, char *pwd)
 {
 	char *filename;
 	
@@ -127,18 +127,18 @@ int parse_redirect(t_command *command, char *word)
 		filename = get_filename(word);
 		if (filename)
 		{
-			open_file(command, filename);
+			open_file(command, filename, pwd);
 			return (1);
 		}
 	}
 	return (0);
 }
 
-int parse_word(char *word, t_command *command, t_list **args)
+int parse_word(char *word, t_command *command, t_list **args, char *pwd)
 {
 	if (command->redirect_type && (command->redirect_type & NO_FILENAME))
 	{
-		if (open_file(command, word) < 0)
+		if (open_file(command, word, pwd) < 0)
 			return (-1);
 	}
 	else
@@ -146,7 +146,7 @@ int parse_word(char *word, t_command *command, t_list **args)
 		command->redirect_type = set_redirect(word);
 		if (command->redirect_type)
 		{
-			if (parse_redirect(command, word))
+			if (parse_redirect(command, word, pwd))
 				return (1);
 			else
 				return (2);
@@ -166,7 +166,7 @@ int get_next_command(t_all *all, int i)
 	command = (t_command *)ft_calloc(1, sizeof (t_command));
 	if (command)
 	{
-		args = (t_list **) ft_calloc(1, sizeof(t_list *));
+		args = (t_list **)ft_calloc(1, sizeof(t_list *));
 		if (args)
 		{
 			command->output_fd = 1;
@@ -175,7 +175,7 @@ int get_next_command(t_all *all, int i)
 				curr_line = NULL;
 				i = get_next_word(all->line, i, &curr_line);
 				i = skip_spaces(all->line, i);
-				if ((parse_word(curr_line, command, args) < 0))
+				if ((parse_word(curr_line, command, args, all->pwd) < 0))
 					all->parse_error = 1;
 				free(curr_line);
 				curr_line = NULL;

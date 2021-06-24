@@ -86,7 +86,6 @@ int main(int ac, char **av, char **env)
 
 	while (1)
 	{
-//		show_program_name();
 		if (fill_all(&all) != -1)
 		{
 			while (all.line && *all.line && check_line(&all) && \
