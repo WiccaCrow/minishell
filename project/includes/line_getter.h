@@ -6,6 +6,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <string.h>
+# include <readline/readline.h>
 
 # define KEY_UP "\e[A"
 # define KEY_DOWN "\e[B"
@@ -35,8 +36,8 @@ int			enter_handle(t_line *line);
 int			control_d_handle(t_line *line);
 int 		key_right_handle(t_line *line);
 int 		key_left_handle(t_line *line);
-char 		*read_history(int fd);
-int		    write_history(char **history);
+char 		*rd_history(int fd);
+int		    wr_history(char **history);
 int         free_char_array(char **history);
 int         add_to_history(char *line, char ***history);
 int			history_len(char **history);
