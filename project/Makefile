@@ -39,7 +39,7 @@ all:		$(NAME)
 $(NAME):	$(OBJS) $(HDR)
 			@make bonus -C $(LIB_DIR)
 			@mv $(LIB_DIR)$(LIBFT) $(LIBFT)
-			@$(CCF) -ltermcap $(OBJS) $(LIBFT) -o $(NAME)
+			@$(CCF) -ltermcap -lreadline $(OBJS) $(LIBFT) -o $(NAME)
 			@echo "${GREEN}"$(NAME)" is compiled${ENDCOLOR}"
 
 linux:		$(OBJS) $(HDR)
