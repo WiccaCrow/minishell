@@ -10,6 +10,9 @@
 # define LIM_READ 8
 # define NO_FILENAME 16
 # define TMP_FILE ".tmp_file"
+# define NOFILE_REDIRECT 1
+# define WORD 2
+# define TOKEN 4
 
 int		get_next_arg(char *line, int i, char **tmp_line);
 int		skip_spaces(const char *line, int i);
@@ -18,6 +21,9 @@ int 	crop_line(char **line);
 char	*add_chr(char *str, char c);
 int		clear_list2(t_list **args);
 int 	remove_first(t_list **args);
+int 	set_redirect(const char *word);
+
+
 
 
 

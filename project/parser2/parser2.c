@@ -47,7 +47,7 @@ int show_commands(t_command **commands)
 	return (0);
 }
 
-int get_next_word(char *line, int i, char **tmp_line)
+static int	get_next_word(char *line, int i, char **tmp_line)
 {
 	int	flag;
 
@@ -218,11 +218,10 @@ int parser2(t_all *all)
 	i = 0;
 //	if (all->commands)
 //		free_commands(all->commands);
-	all->commands = (t_command **)malloc(sizeof (t_command *));
-	all->parse_error = 0;
+	all->commands = (t_command **)ft_calloc(1, sizeof (t_command *));
 	if (all->commands)
 	{
-		*all->commands = NULL;
+//		*all->commands = NULL;
 		i = skip_spaces(all->line, i);
 		while (all->line && all->line[i] && all->line[i] != ';')
 		{
