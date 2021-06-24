@@ -3,6 +3,7 @@
 
 # include <stdio.h>
 # include <errno.h>
+# include <signal.h>
 # include "./parser.h"
 # include "./line_getter.h"
 # include "../libft/libft.h"
@@ -70,6 +71,8 @@ void			init_env(t_all *all, char **env);
 void			init_commands(t_all *all);
 void			exit_clean(t_all *all, int code);
 int 			fill_all(t_all *all);
+void			signal_handler(int sig);
+
 int				show_program_name(void);
 
 int 			line_getter(t_all *all);

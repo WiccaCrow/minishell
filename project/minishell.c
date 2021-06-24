@@ -82,6 +82,8 @@ int main(int ac, char **av, char **env)
 
 	(void) ac;
 	(void) av;
+	signal(SIGINT, signal_handler);
+
 	start_all(&all, env);
 
 	while (1)

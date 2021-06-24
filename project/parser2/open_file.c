@@ -38,6 +38,7 @@ int open_file(t_command *command, char *filename, char *pwd)
 {
 	if (command && filename && pwd)
 	{
+		pwd = gnl_strjoin(pwd, "/");
 		filename = gnl_strjoin(pwd, filename);
 		if (command->redirect_type & APPEND)
 		{

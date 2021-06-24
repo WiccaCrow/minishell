@@ -98,13 +98,15 @@ int check_line(t_all *all)
 		{
 			word = NULL;
 			i = get_next_word(all->line, i, &word);
-			if (!check_word(word, &prev_type) && write(STDOUT_FILENO, 
-				SYN_ERR, 47) && write(STDOUT_FILENO, word, ft_strlen(word)) 
-				&& write(STDOUT_FILENO, "\'\n", 2))
+			if (!check_word(word, &prev_type)) 
 			{
+				write(STDOUT_FILENO, SYN_ERR, 4);
+				write(STDOUT_FILENO, word, ft_strlen(word));
+				write(STDOUT_FILENO, "\'\n", 2);
 				all->completion_code = 258;
 				return (0);
-			}			i = skip_spaces(all->line, i);
+			}
+			i = skip_spaces(all->line, i);
 		}
 	}
 	return (1);

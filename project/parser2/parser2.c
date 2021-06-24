@@ -175,7 +175,8 @@ int get_next_command(t_all *all, int i)
 				curr_line = NULL;
 				i = get_next_word(all->line, i, &curr_line);
 				i = skip_spaces(all->line, i);
-				if ((parse_word(curr_line, command, args, all->pwd) < 0))
+				if ((parse_word(curr_line, command, args, ft_strdup(all->pwd)
+				) < 0))
 					all->parse_error = 1;
 				free(curr_line);
 				curr_line = NULL;
@@ -218,6 +219,7 @@ int parser2(t_all *all)
 	i = 0;
 //	if (all->commands)
 //		free_commands(all->commands);
+	all->parse_error = 0;
 	all->commands = (t_command **)ft_calloc(1, sizeof (t_command *));
 	if (all->commands)
 	{
