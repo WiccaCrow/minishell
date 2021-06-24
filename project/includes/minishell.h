@@ -121,6 +121,7 @@ int				find_next_double_arg(char **args, int find_plus, int nb_args, int i);
 int				find_env_str(t_all *all, char *oper_name, int j, char **env);
 void			change_env_str(t_all *all, int j, int index, char **env);
 void			create_env_str(t_all *all, int j, char **env, int *i);
+void            check_arg_pwd(t_all *all);
 int				exec_unset(t_all *all);
 void			exec_unset_find_env_str(t_all *all, char *oper_name);
 void			exec_unset_do_new_env(t_all *all, char **env_new, int nb_lines);

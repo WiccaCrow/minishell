@@ -70,6 +70,7 @@ void	subjoin_env(t_all *all, int i, int j)
 			free(env_new);
 		}
 	}
+	check_arg_pwd(all);
 }
 
 /************************************
