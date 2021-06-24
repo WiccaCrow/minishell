@@ -39,12 +39,10 @@ static int	check_end_of_input(const char *line, int flag)
 
 int fill_all(t_all *all)
 {
-	int		ret;
 	char	*line;
 	int 	flag;
 
-	line = NULL;
-	ret = get_next_line(STDIN_FILENO, &line);
+	line = readline(GOLD NAME NONECOLOR);
 	all->line = gnl_strjoin(all->line, line);
 	flag = check_end_of_input(all->line, 0);
 	while (flag)
@@ -52,13 +50,12 @@ int fill_all(t_all *all)
 		if (!(flag & SHIELD))
 			all->line = gnl_strjoin(all->line, "\n");
 		free(line);
-		line = NULL;
-		write(STDOUT_FILENO, "> ", 2);
-		ret = get_next_line(STDIN_FILENO, &line);
+		line = readline("> ");
 		all->line = gnl_strjoin(all->line, line);
 		flag = check_end_of_input(all->line, 0);
 	}
+	add_history(all->line);
 	free(line);
 	line = NULL;
-	return (ret);
+	return (1);
 }
