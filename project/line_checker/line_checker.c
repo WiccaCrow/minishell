@@ -1,66 +1,28 @@
 #include "minishell.h"
 
-//static int	check_semicolon(char *line)
-//{
-//	int i;
-//	
-//	i = -1;
-//	while (line[++i])
-//	{
-//		if (line[i] == ';')
-//		{
-//			i++;
-//			if (line[i] == ';')
-//			{
-//				write(STDOUT_FILENO, SYN_ERR, 47);
-//				write(STDOUT_FILENO, ";;\'\n", 4);
-//				return (0);
-//			} else
-//			{
-//				i = skip_spaces(line, i);
-//				if (line[i] == ';' || i == 1)
-//				{
-//					write(STDOUT_FILENO, SYN_ERR, 47);
-//					write(STDOUT_FILENO, ";\'\n", 3);
-//					return (0);
-//				}
-//			}
-//		}
-//	}
-//	return(1);
-//}
-//
-//static int	check_pipe(char *line)
-//{
-//	int i;
-//
-//	if (line[0] == '|')
-//	{
-//		if (line[1] == '|')
-//		{
-//			write(STDOUT_FILENO, SYN_ERR, 47);
-//			write(STDOUT_FILENO, "||\'\n", 4);
-//			return (0);
-//		} else
-//		{
-//			i = skip_spaces(line, 1);
-//			if (line[i] == '|' || i == 1)
-//			{
-//				write(STDOUT_FILENO, SYN_ERR, 47);
-//				write(STDOUT_FILENO, "|\'\n", 3);
-//				return (0);
-//			}
-//		}
-//	}
-//	return (1);
-//}
+static int is_token(char *line)
+{
+	if (!line)
+		return (0);
+	if (!ft_strncmp(line, ";", 2))
+		return (1);
+	if (!ft_strncmp(line, ";;", 3))
+		return (2);
+	if (!ft_strncmp(line, "|", 2))
+		return (3);
+	if (!ft_strncmp(line, "&&", 3))
+		return (4);
+	if (!ft_strncmp(line, "||", 3))
+		return (5);
+	return (0);
+}
 
 static int	get_next_word(char *line, int i, char **tmp_line)
 {
 	int	flag;
 
 	flag = 0;
-	while (line[i])
+	while (line[i] && !is_token(*tmp_line))
 	{
 		if (line[i] == '\\' && !(flag & QUOTE) && !(flag & SHIELD))
 		{
@@ -137,9 +99,11 @@ int check_line(t_all *all)
 			word = NULL;
 			i = get_next_word(all->line, i, &word);
 			if (!check_word(word, &prev_type) && write(STDOUT_FILENO, 
-													   SYN_ERR "\n", 48))
+													   SYN_ERR "'\n", 49))
+			{
+				all->completion_code = 258;
 				return (0);
-			i = skip_spaces(all->line, i);
+			}			i = skip_spaces(all->line, i);
 		}
 	}
 	return (1);
