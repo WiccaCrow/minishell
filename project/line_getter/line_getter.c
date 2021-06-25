@@ -73,7 +73,11 @@ char	*get_line(t_all *all)
 					break ;
 			}
 			else
+			{
+				if (sigint_switcher(&line))
+					init_t_line(&line, all);
 				add_chr_to_pos(&line, *buff);
+			}
 		}
 		if (!canon_on())
 		{
