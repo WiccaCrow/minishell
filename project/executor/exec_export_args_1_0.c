@@ -12,7 +12,7 @@
  * 		int index; the index of the search string 
  * 						 in the current env array.
  * 		if (all->env[index] == NULL)
- * 			env_new[--i] = ft_strdup(all->args[j]);
+ * 			env_new[--i] = ft_strdup((*all->commands)->args[j]);
  * 			//if in the env array was no such 
  * 			// variable, create it.
  * Description:
@@ -85,7 +85,7 @@ void	subjoin_env(t_all *all, int i, int j)
  * Variables description, code comments:
  * 	int index; index of the string in env array
  *	
- *	1. while (all->args[++j])
+ *	1. while ((*all->commands)->args[++j])
  *		Until all the arguments in the argument array 
  *		have been iterated over, the following actions 
  *		are performed for each argument:
@@ -96,7 +96,7 @@ void	subjoin_env(t_all *all, int i, int j)
  *		checks the validity of the entered arguments. 
  * 		if argument not validity print message about it and 
  * 		go to next argument.
- * 	1.2. if (check_double_args(&(all->args[j])))
+ * 	1.2. if (check_double_args(&((*all->commands)->args[j])))
  * 				continue;
  *  	checks for the presence of the same argument among 
  * 		subsequent arguments.
@@ -141,13 +141,13 @@ int	count_lines(t_all *all, char *oper_name, int nb_env_lines, int j)
 {
 	int		index;
 	
-	while (all->args[++j])
+	while ((*all->commands)->args[++j])
 	{
 		if (!check_valid_args(all, oper_name, j, 1))
 			continue;
-		if (check_double_args(&(all->args[j]), 1))
+		if (check_double_args(&((*all->commands)->args[j]), 1))
 			continue;
-printf("args[j] = %s\n", all->args[j]);
+printf("args[j] = %s\n", (*all->commands)->args[j]);
 		index = find_env_str(all, oper_name, j, all->env);
 		if (!ft_strncmp(oper_name, "export", ft_strlen(oper_name)))
 		{
@@ -203,17 +203,17 @@ void	export_args_to_new_env(t_all *all, int j, char **env_new)
 	int		i_env_new;
 
 	i_env_old = count_env_lines(all);
-	while (all->args[++j] && g_completion_code == 0)
+	while ((*all->commands)->args[++j] && g_completion_code == 0)
 	{
 		if (!check_valid_args(all, "export", j, 0))
 			continue;
-		if (check_double_args(&(all->args[j]), 0))
+		if (check_double_args(&((*all->commands)->args[j]), 0))
 			continue;// проверяю на последующее повторение аргумента с = без + (возврат 1)
-		str_new_change = check_double_args(&(all->args[j]), 1);// проверяю на последующее повторение аргумента с += (возврат 2) или без значения (возврат 3)
+		str_new_change = check_double_args(&((*all->commands)->args[j]), 1);// проверяю на последующее повторение аргумента с += (возврат 2) или без значения (возврат 3)
 		i_env_new = find_env_str(all, "export", j, env_new);// 1) проверяю, есть ли уже такая переменная в новом массиве
 		if (env_new[i_env_new])// да - дополняю ее
 		{
-			if (ft_strchr(all->args[j], '=') != NULL)//если встретилось =
+			if (ft_strchr((*all->commands)->args[j], '=') != NULL)//если встретилось =
 				change_env_str(all, j, i_env_new, env_new);
 		}
 		else// нет - создаю новую переменную
@@ -243,22 +243,22 @@ int	check_valid_args(t_all *all, char *oper_name, int j, int flag_print)
 	int		i;
 
 	i = 0;
-	if ((all->args[j][i] == '+' && all->args[j][i + 1] == '=') ||
-		all->args[j][i] == '=')
-		return (print_not_valid(all, all->args[j], oper_name, flag_print));
-	while (all->args[j][i] != '\0')
+	if (((*all->commands)->args[j][i] == '+' && (*all->commands)->args[j][i + 1] == '=') ||
+            (*all->commands)->args[j][i] == '=')
+		return (print_not_valid(all, (*all->commands)->args[j], oper_name, flag_print));
+	while ((*all->commands)->args[j][i] != '\0')
 	{
-		if ((all->args[j][i] == '=' && !ft_strncmp(oper_name, "export", 6)) ||
-			(all->args[j][i] == '+' && all->args[j][i + 1] == '=' && !ft_strncmp(oper_name, "export", 6)))
+		if (((*all->commands)->args[j][i] == '=' && !ft_strncmp(oper_name, "export", 6)) ||
+			((*all->commands)->args[j][i] == '+' && (*all->commands)->args[j][i + 1] == '=' && !ft_strncmp(oper_name, "export", 6)))
 			break;
-		if (!(all->args[j][i] == '=' && !ft_strncmp(oper_name, "unset", 6)) &&
-			((all->args[j][i] >= 'a' && all->args[j][i] <= 'z') ||
-			(all->args[j][i] >= 'A' && all->args[j][i] <= 'Z') ||
-			(all->args[j][i] >= '0' && all->args[j][i] <= '9' && i != 0) ||
-			all->args[j][i] == '_'))
+		if (!((*all->commands)->args[j][i] == '=' && !ft_strncmp(oper_name, "unset", 6)) &&
+			(((*all->commands)->args[j][i] >= 'a' && (*all->commands)->args[j][i] <= 'z') ||
+			((*all->commands)->args[j][i] >= 'A' && (*all->commands)->args[j][i] <= 'Z') ||
+			((*all->commands)->args[j][i] >= '0' && (*all->commands)->args[j][i] <= '9' && i != 0) ||
+             (*all->commands)->args[j][i] == '_'))
 				++i;
 		else
-			return (print_not_valid(all, all->args[j], oper_name, flag_print));
+			return (print_not_valid(all, (*all->commands)->args[j], oper_name, flag_print));
 	}
 	return (1);
 }

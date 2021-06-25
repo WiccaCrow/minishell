@@ -5,7 +5,7 @@
  * **********************************
 */
 /* Description:
- * 		The function searches the all->args for a string
+ * 		The function searches the (*all->commands)->args for a string
  * 		containing the PWD key. If all the keys found
  * 		without assigning or changing the values of the
  * 		PWD variable (without '=', without "+="), search
@@ -25,13 +25,13 @@ void    check_arg_pwd(t_all *all)
     int cmp;
 
     i = 0;
-    while (all->args[++i])
+    while ((*all->commands)->args[++i])
     {
-        cmp = ft_strncmp(all->args[i], "PWD", 3);
-        if (!cmp && (all->args[i][3] == '=' || (all->args[i][3] == '+' && all->args[i][4] == '=')))
+        cmp = ft_strncmp((*all->commands)->args[i], "PWD", 3);
+        if (!cmp && ((*all->commands)->args[i][3] == '=' || ((*all->commands)->args[i][3] == '+' && (*all->commands)->args[i][4] == '=')))
             break;
     }
-    if (all->args[i] == NULL)
+    if ((*all->commands)->args[i] == NULL)
         i = get_my_env_index(all->env, "PWD", 3);
     if (all->env[i] && all->env[i][3] == '\0')
         change_pwd(all);

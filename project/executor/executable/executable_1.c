@@ -17,7 +17,7 @@
  * Variables description, code comments:
  * 		1. pointer to struct t_all all with variables:
  * 			all->env. Env-variables array (for PATH);
- * 			all->args. Input line to check and run if it is executable.
+ * 			(*all->commands)->args. Input line to check and run if it is executable.
  * 		2. function variables:
  * 			path_from_env. Path for the executable file.
  * 			i. Iterator for path.
@@ -43,7 +43,7 @@ int	executable(t_all *all)
 	int		path;
 
     g_completion_code = 0;
-	path = executable_check_and_run(all, all->args[0], 1);
+	path = executable_check_and_run(all, (*all->commands)->args[0], 1);
 	if (path && g_completion_code == 127)
 		return (1);
 	if (!path || (path && g_completion_code))
@@ -55,8 +55,8 @@ int	executable(t_all *all)
 	path = -1;
 	while (path_from_env[++i] && path == -1 && 0 == g_completion_code)
 	{
-        com_name = join_directory_and_command(path_from_env[i], all->args[0]);
-        completion_code_malloc_error(com_name, all->args[0]);
+        com_name = join_directory_and_command(path_from_env[i], (*all->commands)->args[0]);
+        completion_code_malloc_error(com_name, (*all->commands)->args[0]);
         path = executable_check_and_run(all, com_name, 0);
     }
 	return (path == -1);
@@ -194,7 +194,7 @@ int		fork_execve(t_all *all, char *com_name)
     pid = fork();
     if (pid == 0)
     {
-        ret = execve(com_name, all->args, all->env);
+        ret = execve(com_name, (*all->commands)->args, all->env);
         if (ret == -1)
         {
             exit(rv = 2);

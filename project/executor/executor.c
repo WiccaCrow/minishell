@@ -5,7 +5,7 @@
  * **********************************
 */
 /* Description:
- * Free all->args memory.
+ * Free (*all->commands)->args memory.
 */
 
 void	all_args_free(t_all *all)
@@ -13,10 +13,10 @@ void	all_args_free(t_all *all)
 	int	i;
 
 	i = 0;
-	while (all->args[i])
+	while ((*all->commands)->args[i])
 	{
-		free(all->args[i]);
-		all->args[i] = NULL;
+		free((*all->commands)->args[i]);
+        (*all->commands)->args[i] = NULL;
 		++i;
 	}
 }
@@ -38,9 +38,9 @@ void command_not_found(t_all *all)
     g_completion_code = 0;
 	if (executable(all) == 0)
 		return ;
-	write((*(all->commands))->output_fd, "minishell: ", 12);
-	write((*(all->commands))->output_fd, all->args[0], ft_strlen(all->args[0]));
-	write((*(all->commands))->output_fd, COM_NOT_FOUND, ft_strlen(COM_NOT_FOUND));
+	write((*all->commands)->output_fd, "minishell: ", 12);
+	write((*all->commands)->output_fd, (*all->commands)->args[0], ft_strlen((*all->commands)->args[0]));
+	write((*all->commands)->output_fd, COM_NOT_FOUND, ft_strlen(COM_NOT_FOUND));
     g_completion_code = 127;
 }
 
@@ -70,21 +70,21 @@ void command_not_found(t_all *all)
 
 int executor(t_all *all)
 {
-	if ((*(all->commands))->flag_command == not_found)
+	if ((*all->commands)->flag_command == not_found)
 		command_not_found(all);
-	else if ((*(all->commands))->flag_command == exit_shell)
+	else if ((*all->commands)->flag_command == exit_shell)
 		exec_exit(all);
-	else if ((*(all->commands))->flag_command == echo)
+	else if ((*all->commands)->flag_command == echo)
 		exec_echo(all);
-	else if ((*(all->commands))->flag_command == cd)
+	else if ((*all->commands)->flag_command == cd)
 		exec_cd(all);
-	else if ((*(all->commands))->flag_command == pwd)
+	else if ((*all->commands)->flag_command == pwd)
 		exec_pwd(all);
-	else if ((*(all->commands))->flag_command == env)
+	else if ((*all->commands)->flag_command == env)
 		exec_env(all);
-	else if ((*(all->commands))->flag_command == export)
+	else if ((*all->commands)->flag_command == export)
 		exec_export(all);
-	else if ((*(all->commands))->flag_command == unset)
+	else if ((*all->commands)->flag_command == unset)
 		exec_unset(all);
 	else
 		write(1, "other command\n", 15);
@@ -102,15 +102,15 @@ int executor(t_all *all)
 
 void	close_fd_output_input(t_all *all)
 {
-	if ((*(all->commands))->output_fd != 1)
+	if ((*all->commands)->output_fd != 1)
 	{
-		close((*(all->commands))->output_fd);
-		(*(all->commands))->output_fd = 1;
+		close((*all->commands)->output_fd);
+		(*all->commands)->output_fd = 1;
 	}
-	if ((*(all->commands))->input_fd != 0)
+	if ((*all->commands)->input_fd != 0)
 	{
-		close((*(all->commands))->input_fd);
-		(*(all->commands))->input_fd = 0;
+		close((*all->commands)->input_fd);
+		(*all->commands)->input_fd = 0;
 	}
 }
 

@@ -21,9 +21,9 @@ int	exec_cd(t_all *all)
 
     g_completion_code = 0;
 	i = 0;
-	if (all->args[0] == NULL)
+	if ((*all->commands)->args[0] == NULL)
 		return (g_completion_code = 0);
-	ret_chdir = chdir(all->args[0]);
+	ret_chdir = chdir((*all->commands)->args[0]);
 	if (ret_chdir == -1)
 	{
 		write(STDERR_FILENO, "minishell: cd: ", 16);

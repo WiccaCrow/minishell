@@ -27,7 +27,7 @@ char	**path_env(t_all *all)
 	{
         g_completion_code = 1;
 		write(STDERR_FILENO, "minishell: ", 12);
-		write(STDERR_FILENO, all->args[0], ft_strlen(all->args[0]));
+		write(STDERR_FILENO, (*all->commands)->args[0], ft_strlen((*all->commands)->args[0]));
 		write(STDERR_FILENO, ": malloc error. Try again.\n", 28);
 	}
 	return (path_env);

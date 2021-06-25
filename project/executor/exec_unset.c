@@ -63,7 +63,7 @@ void	exec_unset_find_env_str(t_all *all, char *oper_name)
 	int	index_env_str;
 
 	j = -1;
-	while (all->args[++j])
+	while ((*all->commands)->args[++j])
 	{
 		if (!check_valid_args(all, oper_name, j, 0))
 			continue;

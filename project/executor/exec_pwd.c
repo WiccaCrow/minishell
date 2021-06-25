@@ -9,7 +9,7 @@
 
 void	exec_pwd(t_all *all)
 {
-	write((*(all->commands))->output_fd, all->pwd, ft_strlen(all->pwd));
-	write((*(all->commands))->output_fd, "\n", 1);
+	write((*all->commands)->output_fd, all->pwd, ft_strlen(all->pwd));
+	write((*all->commands)->output_fd, "\n", 1);
     g_completion_code = 0;
 }

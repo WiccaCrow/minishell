@@ -26,7 +26,7 @@ int	exec_export(t_all *all)
 
     g_completion_code = 0;
 	i = count_env_lines(all);
-	if (!all->args[0])
+	if (!(*all->commands)->args[0])
 		sort_env(all, i, -1, 0);
 	else
 		subjoin_env(all, i, -1);

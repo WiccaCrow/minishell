@@ -35,11 +35,12 @@ void	exec_exit(t_all *all)
 	int	pipe_on_of;
 
 	pipe_on_of = 0;
-	if ((*(all->commands))->end_flag&PIPE)
+	if ((*all->commands)->end_flag&PIPE)
 		pipe_on_of = 1;
-	write((*(all->commands))->output_fd, "exit\n", 6);
+	else
+	    write((*all->commands)->output_fd, "exit\n", 6);
     g_completion_code = exit_code(all);
-	if (((all->args[0] && !all->args[1]) || !all->args[0]) && !pipe_on_of)
+	if ((((*all->commands)->args[0] && !(*all->commands)->args[1]) || !(*all->commands)->args[0]) && !pipe_on_of)
 		exit_clean(all);
 }
 
@@ -57,23 +58,23 @@ int	exit_code(t_all *all)
 	int	code;
 	int	i;
 
-	if (all->args[0] == NULL)
+	if ((*all->commands)->args[0] == NULL)
 		return (0);
 	i = -1;
-	if (args_is_digit(all->args[0]))
+	if (args_is_digit((*all->commands)->args[0]))
 	{
-		write((*(all->commands))->output_fd, "bash: exit: ", 13);
-		write((*(all->commands))->output_fd, all->args[0], ft_strlen(all->args[0]));
-		write((*(all->commands))->output_fd, ": numeric argument required\n", 29);
+		write((*all->commands)->output_fd, "bash: exit: ", 13);
+		write((*all->commands)->output_fd, (*all->commands)->args[0], ft_strlen((*all->commands)->args[0]));
+		write((*all->commands)->output_fd, ": numeric argument required\n", 29);
         g_completion_code = 255;
 		exit_clean(all);
 	}
-	if (all->args[1]!= NULL)
+	if ((*all->commands)->args[1]!= NULL)
 	{
-		write((*(all->commands))->output_fd, "minishell: exit: too many arguments\n", 37);
+		write((*all->commands)->output_fd, "minishell: exit: too many arguments\n", 37);
 		return(1);
 	}
-	code = ft_atoi(all->args[0]);
+	code = ft_atoi((*all->commands)->args[0]);
 	if (code < 0)
 		return (code + 256);
 	else if (code > 255)
