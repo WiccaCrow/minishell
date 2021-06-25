@@ -35,13 +35,13 @@ void	all_args_free(t_all *all)
 
 void command_not_found(t_all *all)
 {
-	all->completion_code = 0;
+    g_completion_code = 0;
 	if (executable(all) == 0)
 		return ;
 	write((*(all->commands))->output_fd, "minishell: ", 12);
 	write((*(all->commands))->output_fd, all->args[0], ft_strlen(all->args[0]));
 	write((*(all->commands))->output_fd, COM_NOT_FOUND, ft_strlen(COM_NOT_FOUND));
-	all->completion_code = 127;
+    g_completion_code = 127;
 }
 
 /************************************

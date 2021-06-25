@@ -47,7 +47,7 @@ int exec_echo(t_all *all)
 	int ret;
 	int	flag_n;
 
-	all->completion_code = 0;
+    g_completion_code = 0;
 	ret = 0;
 	echo_check_flag_n(all, &i, &flag_n);
 	while (all->args[i])

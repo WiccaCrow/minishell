@@ -26,7 +26,7 @@ int	print_not_valid(t_all *all, char *args_name, char *operation_name, int flag_
 		write((*(all->commands))->output_fd, args_name, ft_strlen(args_name));
 		write((*(all->commands))->output_fd, "': not a valid identifier\n", 27);
 	}
-	all->completion_code = 1;
+    g_completion_code = 1;
 	return (0);
 }
 
@@ -57,8 +57,8 @@ void	change_env_str(t_all *all, int j, int index, char **env)
 	}
 	else
 		env[index] = ft_strdup(all->args[j]);
-	completion_code_malloc_error(&all->completion_code, env[index], "export with arguments");
-	if (all->completion_code == 0)
+	completion_code_malloc_error(env[index], "export with arguments");
+	if (g_completion_code == 0)
 	{
 		if (tmp)
 			free(tmp);
@@ -216,6 +216,6 @@ void	create_env_str(t_all *all, int j, char **env, int *i)
 	}
 	env[*i] = ft_strdup(all->args[j]);
 	if (env[*i] == NULL)
-		completion_code_malloc_error(&(all->completion_code), NULL, "export with arguments");
+		completion_code_malloc_error(NULL, "export with arguments");
 	env[++(*i)] = NULL;
 }

@@ -22,12 +22,12 @@
 # define PIPE 1
 # define SEMICOLON 2
 # define START_PIPE 4
-# define SIGINT_CALL (1 << 8)
+# define SIGINT_CALL (1 << 16)
 
 #include <sys/types.h>//DIR *opendir(const char *name);
 #include <dirent.h>//DIR *opendir(const char *name);
 
-int g_completion_code;
+int g_completion_code; // код возврата ошибки $? return заменила на completion
 
 enum e_command
 {
@@ -73,7 +73,7 @@ typedef struct			s_all {
 void			start_all(t_all *all, char **env);
 void			init_env(t_all *all, char **env);
 void			init_commands(t_all *all);
-void			exit_clean(t_all *all, int code);
+void			exit_clean(t_all *all);
 int 			fill_all(t_all *all);
 void			sigint_handler(int sig);
 void			sigquit_handler(int sig);
@@ -104,7 +104,7 @@ int				free_commands(t_command **commands);
 
 int 			executor(t_all *all);
 void			command_not_found(t_all *all);
-void 			completion_code_malloc_error(int	*code_to_on, char *array_null, char *open_name);
+void 			completion_code_malloc_error(char *array_null, char *open_name);
 int				exec_echo(t_all *all);
 int				exec_cd(t_all *all);
 int				get_my_env_index(char **my_env, char *env_str, size_t len_env_str);
@@ -116,7 +116,7 @@ void			exec_env(t_all *all);
 int				exec_export(t_all *all);
 int				count_env_lines(t_all *all);
 void			sort_env(t_all *all, int i, int k, int j);
-int				do_sort_index(t_all *all, char ***sort_env_index, int **sort, int i);
+int				do_sort_index(char ***sort_env_index, int **sort, int i);
 int				ft_strcmp_s1_less_s2(char *str1, char *str2);
 void			print_export(t_all *all, char **sort_env_index);
 void			free_sort_index(char **sort_env_index, int *sort);
@@ -142,8 +142,8 @@ void			close_fd_output_input(t_all *all);
 
 int			executable(t_all *all);
 int	        executable_check_and_run(t_all *all, char *filename_with_path, int have_path);
-int			check_command_sourse(t_all *all, char *com_name);
-int			executable_error_print(int	*code_to_on, char *com_name, char *error_message, int error_code);
+int			check_command_sourse(char *com_name);
+int			executable_error_print(char *com_name, char *error_message, int error_code);
 int			fork_execve(t_all *all, char *com_name);
 char		**path_env(t_all *all);
 char		*join_directory_and_command(char *directory, char *command_name);

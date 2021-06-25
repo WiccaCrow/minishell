@@ -25,7 +25,7 @@ char	**path_env(t_all *all)
 	path_env = ft_split(++path_env_value, ':');
 	if (path_env == NULL)
 	{
-		all->completion_code = 1;
+        g_completion_code = 1;
 		write(STDERR_FILENO, "minishell: ", 12);
 		write(STDERR_FILENO, all->args[0], ft_strlen(all->args[0]));
 		write(STDERR_FILENO, ": malloc error. Try again.\n", 28);

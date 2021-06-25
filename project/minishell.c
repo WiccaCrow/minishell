@@ -70,7 +70,7 @@
 //		free(all.args);
 //		all.args = NULL;
 //	}
-//	exit_clean(&all, 0);
+//	exit_clean(&all);
 //	return (0);
 //}
 
@@ -103,7 +103,7 @@ int main(int ac, char **av, char **env)
 		free(all.args);
 		all.args = NULL;
 	}
-	exit_clean(&all, 0);
+	exit_clean(&all);
 	return (0);
 }
 
@@ -127,8 +127,8 @@ void	start_all(t_all *all, char **env)
 	int	i;
 
 	i = 0;
-	all->completion_code = 0;
-	g_completion_code = 0;
+	all->completion_code = 0;/////////////////////
+    g_completion_code = 0;
 	all->parse_error = 0;
 	all->line = NULL;
 	all->args = NULL;
@@ -232,7 +232,7 @@ int show_program_name(void)
  * 	Clean exit.
 */
 
-void	exit_clean(t_all *all, int code)
+void	exit_clean(t_all *all)
 {
 	wr_history(all->history);
 	if (all->line)
@@ -242,5 +242,5 @@ void	exit_clean(t_all *all, int code)
 	}
 	close_fd_output_input(all);
 	all_args_free(all);
-	exit(all->completion_code = code);
+	exit(g_completion_code);
 }

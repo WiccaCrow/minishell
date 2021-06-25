@@ -35,12 +35,12 @@ void	exec_exit(t_all *all)
 	int	pipe_on_of;
 
 	pipe_on_of = 0;
-	if ((*(all->commands))->end_flag && PIPE)
+	if ((*(all->commands))->end_flag&PIPE)
 		pipe_on_of = 1;
 	write((*(all->commands))->output_fd, "exit\n", 6);
-	all->completion_code = exit_code(all);
+    g_completion_code = exit_code(all);
 	if (((all->args[0] && !all->args[1]) || !all->args[0]) && !pipe_on_of)
-		exit_clean(all, all->completion_code);
+		exit_clean(all);
 }
 
 /************************************
@@ -65,8 +65,8 @@ int	exit_code(t_all *all)
 		write((*(all->commands))->output_fd, "bash: exit: ", 13);
 		write((*(all->commands))->output_fd, all->args[0], ft_strlen(all->args[0]));
 		write((*(all->commands))->output_fd, ": numeric argument required\n", 29);
-		all->completion_code = 255;
-		exit_clean(all, all->completion_code);
+        g_completion_code = 255;
+		exit_clean(all);
 	}
 	if (all->args[1]!= NULL)
 	{

@@ -24,7 +24,7 @@ int	exec_export(t_all *all)
 {
 	int	i;
 
-	all->completion_code = 0;
+    g_completion_code = 0;
 	i = count_env_lines(all);
 	if (!all->args[0])
 		sort_env(all, i, -1, 0);
@@ -71,8 +71,8 @@ void	sort_env(t_all *all, int i, int k, int j)
 	char	**sort_env_index;
 	int		*sort;
 
-	all->completion_code = do_sort_index(all, &sort_env_index, &sort, i);
-	if (all->completion_code)
+    g_completion_code = do_sort_index(&sort_env_index, &sort, i);
+	if (g_completion_code)
 		return ;
 	j_zero = 0;
 	while (i)
@@ -101,7 +101,7 @@ void	sort_env(t_all *all, int i, int k, int j)
  * 		The Sort array contains ascending indices of strings.
 */
 
-int	do_sort_index(t_all *all, char ***sort_env_index, int **sort, int i)
+int	do_sort_index(char ***sort_env_index, int **sort, int i)
 {
 	int	k;
 
@@ -113,8 +113,8 @@ int	do_sort_index(t_all *all, char ***sort_env_index, int **sort, int i)
 	while (++k < i)
 		(*sort)[k] = 1;
 	if (*sort_env_index == NULL || *sort == NULL)
-		completion_code_malloc_error(&(all->completion_code), NULL, "export without arguments: ");
-	return (all->completion_code);
+		completion_code_malloc_error(NULL, "export without arguments: ");
+	return (g_completion_code);
 }
 
 /************************************

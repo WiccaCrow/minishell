@@ -17,12 +17,12 @@ void	exec_env(t_all *all)
 	int	i;
 
 	i = -1;
-	all->completion_code = 0;
+    g_completion_code = 0;
 	if (all->args[0])
 	{
 		write((*(all->commands))->output_fd, "env: must be without any ", 26);
 		write((*(all->commands))->output_fd, "options and any arguments\n", 27);
-		all->completion_code = 127;
+        g_completion_code = 127;
 	}
 	else
 		while (all->env[++i])

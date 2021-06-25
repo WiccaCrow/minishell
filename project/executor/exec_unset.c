@@ -22,15 +22,15 @@ int	exec_unset(t_all *all)
 	int		i;
 	int		j;
 
-	all->completion_code = 0;
+    g_completion_code = 0;
 	j = -1;
 	i = count_env_lines(all);
 	i = count_lines(all, "unset", i, j);
 	env_new = (char **)malloc((i + 1) * sizeof(char *));
 	env_new[i] = NULL;
 	if (!env_new)
-		completion_code_malloc_error(&(all->completion_code), NULL, "unset");
-	if (all->completion_code == 0)
+		completion_code_malloc_error(NULL, "unset");
+	if (g_completion_code == 0)
 	{
 		exec_unset_find_env_str(all, "unset");
 		exec_unset_do_new_env(all, env_new, i);

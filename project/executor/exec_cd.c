@@ -19,10 +19,10 @@ int	exec_cd(t_all *all)
 	int		ret_chdir;
 	int		i;
 
-	all->completion_code = 0;
+    g_completion_code = 0;
 	i = 0;
 	if (all->args[0] == NULL)
-		return (all->completion_code = 0);
+		return (g_completion_code = 0);
 	ret_chdir = chdir(all->args[0]);
 	if (ret_chdir == -1)
 	{
@@ -30,14 +30,14 @@ int	exec_cd(t_all *all)
 		char *err = strerror(errno);
 		write(STDERR_FILENO, err, ft_strlen(err));
 		write(STDERR_FILENO, "\n", 1);
-		all->completion_code = 1;
+        g_completion_code = 1;
 	}
 	else
 	{
 		change_oldpwd(all);
 		change_pwd(all);	
 	}
-	return (all->completion_code);
+	return (g_completion_code);
 }
 
 /************************************

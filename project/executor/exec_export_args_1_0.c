@@ -46,7 +46,7 @@ void	subjoin_env(t_all *all, int i, int j)
 	env_new = (char **)malloc((i + 1) * sizeof(char *));// создание нового массива
 	if (!env_new)
 	{
-		completion_code_malloc_error(&(all->completion_code), NULL, "export with arguments");
+		completion_code_malloc_error(NULL, "export with arguments");
 		return ;
 	}
 	env_new[i] = NULL;// зануляю окончание нового массива
@@ -55,7 +55,7 @@ void	subjoin_env(t_all *all, int i, int j)
 		env_new[count] = all->env[count];
 	env_new[count] = NULL;
 	export_args_to_new_env(all, j, env_new);// заполняю новый массив аргументами
-	if (all->completion_code == 0)
+	if (g_completion_code == 0)
 	{
 		free(all->env);
 		all->env = env_new;
@@ -203,7 +203,7 @@ void	export_args_to_new_env(t_all *all, int j, char **env_new)
 	int		i_env_new;
 
 	i_env_old = count_env_lines(all);
-	while (all->args[++j] && all->completion_code == 0)
+	while (all->args[++j] && g_completion_code == 0)
 	{
 		if (!check_valid_args(all, "export", j, 0))
 			continue;
