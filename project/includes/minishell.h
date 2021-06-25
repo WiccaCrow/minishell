@@ -21,6 +21,7 @@
 # define SHIELD 4
 # define PIPE 1
 # define SEMICOLON 2
+# define START_PIPE 4
 # define SIGINT_CALL (1 << 8)
 
 #include <sys/types.h>//DIR *opendir(const char *name);
@@ -93,6 +94,7 @@ enum e_command	get_command(t_all *all, int i);
 enum e_command	get_command2(char *word);
 int				args_list_to_arr2(t_list **args, t_command *command);
 int 			set_command_to_all(t_all *all);
+int 			set_start_pipes(t_all *all);
 int				open_file(t_command *command, char *filename, char *pwd);
 int				free_commands(t_command **commands);
 
