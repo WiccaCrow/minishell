@@ -46,35 +46,6 @@
 /**
 * Мэйн на термкапах
 */
-//
-//int main(int ac, char **av, char **env)
-//{
-//	t_all	all;
-//
-//	(void) ac;
-//	(void) av;
-//	start_all(&all, env);
-//	while (1)
-//	{
-//		show_program_name();
-//		if (line_getter(&all))
-//		{
-//			while (all.line && *all.line && check_line(&all) && \
-//			dollar_handler(&all) && parser2(&all))
-//				executor(&all);
-//		}
-//		else
-//			break ;			
-//		free(all.args);
-//		all.args = NULL;
-//	}
-//	exit_clean(&all, 0);
-//	return (0);
-//}
-
-/**
- * Мэйн на гетнекстлайне для дебага
- */
 
 int main(int ac, char **av, char **env)
 {
@@ -82,28 +53,59 @@ int main(int ac, char **av, char **env)
 
 	(void) ac;
 	(void) av;
-	signal(SIGINT, signal_handler);
-
+	signal(SIGINT, sigint_handler);
+	signal(SIGQUIT, sigquit_handler);
 	start_all(&all, env);
-
 	while (1)
 	{
-		if (fill_all(&all) != -1)
+		show_program_name();
+		if (line_getter(&all))
 		{
 			while (all.line && *all.line && check_line(&all) && \
 			dollar_handler(&all) && parser2(&all))
 				executor(&all);
 		}
 		else
-			break ;
-		free(all.line);
-		all.line = NULL;
+			break ;			
 		free(all.args);
 		all.args = NULL;
 	}
 	exit_clean(&all, 0);
 	return (0);
 }
+
+/**
+ * Мэйн на ридлайне для дебага
+ */
+//
+//int main(int ac, char **av, char **env)
+//{
+//	t_all	all;
+//
+//	(void) ac;
+//	(void) av;
+//	signal(SIGINT, sigint_handler);
+//
+//	start_all(&all, env);
+//
+//	while (1)
+//	{
+//		if (fill_all(&all) != -1)
+//		{
+//			while (all.line && *all.line && check_line(&all) && \
+//			dollar_handler(&all) && parser2(&all))
+//				executor(&all);
+//		}
+//		else
+//			break ;
+//		free(all.line);
+//		all.line = NULL;
+//		free(all.args);
+//		all.args = NULL;
+//	}
+//	exit_clean(&all, 0);
+//	return (0);
+//}
 
 /************************************
  * 		1.1. start_all				*
@@ -126,6 +128,7 @@ void	start_all(t_all *all, char **env)
 
 	i = 0;
 	all->completion_code = 0;
+	g_completion_code = 0;
 	all->parse_error = 0;
 	all->line = NULL;
 	all->args = NULL;

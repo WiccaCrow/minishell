@@ -21,9 +21,12 @@
 # define SHIELD 4
 # define PIPE 1
 # define SEMICOLON 2
+# define SIGINT_CALL (1 << 8)
 
 #include <sys/types.h>//DIR *opendir(const char *name);
 #include <dirent.h>//DIR *opendir(const char *name);
+
+int g_completion_code;
 
 enum e_command
 {
@@ -71,7 +74,8 @@ void			init_env(t_all *all, char **env);
 void			init_commands(t_all *all);
 void			exit_clean(t_all *all, int code);
 int 			fill_all(t_all *all);
-void			signal_handler(int sig);
+void			sigint_handler(int sig);
+void			sigquit_handler(int sig);
 
 int				show_program_name(void);
 
