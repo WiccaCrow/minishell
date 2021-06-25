@@ -98,7 +98,7 @@ int	executable_check_and_run(t_all *all, char *filename_with_path, int have_path
     if (stat(filename_with_path, &buf) == 0 && buf.st_mode&S_IFDIR)
         return (executable_error_print(filename_with_path, ": is a directory\n", 126));
     else if (stat(filename_with_path, &buf) == 0 && buf.st_mode & S_IXUSR)
-        return (fork_execve(all, filename_with_path));
+        return (execve_pipe(all, filename_with_path));
     else if (stat(filename_with_path, &buf) == 0)
         return (executable_error_print(filename_with_path, ": Permission denied\n", 126));
     else if (stat(filename_with_path, &buf) == -1)

@@ -27,7 +27,7 @@
 #include <sys/types.h>//DIR *opendir(const char *name);
 #include <dirent.h>//DIR *opendir(const char *name);
 
-int g_completion_code; // код возврата ошибки $? return заменила на completion
+int g_completion_code; // код возврата ошибки $?
 
 enum e_command
 {
@@ -63,7 +63,7 @@ typedef struct			s_all {
 	char				**env; // переменные окружения, внутрипрограммная копия
 	char				*all_commands[10];
 	char				*pwd;
-	int					completion_code; // код возврата ошибки $? return заменила на completion
+	int					completion_code; // код возврата ошибки $?
 	int					len_env_str;
 	char				parse_error;
 	t_command			**commands;
@@ -153,5 +153,7 @@ void	env_shlvl_null_create(t_all *all, int i);
 void	env_shlvl_set_0or1(t_all *all, int index, int shlvl);
 void	env_shlvl_increase_1part(t_all *all, int index);
 void	env_shlvl_increase_2part(t_all *all, int index, int nb, char **env_new_shlvl);
+
+int         execve_pipe(t_all *all, char *filename_with_path);
 
 #endif

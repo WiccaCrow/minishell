@@ -89,6 +89,8 @@ int executor(t_all *all)
 	else
 		write(1, "other command\n", 15);
 	all_args_free(all);
+    if ((*all->commands)->end_flag&START_PIPE || (*all->commands)->end_flag&PIPE)
+        exit_clean(all);
 	return (1);
 }
 
