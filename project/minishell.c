@@ -94,7 +94,12 @@ int main(int ac, char **av, char **env)
 		{
 			while (all.line && *all.line && check_line(&all) && \
 			dollar_handler(&all) && parser2(&all))
-				executor(&all);
+			{
+                if ((*all.commands)->end_flag & START_PIPE || (*all.commands)->end_flag & PIPE)
+                    all_pipes(all.commands, all.env);
+                else
+                    executor(&all);
+            }
 		}
 		else
 			break ;

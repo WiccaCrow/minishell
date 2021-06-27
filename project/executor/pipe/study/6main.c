@@ -13,27 +13,32 @@ typedef struct			s_command {
     struct s_command	*next;
 }						t_command;
 
-int pipe_23(char **com_name, int fd0, char **envp)
+int pipe_23(char **com_name, int fd0, char **envp, int end_flag)
 {
     int file_pipes[2];
 
-    pipe(file_pipes);
-    if (!fork())
+    if (pipe(file_pipes) == 0)
     {
-        dup2(file_pipes[1], 1);                         // всё, что писалось бы в терминал,
-                                                        // теперь пишется в то место, куда
-                                                        // записалось file_pipes[1] (то есть 0
-                                                        // после dup2)
-        close(file_pipes[1]);
-        close(file_pipes[0]);
+        if (!fork())
+        {
+            dup2(file_pipes[1], 1);                         // всё, что писалось бы в терминал, теперь пишется в то место, куда записалось file_pipes[1] (то есть после dup2)
+            close(file_pipes[1]);
+            close(file_pipes[0]);
 
-        dup2(fd0, 0);
-        close(fd0);
-        execve(com_name[0], com_name, envp);            // ls теперь записан в 1
+            if (end_flag == 2)
+            {
+                dup2(fd0, 0);
+                close(fd0);
+            }
+            execve(com_name[0], com_name, envp);            // ls теперь записан в 1
+        }
+        if (end_flag == 2)
+            close(fd0);
+        close(file_pipes[1]);
+        wait(NULL);
+        return (file_pipes[0]);
     }
-    close(fd0);
-    close(file_pipes[1]);
-    return (file_pipes[0]);
+    return (0);
 }
 
 int all_pipes(t_command **commands, char **envp)
@@ -41,50 +46,23 @@ int all_pipes(t_command **commands, char **envp)
     t_command *tmp;
     tmp = *commands;
 
-    int file_pipes[2];
-
     int fd0;
 
-    if (pipe(file_pipes) == 0)                              // создаю канал
+    fd0 = 0;
+    while (tmp->next)
     {
-        if (!fork())
-        {
-            dup2(file_pipes[1], 1);                         // всё, что писалось бы в терминал,
-                                                            // теперь пишется в то место, куда
-                                                            // записалось file_pipes[1] (то есть 0
-                                                            // после dup2)
-            close(file_pipes[1]);
-            close(file_pipes[0]);
-            execve(tmp->args[0], tmp->args, envp);          // ls теперь записан в 1
-        }
-        close(file_pipes[1]);
-        fd0 = file_pipes[0];
+        fd0 = pipe_23(tmp->args, fd0, envp, tmp->end_flag);
         tmp = tmp->next;
-
-        if (tmp->end_flag == 2)
-        {
-
-            fd0 = pipe_23(tmp->args, file_pipes[0], envp);
-            tmp = tmp->next;
-        }
-
+    }
         if (!fork())                                        //executor();
         {
-            dup2(fd0, 0);                                   // всё, что читалось бы из терминала,
-                                                            // теперь читается из того места, куда
-                                                            // записалось file_pipes[1] (то есть 1
-                                                            // после dup2)
+            dup2(fd0, 0);                                   // всё, что читалось бы из терминала, теперь читается из того места, куда записалось file_pipes[1] (то есть 1 после dup2)
             close(fd0);
-            execve(tmp->args[0], tmp->args, envp);          // cat теперь должен получить мою
-                                                            // строку "123" и вывести в терминал
+            execve(tmp->args[0], tmp->args, envp);          // cat теперь должен получить мою строку "123" и вывести в терминал
         }
         close(fd0);
-//        printf("tmp->args[0] = %s\n", tmp->args[0]);
+            wait(NULL);
 
-        wait(NULL);
-        wait(NULL);
-        wait(NULL);
-    }
     return (0);
 }
 
@@ -103,6 +81,16 @@ int    fill_commands(t_command **commands)
     tmp->end_flag = 1;// справа пайп
 
     //com2
+    tmp->next = (t_command *)malloc(sizeof(t_command));
+    tmp = tmp->next;
+    tmp->args = (char **)malloc(sizeof(char*) * 4);
+    tmp->args[0] = "/bin/cat";//ls и все что угодно;
+    tmp->args[1] = "-e";
+    tmp->args[2] = 0;
+    tmp->args[3] = NULL;
+    tmp->end_flag = 2;// слева и справа пайп
+
+    //com4
     tmp->next = (t_command *)malloc(sizeof(t_command));
     tmp = tmp->next;
     tmp->args = (char **)malloc(sizeof(char*) * 4);

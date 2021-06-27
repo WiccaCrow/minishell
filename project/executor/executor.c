@@ -89,8 +89,11 @@ int executor(t_all *all)
 	else
 		write(1, "other command\n", 15);
 	all_args_free(all);
+write(1, "test executor\n", 14);
     if ((*all->commands)->end_flag&START_PIPE || (*all->commands)->end_flag&PIPE)
         exit_clean(all);
+    if ((*all->commands)->next && (*all->commands)->end_flag&START_PIPE)
+        (*all->commands) = (*all->commands)->next;
 	return (1);
 }
 
