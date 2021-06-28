@@ -50,7 +50,7 @@ tmp = *commands;
     return (0);
 }
 
-int all_pipes(t_command **commands, char **envp)
+int     all_pipes(t_command **commands, char **envp)
 {
     t_command *tmp;
     tmp = *commands;

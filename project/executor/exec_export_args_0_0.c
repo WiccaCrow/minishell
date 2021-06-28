@@ -65,7 +65,7 @@ int	count_env_lines(t_all *all)
  * 	free_sort_index;
 */
 
-void	sort_env(t_all *all, int i, int k, int j)
+void	    sort_env(t_all *all, int i, int k, int j)
 {
 	int		j_zero;
 	char	**sort_env_index;
