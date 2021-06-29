@@ -105,8 +105,6 @@ int main(int ac, char **av, char **env)
 			break ;
 		free(all.line);
 		all.line = NULL;
-		free(all.args);
-		all.args = NULL;
 	}
 	exit_clean(&all);
 	return (0);
@@ -136,7 +134,6 @@ void	start_all(t_all *all, char **env)
     g_completion_code = 0;
 	all->parse_error = 0;
 	all->line = NULL;
-	all->args = NULL;
 	all->commands = NULL;
 	all->pwd = getcwd(NULL, 0);
 	init_env(all, env);
@@ -144,33 +141,6 @@ void	start_all(t_all *all, char **env)
 	all->history = get_history();
 	while (all->env[i] && ft_strncmp(all->env[i], "PWD=", 4))
 		++i;
-	init_commands(all);
-}
-
-/************************************
- * 		1.1.2. init_commands		*
- * **********************************
-*/
-/* Description:
- * init our shell commands.
- *
- * Contain functions:
- *  libft. init_env;
- *          do copy env.
- */
-
-void	init_commands(t_all *all)
-{
-	all->all_commands[0] = ft_strdup("echo");
-	all->all_commands[1] = ft_strdup("cd");
-	all->all_commands[2] = ft_strdup("pwd");
-	all->all_commands[3] = ft_strdup("export");
-	all->all_commands[4] = ft_strdup("unset");
-	all->all_commands[5] = ft_strdup("env");
-	all->all_commands[6] = ft_strdup("ctrl_c");
-	all->all_commands[7] = ft_strdup("ctrl_d");
-	all->all_commands[8] = ft_strdup("ctrl_slash");
-	all->all_commands[9] = ft_strdup("exit");
 }
 
 /************************************

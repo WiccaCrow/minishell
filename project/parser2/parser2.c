@@ -5,18 +5,6 @@
  * только для одной комманды
 */
 
-int set_command_to_all(t_all *all)
-{
-	if (all->commands && *all->commands)
-	{
-		all->flag_command = (*all->commands)->flag_command;
-		all->args = (*all->commands)->args;
-	}
-	else
-		all->flag_command = not_found;
-	return (0);
-}
-
 int show_commands(t_command **commands)
 {
 	t_command *tmp;
@@ -217,13 +205,10 @@ int parser2(t_all *all)
 	int			i;
 
 	i = 0;
-//	if (all->commands)
-//		free_commands(all->commands);
 	all->parse_error = 0;
 	all->commands = (t_command **)ft_calloc(1, sizeof (t_command *));
 	if (all->commands)
 	{
-//		*all->commands = NULL;
 		i = skip_spaces(all->line, i);
 		while (all->line && all->line[i] && all->line[i] != ';')
 		{
@@ -232,7 +217,6 @@ int parser2(t_all *all)
 		}
 		set_start_pipes(all);
 		show_commands(all->commands);
-		set_command_to_all(all);
 		crop_line(&(all->line));
 		if (all->parse_error == 0)
 			return (1);
