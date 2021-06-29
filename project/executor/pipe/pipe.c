@@ -13,25 +13,29 @@
 //    return (0);
 //}
 
-int pipe_23(char **com_name, int fd0, char **envp, int end_flag, t_command **commands)
+/**
+ * 
+ * изменил функцию, теперь она принимает конкретную команду, а не лист
+ * возвращает выходной конец трубы
+ */
+
+int pipe_23(char **com_name, int fd0, char **envp, int end_flag, t_command *command)
 {
     int			file_pipes[2];
-	t_command	*tmp;
 
-	if(!commands)
+	if(!command)
 		return (0);
-	tmp = *commands;
     if (pipe(file_pipes) == 0)
     {
         if (!fork())
         {
-            dup2(file_pipes[1], 1);                         // всё, что писалось бы в терминал, теперь пишется в то место, куда записалось file_pipes[1] (то есть после dup2)
-            close(file_pipes[1]);
-            close(file_pipes[0]);
+            dup2(file_pipes[1], 1);  // всё, что писалось бы в терминал, теперь пишется в то место, куда записалось file_pipes[1] (то есть после dup2)
+//            close(file_pipes[1]);
+//            close(file_pipes[0]);
 
-            if (end_flag&START_PIPE && end_flag&PIPE)
+            if (end_flag & START_PIPE && end_flag & PIPE)
             {
-                dup2(fd0, tmp->input_fd);
+                dup2(fd0, command->input_fd);
                 close(fd0);
             }
 
@@ -39,7 +43,7 @@ int pipe_23(char **com_name, int fd0, char **envp, int end_flag, t_command **com
             exit (0);
         }
 
-        if (end_flag&START_PIPE && end_flag&PIPE)
+        if (end_flag & START_PIPE && end_flag & PIPE)
             close(fd0);
         close(file_pipes[1]);
         wait(NULL);
@@ -66,11 +70,11 @@ int     all_pipes(t_command **commands, char **envp)
     int fd0;
 
     fd0 = tmp->input_fd;
-    while (tmp->next && tmp->end_flag & PIPE)
+    while (tmp && tmp->end_flag & PIPE)
     {
 		printf("tmp->args[0] = |%s|\n", tmp->args[0]);
 		stdout = stdoutt;
-        fd0 = pipe_23(tmp->args, fd0, envp, tmp->end_flag, commands);
+        fd0 = pipe_23(tmp->args, fd0, envp, tmp->end_flag, tmp);
         tmp = tmp->next;
     }
     printf("tmp->args[0] = |%s|\n", tmp->args[0]);
