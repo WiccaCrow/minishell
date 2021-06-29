@@ -38,6 +38,7 @@ int pipe_23(char **com_name, int fd0, char **envp, int end_flag, t_command *comm
 			execve(com_name[0], com_name, envp); // ls теперь записан в 1
 			exit(0);
 		}
+		wait(NULL);
 		return (file_pipes[0]);
 	}
     return (0);
@@ -63,7 +64,6 @@ int     all_pipes(t_command **commands, char **envp)
 			printf("tmp->args[0] = |%s|\n", tmp->args[0]);
 			tmp = tmp->next;
 		}
-		wait(NULL);
 		write(1, "pipe\n", 5);
 	}
     return (0);
