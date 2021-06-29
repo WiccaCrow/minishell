@@ -44,8 +44,8 @@
 */
 
 /**
-* Мэйн на термкапах
-*/
+ * Мэйн на ридлайне для дебага
+ */
 
 int main(int ac, char **av, char **env)
 {
@@ -53,23 +53,27 @@ int main(int ac, char **av, char **env)
 
 	(void) ac;
 	(void) av;
-	signal(SIGINT, sigint_handler);
-	signal(SIGQUIT, sigquit_handler);
+//	signal(SIGINT, sigint_handler);
+
 	start_all(&all, env);
+
 	while (1)
 	{
-		show_program_name();
-		if (line_getter(&all))
+		if (fill_all(&all) != -1)
 		{
 			while (all.line && *all.line && check_line(&all) && \
 			dollar_handler(&all) && parser2(&all))
+			{
                 if ((*all.commands)->end_flag & START_PIPE || (*all.commands)->end_flag & PIPE)
                     all_pipes(all.commands, all.env);
                 else
                     executor(&all);
+            }
 		}
 		else
-			break ;			
+			break ;
+		free(all.line);
+		all.line = NULL;
 	}
 	exit_clean(&all);
 	return (0);
