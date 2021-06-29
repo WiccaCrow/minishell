@@ -17,7 +17,7 @@ int skip_command(const char *line, int i)
 
 int skip_spaces(const char *line, int i)
 {
-	while (line && line[i] && line[i] == ' ')
+	while (line && ((line[i] >= 9 && line[i] <= 13) || line[i] == 32))
 		i++;
 	return (i);
 }
