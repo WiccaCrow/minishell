@@ -15,12 +15,12 @@
 
 int pipe_23(char **com_name, int fd0, char **envp, int end_flag, t_command **commands)
 {
-    int file_pipes[2];
-t_command *tmp;
-tmp = *commands;
+    int			file_pipes[2];
+	t_command	*tmp;
 
-
-
+	if(!commands)
+		return (0);
+	tmp = *commands;
     if (pipe(file_pipes) == 0)
     {
         if (!fork())
@@ -52,24 +52,28 @@ tmp = *commands;
 
 int     all_pipes(t_command **commands, char **envp)
 {
-    t_command *tmp;
+    t_command	*tmp;
+    
+    if (!commands)
+		return (0);
     tmp = *commands;
-write(1, "pipe\n", 5);
-    int stdout; int stdoutt = dup(tmp->output_fd);
+	write(1, "pipe\n", 5);
+    int stdout;
+    int stdoutt = dup(tmp->output_fd);
 
 //int stdout; stdout = dup(1);
 
     int fd0;
 
     fd0 = tmp->input_fd;
-    while (tmp->next && tmp->end_flag&PIPE)
+    while (tmp->next && tmp->end_flag & PIPE)
     {
-printf("tmp->args[0] = |%s|\n", tmp->args[0]);
-stdout = stdoutt;
+		printf("tmp->args[0] = |%s|\n", tmp->args[0]);
+		stdout = stdoutt;
         fd0 = pipe_23(tmp->args, fd0, envp, tmp->end_flag, commands);
         tmp = tmp->next;
     }
-printf("tmp->args[0] = |%s|\n", tmp->args[0]);
+    printf("tmp->args[0] = |%s|\n", tmp->args[0]);
 
     if (!fork())                                        // executor();
     {
