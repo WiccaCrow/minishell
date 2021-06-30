@@ -66,9 +66,7 @@
 //				executor(&all);
 //		}
 //		else
-//			break ;			
-//		free(all.args);
-//		all.args = NULL;
+//			break ;
 //	}
 //	exit_clean(&all);
 //	return (0);
