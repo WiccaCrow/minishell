@@ -56,12 +56,9 @@ typedef struct			s_command {
 }						t_command;
 
 typedef struct			s_all {
-	enum e_command		flag_command;
 	char				*line;
-	char 				**args; // аргументы комманды
 	char 				**history; //  история комманд
 	char				**env; // переменные окружения, внутрипрограммная копия
-	char				*all_commands[10];
 	char				*pwd;
 	int					completion_code; // код возврата ошибки $?
 	int					len_env_str;
