@@ -33,14 +33,14 @@ void	all_args_free(t_all *all)
  * libft. ft_strlen;
 */
 
-void command_not_found(t_all *all)
+void command_not_found(t_all *all, t_command *tmp)
 {
     g_completion_code = 0;
-	if (executable(all) == 0)
+	if (executable(all, tmp) == 0)
 		return ;
-	write((*all->commands)->output_fd, "minishell: ", 12);
-	write((*all->commands)->output_fd, (*all->commands)->args[0], ft_strlen((*all->commands)->args[0]));
-	write((*all->commands)->output_fd, COM_NOT_FOUND, ft_strlen(COM_NOT_FOUND));
+	write(tmp->output_fd, "minishell: ", 12);
+	write(tmp->output_fd, tmp->args[0], ft_strlen(tmp->args[0]));
+	write(tmp->output_fd, COM_NOT_FOUND, ft_strlen(COM_NOT_FOUND));
     g_completion_code = 127;
 }
 
@@ -68,32 +68,32 @@ void command_not_found(t_all *all)
  * 1.5.   exit_clean;
 */
 
-int executor(t_all *all)
+int executor(t_all *all, t_command *tmp)
 {
-	if ((*all->commands)->flag_command == not_found)
-		command_not_found(all);
-	else if ((*all->commands)->flag_command == exit_shell)
+	if (tmp->flag_command == not_found)
+		command_not_found(all, tmp);
+	else if (tmp->flag_command == exit_shell)
 		exec_exit(all);
-	else if ((*all->commands)->flag_command == echo)
+	else if (tmp->flag_command == echo)
 		exec_echo(all);
-	else if ((*all->commands)->flag_command == cd)
+	else if (tmp->flag_command == cd)
 		exec_cd(all);
-	else if ((*all->commands)->flag_command == pwd)
+	else if (tmp->flag_command == pwd)
 		exec_pwd(all);
-	else if ((*all->commands)->flag_command == env)
+	else if (tmp->flag_command == env)
 		exec_env(all);
-	else if ((*all->commands)->flag_command == export)
+	else if (tmp->flag_command == export)
 		exec_export(all);
-	else if ((*all->commands)->flag_command == unset)
+	else if (tmp->flag_command == unset)
 		exec_unset(all);
 	else
 		write(1, "other command\n", 15);
 	all_args_free(all);
 write(1, "test executor\n", 14);
-    if ((*all->commands)->end_flag&START_PIPE || (*all->commands)->end_flag&PIPE)
-        exit_clean(all);
-    if ((*all->commands)->next && (*all->commands)->end_flag&START_PIPE)
-        (*all->commands) = (*all->commands)->next;
+//    if ((*all->commands)->end_flag&START_PIPE || (*all->commands)->end_flag&PIPE)
+//        exit_clean(all);
+//    if ((*all->commands)->next && (*all->commands)->end_flag&START_PIPE)
+//        (*all->commands) = (*all->commands)->next;
 	return (1);
 }
 

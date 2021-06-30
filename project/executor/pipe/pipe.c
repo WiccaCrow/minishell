@@ -13,13 +13,9 @@
 //    return (0);
 //}
 
-int pipe_23(char **com_name, int fd0, char **envp, int end_flag, t_command **commands)
+int pipe_23(char **com_name, int fd0, char **envp, int end_flag, t_command *tmp)
 {
     int file_pipes[2];
-t_command *tmp;
-tmp = *commands;
-
-
 
     if (pipe(file_pipes) == 0)
     {
@@ -43,6 +39,7 @@ tmp = *commands;
             close(fd0);
         close(file_pipes[1]);
         wait(NULL);
+//        all->fd0 = file_pipes[0];
         return (file_pipes[0]);
     }
 //if (end_flag&START_PIPE && end_flag&PIPE)// чтобы не менять объявл функ
@@ -50,39 +47,38 @@ tmp = *commands;
     return (0);
 }
 
-int     all_pipes(t_command **commands, char **envp)
+int     all_pipes(t_all *all, t_command *tmp, char **envp)
 {
-    t_command *tmp;
-    tmp = *commands;
+//    t_command *tmp;
+//    tmp = *commands;
 write(1, "pipe\n", 5);
     int stdout; int stdoutt = dup(tmp->output_fd);
 
 //int stdout; stdout = dup(1);
+    all->tmp = *all->commands;
 
-    int fd0;
-
-    fd0 = tmp->input_fd;
-    while (tmp->next && tmp->end_flag&PIPE)
+    all->fd0 = all->tmp->input_fd;
+    while (all->tmp->next && all->tmp->end_flag&PIPE)
     {
-printf("tmp->args[0] = |%s|\n", tmp->args[0]);
+printf("tmp->args[0] = |%s|\n", all->tmp->args[0]);
 stdout = stdoutt;
-        fd0 = pipe_23(tmp->args, fd0, envp, tmp->end_flag, commands);
-        tmp = tmp->next;
+        all->fd0 = pipe_23(all->tmp->args, all->fd0, envp, all->tmp->end_flag, all->tmp);
+        all->tmp = all->tmp->next;
     }
-printf("tmp->args[0] = |%s|\n", tmp->args[0]);
+printf("tmp->args[0] = |%s|\n", all->tmp->args[0]);
 
     if (!fork())                                        // executor();
     {
-        dup2(fd0, tmp->input_fd);                                   // всё, что читалось бы из терминала, теперь читается из того места, куда записалось file_pipes[1] (то есть 1 после dup2)
-        close(fd0);
+        dup2(all->fd0, all->tmp->input_fd);                       // всё, что читалось бы из терминала, теперь читается из того места, куда записалось file_pipes[1] (то есть 1 после dup2)
+        close(all->fd0);
 
 //        dup2(stdout, 1);
 //        close(stdout);
 
-        execve(tmp->args[0], tmp->args, envp);          // cat теперь должен получить мою строку "123" и вывести в терминал
+        execve(all->tmp->args[0], all->tmp->args, envp);          // cat теперь должен получить мою строку "123" и вывести в терминал
         exit (0);
     }
-    close(fd0);
+    close(all->fd0);
     wait(NULL);
 
     write(1, "pipe\n", 5);

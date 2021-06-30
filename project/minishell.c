@@ -96,9 +96,9 @@ int main(int ac, char **av, char **env)
 			dollar_handler(&all) && parser2(&all))
 			{
                 if ((*all.commands)->end_flag & START_PIPE || (*all.commands)->end_flag & PIPE)
-                    all_pipes(all.commands, all.env);
+                    all_pipes(&all, *all.commands, all.env);
                 else
-                    executor(&all);
+                    executor(&all, *all.commands);
             }
 		}
 		else
@@ -138,6 +138,7 @@ void	start_all(t_all *all, char **env)
 	all->line = NULL;
 	all->args = NULL;
 	all->commands = NULL;
+    all->tmp = NULL;///////////////////////
 	all->pwd = getcwd(NULL, 0);
 	init_env(all, env);
 	shlvl_set(all);

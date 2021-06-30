@@ -35,7 +35,7 @@
  * 		1.4. completion_code_malloc_error;
 */
 
-int	executable(t_all *all)
+int	executable(t_all *all, t_command *tmp)
 {
 	char	**path_from_env;
 	char    *com_name;
@@ -43,7 +43,7 @@ int	executable(t_all *all)
 	int		path;
 
     g_completion_code = 0;
-	path = executable_check_and_run(all, (*all->commands)->args[0], 1);
+	path = executable_check_and_run(all, tmp->args[0], 1, tmp);
 	if (path && g_completion_code == 127)
 		return (1);
 	if (!path || (path && g_completion_code))
@@ -55,9 +55,9 @@ int	executable(t_all *all)
 	path = -1;
 	while (path_from_env[++i] && path == -1 && 0 == g_completion_code)
 	{
-        com_name = join_directory_and_command(path_from_env[i], (*all->commands)->args[0]);
-        completion_code_malloc_error(com_name, (*all->commands)->args[0]);
-        path = executable_check_and_run(all, com_name, 0);
+        com_name = join_directory_and_command(path_from_env[i], tmp->args[0]);
+        completion_code_malloc_error(com_name, tmp->args[0]);
+        path = executable_check_and_run(all, com_name, 0, tmp);
     }
 	return (path == -1);
 }
@@ -89,7 +89,7 @@ int	executable(t_all *all)
  * 		1.1.2. executable_error_print;
 */
 
-int	executable_check_and_run(t_all *all, char *filename_with_path, int have_path)
+int	executable_check_and_run(t_all *all, char *filename_with_path, int have_path, t_command *tmp)
 {
     struct stat buf;
 
@@ -98,8 +98,12 @@ int	executable_check_and_run(t_all *all, char *filename_with_path, int have_path
     if (stat(filename_with_path, &buf) == 0 && buf.st_mode&S_IFDIR)
         return (executable_error_print(filename_with_path, ": is a directory\n", 126));
     else if (stat(filename_with_path, &buf) == 0 && buf.st_mode & S_IXUSR)
-//        return (execve_pipe(all, filename_with_path));
-        return (fork_execve(all, filename_with_path));
+    {
+        if (tmp->end_flag&START_PIPE && tmp->end_flag&PIPE)
+            return (all_pipes(all, tmp, all->env));
+        else
+            return (fork_execve(all, filename_with_path));
+    }
     else if (stat(filename_with_path, &buf) == 0)
         return (executable_error_print(filename_with_path, ": Permission denied\n", 126));
     else if (stat(filename_with_path, &buf) == -1)

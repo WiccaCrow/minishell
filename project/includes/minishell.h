@@ -67,6 +67,8 @@ typedef struct			s_all {
 	int					len_env_str;
 	char				parse_error;
 	t_command			**commands;
+    t_command           *tmp;
+    int                 fd0;
 }						t_all;
 
 
@@ -102,8 +104,8 @@ int				free_commands(t_command **commands);
 
 
 
-int 			executor(t_all *all);
-void			command_not_found(t_all *all);
+int 			executor(t_all *all, t_command *tmp);
+void			command_not_found(t_all *all, t_command *tmp);
 void 			completion_code_malloc_error(char *array_null, char *open_name);
 int				exec_echo(t_all *all);
 int				exec_cd(t_all *all);
@@ -140,8 +142,8 @@ int				args_is_digit(char *args);
 int				exit_code(t_all *all);
 void			close_fd_output_input(t_all *all);
 
-int			executable(t_all *all);
-int	        executable_check_and_run(t_all *all, char *filename_with_path, int have_path);
+int			executable(t_all *all, t_command *tmp);
+int	        executable_check_and_run(t_all *all, char *filename_with_path, int have_path, t_command *tmp);
 int			check_command_sourse(char *com_name);
 int			executable_error_print(char *com_name, char *error_message, int error_code);
 int			fork_execve(t_all *all, char *com_name);
@@ -155,7 +157,7 @@ void	env_shlvl_increase_1part(t_all *all, int index);
 void	env_shlvl_increase_2part(t_all *all, int index, int nb, char **env_new_shlvl);
 
 //int         execve_pipe(t_all *all, char *filename_with_path);
-int     all_pipes(t_command **commands, char **envp);
-int     pipe_23(char **com_name, int fd0, char **envp, int end_flag, t_command **commands);
+int     all_pipes(t_all *all, t_command *tmp, char **envp);
+int     pipe_23(char **com_name, int fd0, char **envp, int end_flag, t_command *tmp);
 
 #endif
