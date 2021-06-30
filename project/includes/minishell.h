@@ -153,6 +153,6 @@ void	env_shlvl_increase_2part(t_all *all, int index, int nb, char **env_new_shlv
 
 //int         execve_pipe(t_all *all, char *filename_with_path);
 int     all_pipes(t_command **commands, char **envp);
-int     pipe_23(char **com_name, int fd0, char **envp, int end_flag, t_command *command);
+int     pipe_23(char **com_name, int fd0, char **envp, int end_flag, t_command **commands);
 
 #endif
