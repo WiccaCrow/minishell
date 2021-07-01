@@ -4,6 +4,10 @@
 # include <stdio.h>
 # include <errno.h>
 # include <signal.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <sys/types.h>
+# include <sys/wait.h>
 # include "./parser.h"
 # include "./line_getter.h"
 # include "../libft/libft.h"
@@ -27,7 +31,7 @@
 #include <sys/types.h>//DIR *opendir(const char *name);
 #include <dirent.h>//DIR *opendir(const char *name);
 
-int g_completion_code; // код возврата ошибки $?
+extern int g_completion_code; // код возврата ошибки $?
 
 enum e_command
 {

@@ -6,7 +6,6 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <string.h>
-# include <readline/readline.h>
 
 # define KEY_UP "\e[A"
 # define KEY_DOWN "\e[B"

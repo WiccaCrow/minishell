@@ -1,4 +1,5 @@
 #include "minishell.h"
+int g_completion_code; // код возврата ошибки $?
 
 /************************************
  * 		1. main						*
@@ -61,7 +62,7 @@
 //		show_program_name();
 //		if (line_getter(&all))
 //		{
-//			while (all.line && *all.line && check_line(&all) && \
+//			while (all.line && *all.line && check_line(&all) && 
 //			dollar_handler(&all) && parser2(&all))
 //				executor(&all);
 //		}
@@ -171,8 +172,8 @@ void	init_env(t_all *all, char **env)
     all->env = (char**)malloc(sizeof(char*) * (i + 1));
     all->env[i] = NULL;
 	i = -1;
-    while (env[++i])
-        all->env[i] = ft_strdup(env[i]);
+	while (env[++i])
+		all->env[i] = ft_strdup(env[i]);
 	if (env[index_oldpwd] == NULL)
 		all->env[i] = ft_strdup("OLDPWD");
 	if (env[index_pwd] == NULL)

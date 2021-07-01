@@ -1,6 +1,6 @@
 NAME		=	minishell
 LIBFT		=	libft.a
-CCF			=	gcc $(CFLAGS)
+CCF			=	clang $(CFLAGS)
 RM			=	rm -f
 CFLAGS		=	-Wall -Wextra -Werror -g -I./includes/
 LG_PATH		=	line_getter/
@@ -59,7 +59,7 @@ rl:			$(OBJS_RL) $(HDR)
 linux:		$(OBJS) $(HDR)
 			@make bonus -C $(LIB_DIR)
 			@mv $(LIB_DIR)$(LIBFT) $(LIBFT)
-			@$(CCF) -lncurses $(OBJS) $(LIBFT) -o $(NAME)
+			@$(CCF) -lncurses -lreadline $(OBJS) $(LIBFT) -o $(NAME)
 			@echo $(NAME) is compiled
 
 clean:
