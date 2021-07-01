@@ -147,6 +147,7 @@ int			executable(t_all *all, t_command *tmp);
 int	        executable_check_and_run(t_all *all, char *filename_with_path, int have_path, t_command *tmp);
 int			check_command_sourse(char *com_name);
 int			executable_error_print(char *com_name, char *error_message, int error_code);
+void		repointer_to_filename_with_path(char **args0, char *filename_with_path);
 int			fork_execve(t_all *all, char *com_name);
 char		**path_env(t_all *all);
 char		*join_directory_and_command(char *directory, char *command_name);
@@ -158,7 +159,9 @@ void	env_shlvl_increase_1part(t_all *all, int index);
 void	env_shlvl_increase_2part(t_all *all, int index, int nb, char **env_new_shlvl);
 
 //int         execve_pipe(t_all *all, char *filename_with_path);
-int     all_pipes(t_all *all, t_command *tmp, char **envp);
-int     pipe_23(char **com_name, int fd0, char **envp, int end_flag, t_command *tmp);
+int		all_pipes(t_all *all, t_command *tmp);
+int		pipe_23(t_all *all, char **com_name, int fd0, char **envp, int end_flag, t_command *tmp);
+int		pipe_1st_midle(char **com_name, int fd0, char **envp, int end_flag, t_command *tmp);
+int		pipe_last(t_all *all, char **com_name, char **envp, t_command *tmp);
 
 #endif

@@ -57,3 +57,12 @@ char	*join_directory_and_command(char *directory, char *command_name)
 	}
 	return (command_name);
 }
+
+void	repointer_to_filename_with_path(char **args0, char *filename_with_path)
+{
+	if (*args0 != filename_with_path)
+	{
+		free(*args0);
+		*args0 = filename_with_path;
+	}
+}

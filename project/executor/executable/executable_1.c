@@ -99,8 +99,9 @@ int	executable_check_and_run(t_all *all, char *filename_with_path, int have_path
         return (executable_error_print(filename_with_path, ": is a directory\n", 126));
     else if (stat(filename_with_path, &buf) == 0 && buf.st_mode & S_IXUSR)
     {
-        if (tmp->end_flag&START_PIPE && tmp->end_flag&PIPE)
-            return (all_pipes(all, tmp, all->env));
+        repointer_to_filename_with_path(&tmp->args[0], filename_with_path);
+        if (tmp->end_flag&START_PIPE || tmp->end_flag&PIPE)
+            return (all->fd0 = pipe_23(all, tmp->args, all->fd0, all->env, tmp->end_flag, tmp));
         else
             return (fork_execve(all, filename_with_path));
     }
@@ -133,9 +134,6 @@ int	executable_check_and_run(t_all *all, char *filename_with_path, int have_path
 
 int	check_command_sourse(char *com_name)
 {
-    int	i;
-
-    i = 0;
     if (com_name[0] == '.' && com_name[1] == '\0')
     {
         write(STDERR_FILENO, "minishell: This command is missing from the subject.\n", 54);

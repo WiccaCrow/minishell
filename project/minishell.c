@@ -95,7 +95,7 @@ int main(int ac, char **av, char **env)
 			dollar_handler(&all) && parser2(&all))
 			{
                 if ((*all.commands)->end_flag & START_PIPE || (*all.commands)->end_flag & PIPE)
-                    all_pipes(&all, *all.commands, all.env);
+                    all_pipes(&all, *all.commands);
                 else
                     executor(&all, *all.commands);
             }
