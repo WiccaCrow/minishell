@@ -59,7 +59,8 @@ void command_not_found(t_all *all, t_command *tmp)
 		g_completion_code = 0;
 	if (!g_completion_code && executable(all, tmp) == 0)
 		return ;
-	print_command_not_found(tmp);
+	if (!g_completion_code)
+		print_command_not_found(tmp);
 }
 
 /************************************
