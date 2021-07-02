@@ -57,7 +57,7 @@ void command_not_found(t_all *all, t_command *tmp)
 {
 	if (!(tmp->end_flag&PIPE || tmp->end_flag&START_PIPE))
 		g_completion_code = 0;
-	if (!g_completion_code && executable(all, tmp) == 0)
+	if (!g_completion_code && executable(all, tmp) == 0 && !g_completion_code)
 		return ;
 	if (!g_completion_code)
 		print_command_not_found(tmp);
