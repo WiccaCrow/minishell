@@ -36,7 +36,7 @@ char *get_value(const char *key, t_all *all)
 
 	if (key && *key == '?')
 	{
-		return (ft_itoa(all->completion_code));
+		return (ft_itoa(g_completion_code));
 	}
 	i = 0;
 	while (key && all->env[i])

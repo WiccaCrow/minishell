@@ -55,7 +55,6 @@ typedef struct			s_command {
 	int					input_fd;
 	int					output_fd;
 	int					redirect_type;
-	int					return_code; // код возврата ошибки $?
 	struct s_command	*next;
 }						t_command;
 
@@ -64,7 +63,6 @@ typedef struct			s_all {
 	char 				**history; //  история комманд
 	char				**env; // переменные окружения, внутрипрограммная копия
 	char				*pwd;
-	int					completion_code; // код возврата ошибки $?
 	int					len_env_str;
 	char				parse_error;
 	t_command			**commands;
