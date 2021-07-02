@@ -7,9 +7,9 @@
  * 		the current working directory.
 */
 
-void	exec_pwd(t_all *all)
+void	exec_pwd(t_all *all, t_command *tmp)
 {
-	write((*all->commands)->output_fd, all->pwd, ft_strlen(all->pwd));
-	write((*all->commands)->output_fd, "\n", 1);
+	write(tmp->output_fd, all->pwd, ft_strlen(all->pwd));
+	write(tmp->output_fd, "\n", 1);
     g_completion_code = 0;
 }

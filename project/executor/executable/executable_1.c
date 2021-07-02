@@ -101,7 +101,10 @@ int	executable_check_and_run(t_all *all, char *filename_with_path, int have_path
     {
         repointer_to_filename_with_path(&tmp->args[0], filename_with_path);
         if (tmp->end_flag&START_PIPE || tmp->end_flag&PIPE)
-            return (all->fd0 = pipe_23(all, tmp->args, all->fd0, all->env, tmp->end_flag, tmp));
+        {
+            all->fd0 = pipe_23(all, tmp);
+            return (0);
+        }
         else
             return (fork_execve(all, filename_with_path));
     }

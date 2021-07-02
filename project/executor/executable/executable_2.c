@@ -58,6 +58,16 @@ char	*join_directory_and_command(char *directory, char *command_name)
 	return (command_name);
 }
 
+/****************************************
+ * 		repointer_to_filename_with_path	*
+ * **************************************
+*/
+/* Description:
+ * 		The function replaces the *args0 line 
+ * 		with the filename_with_pathline, the 
+ * 		filename_with_path line is freed.
+*/
+
 void	repointer_to_filename_with_path(char **args0, char *filename_with_path)
 {
 	if (*args0 != filename_with_path)

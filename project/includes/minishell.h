@@ -107,6 +107,7 @@ int				free_commands(t_command **commands);
 
 int 			executor(t_all *all, t_command *tmp);
 void			command_not_found(t_all *all, t_command *tmp);
+void			print_command_not_found(t_command *tmp);
 void 			completion_code_malloc_error(char *array_null, char *open_name);
 int				exec_echo(t_all *all);
 int				exec_cd(t_all *all);
@@ -114,7 +115,7 @@ int				get_my_env_index(char **my_env, char *env_str, size_t len_env_str);
 void			change_oldpwd(t_all *all);
 void			change_pwd(t_all *all);
 int				get_my_env_index(char **my_env, char *env_str, size_t len_env_str);
-void			exec_pwd(t_all *all);
+void			exec_pwd(t_all *all, t_command *tmp);
 void			exec_env(t_all *all);
 int				exec_export(t_all *all);
 int				count_env_lines(t_all *all);
@@ -158,10 +159,9 @@ void	env_shlvl_set_0or1(t_all *all, int index, int shlvl);
 void	env_shlvl_increase_1part(t_all *all, int index);
 void	env_shlvl_increase_2part(t_all *all, int index, int nb, char **env_new_shlvl);
 
-//int         execve_pipe(t_all *all, char *filename_with_path);
 int		all_pipes(t_all *all, t_command *tmp);
-int		pipe_23(t_all *all, char **com_name, int fd0, char **envp, int end_flag, t_command *tmp);
-int		pipe_1st_midle(char **com_name, int fd0, char **envp, int end_flag, t_command *tmp);
+int		pipe_23(t_all *all, t_command *tmp);
+int		pipe_1st_midle(t_all *all, char **com_name, int end_flag, t_command *tmp);
 int		pipe_last(t_all *all, char **com_name, char **envp, t_command *tmp);
 
 #endif

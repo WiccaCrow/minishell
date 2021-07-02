@@ -22,6 +22,26 @@ void	all_args_free(t_all *all)
 }
 
 /************************************
+ * 		print_command_not_found		*
+ * **********************************
+*/
+/* Description:
+ * Prints the result or error to standard 
+ * output. Bash standart erorr $? sets 127.
+ * 
+ * Contains functions:
+ * libft. ft_strlen;
+*/
+
+void print_command_not_found(t_command *tmp)
+{
+	write(STDERR_FILENO, "minishell: ", 12);
+	write(STDERR_FILENO, tmp->args[0], ft_strlen(tmp->args[0]));
+	write(STDERR_FILENO, COM_NOT_FOUND, ft_strlen(COM_NOT_FOUND));
+    g_completion_code = 127;
+}
+
+/************************************
  * 		1.4.1. command_not_found	*
  * **********************************
 */
@@ -35,13 +55,11 @@ void	all_args_free(t_all *all)
 
 void command_not_found(t_all *all, t_command *tmp)
 {
-    g_completion_code = 0;
-	if (executable(all, tmp) == 0)
+	if (!(tmp->end_flag&PIPE || tmp->end_flag&START_PIPE))
+		g_completion_code = 0;
+	if (!g_completion_code && executable(all, tmp) == 0)
 		return ;
-	write(STDERR_FILENO, "minishell: ", 12);
-	write(STDERR_FILENO, tmp->args[0], ft_strlen(tmp->args[0]));
-	write(STDERR_FILENO, COM_NOT_FOUND, ft_strlen(COM_NOT_FOUND));
-    g_completion_code = 127;
+	print_command_not_found(tmp);
 }
 
 /************************************
@@ -79,7 +97,7 @@ int executor(t_all *all, t_command *tmp)
 	else if (tmp->flag_command == cd)
 		exec_cd(all);
 	else if (tmp->flag_command == pwd)
-		exec_pwd(all);
+		exec_pwd(all, tmp);
 	else if (tmp->flag_command == env)
 		exec_env(all);
 	else if (tmp->flag_command == export)
@@ -87,14 +105,12 @@ int executor(t_all *all, t_command *tmp)
 	else if (tmp->flag_command == unset)
 		exec_unset(all);
 	else
-		write(1, "other command\n", 15);
-	all_args_free(all);
+		write(tmp->output_fd, "other command\n", 15);
+	// all_args_free(all);
+
 // write(1, "test executor\n", 14);
-//    if (tmp->end_flag&START_PIPE || tmp->end_flag&PIPE)
-//    	exit (g_completion_code);
+
 //        exit_clean(all);
-//    if ((*all->commands)->next && (*all->commands)->end_flag&START_PIPE)
-//        (*all->commands) = (*all->commands)->next;
 	return (1);
 }
 
