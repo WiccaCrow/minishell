@@ -13,26 +13,18 @@ int 	get_semicolon(const char *line)
 	flag = 0;
 	while (line[i])
 	{
-		if (line[i] == '\\' && !(flag & QUOTE))
-		{
-			flag = flag & SHIELD;
-			i++;
-		}
-		if (line[i] == '\"' && !(flag & SHIELD) && !(flag & QUOTE))
-		{
+		if (line[i] == '\\' && !(flag & QUOTE) && !(flag & SHIELD))
+			flag = flag | SHIELD;
+		else if (line[i] == '\"' && !(flag & SHIELD) && !(flag & QUOTE))
 			flag = flag ^ DOUBLE_QUOTE;
-			i++;
-		}
-		if (line[i] == '\'' && !(flag & SHIELD) && !(flag & DOUBLE_QUOTE))
-		{
+		else if (line[i] == '\'' && !(flag & SHIELD) && \
+				!(flag & DOUBLE_QUOTE))
 			flag = flag ^ QUOTE;
-			i++;
-		}
-		if (line[i] && line[i] == ';' && !flag)
+		else if (line[i] == ';' && !flag)
 			return (i);
-		i++;
-		if (line[i])
+		else if ((flag & SHIELD))
 			flag = flag & ~(SHIELD);
+		i++;
 	}
 	return (0);
 }
