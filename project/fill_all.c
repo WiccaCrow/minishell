@@ -22,13 +22,14 @@ static int	check_end_of_input(const char *line, int flag)
 		i = 0;
 		while (line[i])
 		{
-			if (line[i] == '\\' && !(flag & QUOTE))
+			if (line[i] == '\\' && !(flag & QUOTE) && !(flag & SHIELD))
 				flag = flag | SHIELD;
-			if (line[i] == '\"' && !(flag & SHIELD) && !(flag & QUOTE))
+			else if (line[i] == '\"' && !(flag & SHIELD) && !(flag & QUOTE))
 				flag = flag ^ DOUBLE_QUOTE;
-			if (line[i] == '\'' && !(flag & SHIELD) && !(flag & DOUBLE_QUOTE))
+			else if (line[i] == '\'' && !(flag & SHIELD) && \
+				!(flag & DOUBLE_QUOTE))
 				flag = flag ^ QUOTE;
-			if (line[i] != '\\' && (flag & SHIELD) && line[i + 1])
+			else if ((flag & SHIELD))
 				flag = flag & ~(SHIELD);
 			i++;
 		}

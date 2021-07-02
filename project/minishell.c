@@ -48,35 +48,6 @@ int g_completion_code; // код возврата ошибки $?
 * Мэйн на термкапах
 */
 
-//int main(int ac, char **av, char **env)
-//{
-//	t_all	all;
-//
-//	(void) ac;
-//	(void) av;
-//	signal(SIGINT, sigint_handler);
-//	signal(SIGQUIT, sigquit_handler);
-//	start_all(&all, env);
-//	while (1)
-//	{
-//		show_program_name();
-//		if (line_getter(&all))
-//		{
-//			while (all.line && *all.line && check_line(&all) && 
-//			dollar_handler(&all) && parser2(&all))
-//				executor(&all);
-//		}
-//		else
-//			break ;
-//	}
-//	exit_clean(&all);
-//	return (0);
-//}
-
-/**
- * Мэйн на ридлайне для дебага
- */
-
 int main(int ac, char **av, char **env)
 {
 	t_all	all;
@@ -84,12 +55,12 @@ int main(int ac, char **av, char **env)
 	(void) ac;
 	(void) av;
 	signal(SIGINT, sigint_handler);
-
+	signal(SIGQUIT, sigquit_handler);
 	start_all(&all, env);
-
 	while (1)
 	{
-		if (fill_all(&all) != -1)
+		show_program_name();
+		if (line_getter(&all))
 		{
 			while (all.line && *all.line && check_line(&all) && \
 			dollar_handler(&all) && parser2(&all))
@@ -102,12 +73,44 @@ int main(int ac, char **av, char **env)
 		}
 		else
 			break ;
-		free(all.line);
-		all.line = NULL;
 	}
 	exit_clean(&all);
 	return (0);
 }
+
+/**
+ * Мэйн на ридлайне для дебага
+ */
+
+//int main(int ac, char **av, char **env)
+//{
+//	t_all	all;
+//
+//	(void) ac;
+//	(void) av;
+//	signal(SIGINT, sigint_handler);
+//	start_all(&all, env);
+//	while (1)
+//	{
+//		if (fill_all(&all) != -1)
+//		{
+//			while (all.line && *all.line && check_line(&all) && \
+//			dollar_handler(&all) && parser2(&all))
+//			{
+//                if ((*all.commands)->end_flag & START_PIPE || (*all.commands)->end_flag & PIPE)
+//                    all_pipes(&all, *all.commands);
+//                else
+//                    executor(&all, *all.commands);
+//            }
+//		}
+//		else
+//			break ;
+//		free(all.line);
+//		all.line = NULL;
+//	}
+//	exit_clean(&all);
+//	return (0);
+//}
 
 /************************************
  * 		1.1. start_all				*

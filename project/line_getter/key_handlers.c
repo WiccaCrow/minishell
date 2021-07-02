@@ -11,7 +11,7 @@
 static int	check_end_of_input(const char *line)
 {
 	int i;
-	int flag;
+	int	flag;
 
 	flag = 0;
 	if (line)
@@ -19,18 +19,20 @@ static int	check_end_of_input(const char *line)
 		i = 0;
 		while (line[i])
 		{
-			if (line[i] == '\\' && !(flag & QUOTE))
+			if (line[i] == '\\' && !(flag & QUOTE) && !(flag & SHIELD))
 				flag = flag | SHIELD;
-			if (line[i] == '\"' && !(flag & SHIELD) && !(flag & QUOTE))
+			else if (line[i] == '\"' && !(flag & SHIELD) && !(flag & QUOTE))
 				flag = flag ^ DOUBLE_QUOTE;
-			if (line[i] == '\'' && !(flag & SHIELD) && !(flag & DOUBLE_QUOTE))
+			else if (line[i] == '\'' && !(flag & SHIELD) && \
+				!(flag & DOUBLE_QUOTE))
 				flag = flag ^ QUOTE;
-			if (line[i] != '\\' && (flag & SHIELD) && line[i + 1])
+			else if ((flag & SHIELD))
 				flag = flag & ~(SHIELD);
 			i++;
 		}
+		return (!flag);
 	}
-	return (!flag);
+	return (0);
 }
 
 /**
@@ -46,17 +48,14 @@ int		enter_handle(t_line *line)
 	if (line->main_line)
 		line->main_line = gnl_strjoin(line->main_line, "\n");
 	line->main_line = gnl_strjoin(line->main_line, line->curr_line);
-//	if (line->main_line)
-//	{
-		free(line->curr_line);
-		line->curr_line = NULL;
-		if (check_end_of_input(line->main_line))
-			return (1);
-		else
-		{
-			line->pos = 0;
-			write(STDOUT_FILENO, "\n> ", 3);
-//		}
+	free(line->curr_line);
+	line->curr_line = NULL;
+	if (check_end_of_input(line->main_line))
+		return (1);
+	else
+	{
+		line->pos = 0;
+		write(STDOUT_FILENO, "\n> ", 3);
 	}
 	return (0);
 }
