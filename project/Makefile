@@ -27,14 +27,7 @@ SRCS		=	minishell.c fill_all.c signal_handler.c start_all/start_env_shlvl.c\
 				$(addprefix $(EXEC_PATH), $(EXEC_SRCS)) \
 				$(addprefix $(LG_PATH), $(LG_SRCS)) \
 				$(addprefix $(GNL_PATH), $(GNL_SRCS))
-SRCS_RL		=	minishell_readline.c fill_all.c signal_handler.c start_all/start_env_shlvl.c\
-				$(addprefix $(PARSER2_PATH), $(PARSER2_SRCS)) \
-				$(addprefix $(LC_PATH), $(LC_SRCS)) \
-				$(addprefix $(EXEC_PATH), $(EXEC_SRCS)) \
-				$(addprefix $(LG_PATH), $(LG_SRCS)) \
-				$(addprefix $(GNL_PATH), $(GNL_SRCS))
 OBJS		=	$(SRCS:.c=.o)
-OBJS_RL		=	$(SRCS_RL:.c=.o)
 LIB_DIR		=	libft/
 HDR			=	includes/*.h
 CYAN		=	\x1B[36m
@@ -45,12 +38,6 @@ ENDCOLOR	=	\x1B[0m
 all:		$(NAME)
 
 $(NAME):	$(OBJS) $(HDR)
-			@make bonus -C $(LIB_DIR)
-			@mv $(LIB_DIR)$(LIBFT) $(LIBFT)
-			@$(CCF) -ltermcap -lreadline $(OBJS) $(LIBFT) -o $(NAME)
-			@echo "${GREEN}"$(NAME)" is compiled${ENDCOLOR}"
-
-rl:			$(OBJS_RL) $(HDR)
 			@make bonus -C $(LIB_DIR)
 			@mv $(LIB_DIR)$(LIBFT) $(LIBFT)
 			@$(CCF) -ltermcap -lreadline $(OBJS) $(LIBFT) -o $(NAME)
