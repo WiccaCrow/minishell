@@ -100,7 +100,7 @@ int	executable_check_and_run(t_all *all, char *filename_with_path,
         repointer_to_filename_with_path(&tmp->args[0], filename_with_path);
         if (tmp->end_flag&START_PIPE || tmp->end_flag&PIPE)
         {
-            all->fd0 = pipe_23(all, tmp);
+//            all->fd0 = pipe_23(all, tmp);
             return (0);
         }
         else
@@ -205,6 +205,6 @@ int		fork_execve(t_all *all, char *com_name)
         g_completion_code = 1;
         return (1);
     }
-	wait_status_pipes(onepid);
+	wait_status_fork(onepid);
     return (!ret);
 }

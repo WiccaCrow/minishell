@@ -127,7 +127,7 @@ void			subjoin_env(t_all *all, int i, int j);
 int				count_lines(t_all *all, char *oper_name, int nb_env_lines, int j);
 void			export_args_to_new_env(t_all *all, int j, char **env_new);
 int				check_valid_args(t_all *all, char *oper_name, int j, int flag_print);
-int				print_not_valid(t_all *all, char *args_name, char *operation_name, int flag_print);
+int				print_not_valid(char *args_name, char *operation_name, int flag_print);
 int				check_double_args(char **args, int find_plus);
 int				find_next_double_arg(char **args, int find_plus, int nb_args, int i);
 int				find_env_str(t_all *all, char *oper_name, int j, char **env);
@@ -160,9 +160,9 @@ void	env_shlvl_increase_2part(t_all *all, int index, int nb, char **env_new_shlv
 
 int		all_pipes(t_all *all, t_command *tmp);
 //int 	nb_pipes(t_command *tmp);
-int		pipe_23(t_all *all, t_command *tmp);
+//int		pipe_23(t_all *all, t_command *tmp);
 int		pipe_1st_midle(t_all *all, t_command *tmp);
 int		pipe_last(t_all *all, t_command *tmp);
-void	wait_status_pipes(pid_t onepid);
+void	wait_status_fork(pid_t onepid);
 
 #endif
