@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static int is_token(char *line)
+static int is_token(const char *line)
 {
 	if (!line)
 		return (0);
@@ -14,6 +14,18 @@ static int is_token(char *line)
 		return (4);
 	if (!ft_strncmp(line, "||", 3))
 		return (5);
+	if (!ft_strncmp(line, ">>", 2))
+		return (6);
+	if (!ft_strncmp(line, "<<", 2))
+		return (7);
+	return (0);
+}
+static int is_redirect(char c, const char *tmp_line)
+{
+	if (tmp_line && tmp_line[0] == '>' && c != '>')
+		return (1);
+	if (tmp_line && tmp_line[0] == '<' && c != '<')
+		return (1);
 	return (0);
 }
 
@@ -22,28 +34,20 @@ static int	get_next_word(char *line, int i, char **tmp_line)
 	int	flag;
 
 	flag = 0;
-	while (line[i] && !is_token(*tmp_line))
+	while (line[i] && !is_token(*tmp_line) && !is_redirect(line[i], *tmp_line))
 	{
 		if (line[i] == '\\' && !(flag & QUOTE) && !(flag & SHIELD))
-		{
 			flag = flag | SHIELD;
-			i++;
-		}
 		else if (line[i] == '\"' && !(flag & SHIELD) && !(flag & QUOTE))
-		{
 			flag = flag ^ DOUBLE_QUOTE;
-			i++;
-		}
 		else if (line[i] == '\'' && !(flag & SHIELD) && !(flag & DOUBLE_QUOTE))
-		{
 			flag = flag ^ QUOTE;
-			i++;
-		}
 		else if ((line[i] != ' ') || flag)
 		{
-			*tmp_line = add_chr(*tmp_line, line[i++]);
-			if (line[i])
+			*tmp_line = add_chr(*tmp_line, line[i]);
+			if ((flag & SHIELD))
 				flag = flag & ~(SHIELD);
+			i++;
 		}
 		else
 			return (i);
@@ -58,7 +62,8 @@ char	set_type(const char *word)
 	type = set_redirect(word);
 	if (type & NO_FILENAME)
 		return (NOFILE_REDIRECT);
-	if (word[0] == ';' || word[0] == '|' || word[0] == '&')
+	if (word[0] == ';' || word[0] == '|' || word[0] == '&' || word[0] == '>' \
+	|| word[0] == '<')
 		return (TOKEN);
 	return (WORD);
 	
@@ -74,8 +79,8 @@ int	check_word(char *word, char *prev_type)
 		*prev_type = curr_type;
 		return (1);
 	}
-	if (curr_type & TOKEN && (*prev_type & TOKEN || *prev_type & 
-	NOFILE_REDIRECT))
+	if ((curr_type & TOKEN || curr_type & NOFILE_REDIRECT) && \
+	(*prev_type & TOKEN || *prev_type & NOFILE_REDIRECT))
 	{
 		*prev_type = curr_type;
 		return (0);
