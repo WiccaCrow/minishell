@@ -26,8 +26,8 @@ void	all_args_free(t_all *all)
  * **********************************
 */
 /* Description:
- * Prints the result or error to standard 
- * output. Bash standart erorr $? sets 127.
+ * Prints the result or error to standard output. Bash standart erorr $?
+ * sets 127.
  * 
  * Contains functions:
  * libft. ft_strlen;
@@ -46,8 +46,8 @@ void print_command_not_found(t_command *tmp)
  * **********************************
 */
 /* Description:
- * Prints the result or error to standard 
- * output as needed. Bash standart erorr $? sets 127.
+ * Prints the result or error to standard output as needed. Bash standart
+ * erorr $? sets 127.
  * 
  * Contains functions:
  * libft. ft_strlen;
@@ -68,23 +68,21 @@ void command_not_found(t_all *all, t_command *tmp)
  * **********************************
 */
 /* Description:
- * Checks the command flag (enum) and sends the 
- * command for execution.
- * Prints the result or error to standard output as
- * needed.
+ * Checks the command flag (enum) and sends the command for execution.
+ * Prints the result or error to standard output as needed.
  * 
  * Contains functions:
- * 1.4.1. command_not_found;
- * 		Prints the result or error to standard 
- * 		output as needed. Bash standart erorr $? 127.
- * 1.4.2. exec_echo;
+ * 		1.4.1. command_not_found;
+ * 			Prints the result or error to standard output as needed. Bash
+ * 			standart erorr $? 127.
+ * 		1.4.2. exec_echo;
  * 		execution command 'echo'
- * exec_cd;
- * exec_pwd;
- * exec_env;
- * exec_export;
- * exec_unset;
- * 1.5.   exit_clean;
+ * 		exec_cd;
+ * 		exec_pwd;
+ * 		exec_env;
+ * 		exec_export;
+ * 		exec_unset;
+ * 		1.5.   exit_clean;
 */
 
 int executor(t_all *all, t_command *tmp)

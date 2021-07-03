@@ -66,8 +66,9 @@ typedef struct			s_all {
 	int					len_env_str;
 	char				parse_error;
 	t_command			**commands;
-    t_command           *tmp;
+//    t_command           *tmp;
     int                 fd0;
+    pid_t 				waitpid;
 }						t_all;
 
 
@@ -158,8 +159,10 @@ void	env_shlvl_increase_1part(t_all *all, int index);
 void	env_shlvl_increase_2part(t_all *all, int index, int nb, char **env_new_shlvl);
 
 int		all_pipes(t_all *all, t_command *tmp);
+//int 	nb_pipes(t_command *tmp);
 int		pipe_23(t_all *all, t_command *tmp);
-int		pipe_1st_midle(t_all *all, char **com_name, int end_flag, t_command *tmp);
-int		pipe_last(t_all *all, char **com_name, char **envp, t_command *tmp);
+int		pipe_1st_midle(t_all *all, t_command *tmp);
+int		pipe_last(t_all *all, t_command *tmp);
+void	wait_status_pipes(pid_t onepid);
 
 #endif
