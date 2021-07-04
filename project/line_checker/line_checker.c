@@ -69,6 +69,17 @@ char	set_type(const char *word)
 	
 }
 
+static int token_err(char curr, char prev)
+{
+	if (!prev && curr & TOKEN)
+		return (1);
+	if (prev & TOKEN && curr & TOKEN)
+		return (1);
+	if (prev & NOFILE_REDIRECT && curr & NOFILE_REDIRECT)
+		return (1);
+	return (0);
+}
+
 int	check_word(char *word, char *prev_type)
 {
 	char	curr_type;
@@ -79,8 +90,7 @@ int	check_word(char *word, char *prev_type)
 		*prev_type = curr_type;
 		return (1);
 	}
-	if ((curr_type & TOKEN || curr_type & NOFILE_REDIRECT) && \
-	(*prev_type & TOKEN || *prev_type & NOFILE_REDIRECT))
+	if (token_err(curr_type, *prev_type))
 	{
 		*prev_type = curr_type;
 		return (0);
@@ -98,7 +108,7 @@ int check_line(t_all *all)
 	if (all && all->line)
 	{
 		i = skip_spaces(all->line, 0);
-		prev_type = TOKEN;
+		prev_type = 0;
 		while (all->line[i])
 		{
 			word = NULL;
