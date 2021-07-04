@@ -33,6 +33,7 @@ int pipe_last(t_all *all, t_command *tmp)//исполняет команду, к
 int	pipe_1st_midle(t_all *all, t_command *tmp)//исполняет все команды, которые заканчиваются на пайп
 {
 	int	file_pipes[2];
+//int ret;
 
 	if (pipe(file_pipes) == 0)
 	{
@@ -50,6 +51,10 @@ int	pipe_1st_midle(t_all *all, t_command *tmp)//исполняет все ком
 
 			if (tmp->input_fd == 0)
 				dup2(all->fd0, tmp->input_fd);
+//			if (tmp->input_fd < 0)
+//			{
+//				executable_error_print(char *com_name, char *error_message, int error_code);
+//			}
 			else
 				dup2(tmp->input_fd, 0);
 

@@ -193,13 +193,17 @@ int		fork_execve(t_all *all, t_command *tmp, char *com_name)
 	onepid = fork();
     if (onepid == 0)
     {
-		dup2(tmp->input_fd, 0);
+    	if (tmp->input_fd != -1)
+			dup2(tmp->input_fd, 0);
 		dup2(tmp->output_fd, 1);
-		ret = execve(com_name, tmp->args, all->env);
-        if (ret == -1)
-        {
-            exit(rv = 2);
-        }
+		if (tmp->input_fd != -1)
+		{
+			ret = execve(com_name, tmp->args, all->env);
+			if (ret == -1)
+			{
+				exit(rv = 2);
+			}
+		}
     }
     else if (onepid < 0)
     {

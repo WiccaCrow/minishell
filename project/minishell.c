@@ -97,14 +97,25 @@ int main(int ac, char **av, char **env)
 //		show_program_name();
 //		if (line_getter(&all))
 		{
+			printf("иду из филл олл\n");
+
 			while (all.line && *all.line && check_line(&all) && \
 			dollar_handler(&all) && parser2(&all))
 			{
+				printf("зашла \n");
                 if ((*all.commands)->end_flag & START_PIPE || (*all.commands)->end_flag & PIPE)
-                    all_pipes(&all, *all.commands);
+				{
+					printf("зашла в pipe\n");
+					all_pipes(&all, *all.commands);
+				}
+//                else if ((*all.commands)->input_fd != -1)
                 else
-                    executor(&all, *all.commands);
+				{
+                	printf("зашла в executor\n");
+					executor(&all, *all.commands);
+				}
             }
+            printf("иду на следующий филл олл\n");
 		}
 		else
 			break ;
