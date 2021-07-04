@@ -100,7 +100,8 @@ int main(int ac, char **av, char **env)
 			printf("иду из филл олл\n");
 
 			while (all.line && *all.line && check_line(&all) && \
-			dollar_handler(&all) && parser2(&all))
+//			dollar_handler(&all) && parser2(&all))
+				dollar_handler(&all) && parser2(&all) < 50)
 			{
 				printf("зашла \n");
                 if ((*all.commands)->end_flag & START_PIPE || (*all.commands)->end_flag & PIPE)
@@ -108,8 +109,7 @@ int main(int ac, char **av, char **env)
 					printf("зашла в pipe\n");
 					all_pipes(&all, *all.commands);
 				}
-//                else if ((*all.commands)->input_fd != -1)
-                else
+                else if ((*all.commands)->input_fd != -1)
 				{
                 	printf("зашла в executor\n");
 					executor(&all, *all.commands);

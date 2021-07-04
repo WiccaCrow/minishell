@@ -19,10 +19,14 @@ int pipe_last(t_all *all, t_command *tmp)//исполняет команду, к
 			dup2(all->fd0, tmp->input_fd);
 		else
 			dup2(tmp->input_fd, 0);                       // всё, что читалось бы из терминала, теперь читается из того места, куда записалось file_pipes[1] (то есть 1 после dup2)
-		if (tmp->flag_command == 0 && g_completion_code == 0)
-			execve(tmp->args[0], tmp->args, all->env);          // cat теперь должен получить мою строку "123" и вывести в терминал
-		else if (g_completion_code == 0)
-			executor(all, tmp);
+		if (tmp->input_fd >= 0)
+		{
+			if (tmp->flag_command == 0 && g_completion_code == 0)
+				execve(tmp->args[0], tmp->args,
+					   all->env);          // cat теперь должен получить мою строку "123" и вывести в терминал
+			else if (g_completion_code == 0)
+				executor(all, tmp);
+		}
 		exit (g_completion_code);
 	}
 	close(all->fd0);
@@ -34,7 +38,6 @@ int	pipe_1st_midle(t_all *all, t_command *tmp)//исполняет все ком
 {
 	int	file_pipes[2];
 //int ret;
-
 	if (pipe(file_pipes) == 0)
 	{
 		all->waitpid = fork();
@@ -57,11 +60,13 @@ int	pipe_1st_midle(t_all *all, t_command *tmp)//исполняет все ком
 //			}
 			else
 				dup2(tmp->input_fd, 0);
-
-			if (tmp->flag_command == 0 && g_completion_code == 0)
-				execve(tmp->args[0], tmp->args, all->env);            // ls теперь записан в 1
-			else if (g_completion_code == 0)
-				executor(all, tmp);
+			if (tmp->input_fd >= 0)
+			{
+				if (tmp->flag_command == 0 && g_completion_code == 0)
+					execve(tmp->args[0], tmp->args, all->env);            // ls теперь записан в 1
+				else if (g_completion_code == 0)
+					executor(all, tmp);
+			}
 			exit (g_completion_code);
 		}
 		if (tmp->end_flag&START_PIPE && tmp->end_flag&PIPE)
