@@ -148,7 +148,7 @@ int	        executable_check_and_run(t_all *all, char *filename_with_path, int h
 int			check_command_sourse(char *com_name);
 int			executable_error_print(char *com_name, char *error_message, int error_code);
 void		repointer_to_filename_with_path(char **args0, char *filename_with_path);
-int			fork_execve(t_all *all, char *com_name);
+int			fork_execve(t_all *all, t_command *tmp, char *com_name);
 char		**path_env(t_all *all);
 char		*join_directory_and_command(char *directory, char *command_name);
 

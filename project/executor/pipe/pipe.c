@@ -55,7 +55,8 @@ int	pipe_1st_midle(t_all *all, t_command *tmp)//исполняет все ком
 
 int	all_pipes(t_all *all, t_command *tmp)// запускает на параллельное выполнение команды с пайпами
 {
-	all->fd0 = tmp->input_fd;
+//	all->fd0 = tmp->input_fd;
+	all->fd0 = tmp->output_fd;
 	while (tmp->end_flag&PIPE || tmp->end_flag&START_PIPE)
 	{
 		g_completion_code = 0;

@@ -104,7 +104,7 @@ int	executable_check_and_run(t_all *all, char *filename_with_path,
             return (0);
         }
         else
-            return (fork_execve(all, filename_with_path));
+            return (fork_execve(all, tmp, filename_with_path));
     }
     else if (stat(filename_with_path, &buf) == 0)
         return (executable_error_print(filename_with_path, ": Permission denied\n", 126));
@@ -183,7 +183,7 @@ int	executable_error_print(char *com_name, char *error_message, int error_code)
  * 		Else return not zero (1 or compiletion code).
 */
 
-int		fork_execve(t_all *all, char *com_name)
+int		fork_execve(t_all *all, t_command *tmp, char *com_name)
 {
     int		ret;
     pid_t	onepid;
@@ -193,7 +193,9 @@ int		fork_execve(t_all *all, char *com_name)
 	onepid = fork();
     if (onepid == 0)
     {
-        ret = execve(com_name, (*all->commands)->args, all->env);
+		dup2(tmp->input_fd, 0);
+		dup2(tmp->output_fd, 1);
+		ret = execve(com_name, tmp->args, all->env);
         if (ret == -1)
         {
             exit(rv = 2);
