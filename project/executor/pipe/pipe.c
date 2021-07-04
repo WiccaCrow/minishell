@@ -13,7 +13,10 @@ int pipe_last(t_all *all, t_command *tmp)//исполняет команду, к
 	all->waitpid = fork();
 	if (!all->waitpid)                                        // executor();
 	{
-		dup2(all->fd0, tmp->input_fd);                       // всё, что читалось бы из терминала, теперь читается из того места, куда записалось file_pipes[1] (то есть 1 после dup2)
+		if (tmp->input_fd == 0)
+			dup2(all->fd0, tmp->input_fd);
+		else
+			dup2(tmp->input_fd, 0);                       // всё, что читалось бы из терминала, теперь читается из того места, куда записалось file_pipes[1] (то есть 1 после dup2)
 		if (tmp->flag_command == 0 && g_completion_code == 0)
 			execve(tmp->args[0], tmp->args, all->env);          // cat теперь должен получить мою строку "123" и вывести в терминал
 		else if (g_completion_code == 0)
@@ -35,9 +38,14 @@ int	pipe_1st_midle(t_all *all, t_command *tmp)//исполняет все ком
 		if (!all->waitpid)
 		{
 			dup2(file_pipes[1], tmp->output_fd);                         // всё, что писалось бы в терминал, теперь пишется в то место, куда записалось file_pipes[1] (то есть после dup2)
+//			dup2(file_pipes[1], 1);                         // всё, что писалось бы в терминал, теперь пишется в то место, куда записалось file_pipes[1] (то есть после dup2)
 			close(file_pipes[0]);
 
-			dup2(all->fd0, tmp->input_fd);
+			if (tmp->input_fd == 0)
+				dup2(all->fd0, tmp->input_fd);
+			else
+				dup2(tmp->input_fd, 0);
+
 			if (tmp->flag_command == 0 && g_completion_code == 0)
 				execve(tmp->args[0], tmp->args, all->env);            // ls теперь записан в 1
 			else if (g_completion_code == 0)
@@ -55,10 +63,13 @@ int	pipe_1st_midle(t_all *all, t_command *tmp)//исполняет все ком
 
 int	all_pipes(t_all *all, t_command *tmp)// запускает на параллельное выполнение команды с пайпами
 {
-//	all->fd0 = tmp->input_fd;
-	all->fd0 = tmp->output_fd;
+	all->fd0 = tmp->input_fd;
+
+//	all->fd0 = tmp->output_fd;
+
 	while (tmp->end_flag&PIPE || tmp->end_flag&START_PIPE)
 	{
+		printf("|%s| outputfd = %d, inputfd = %d\n", tmp->args[0],tmp->output_fd, tmp->input_fd);
 		g_completion_code = 0;
 		if (tmp->flag_command == 0)
 			executor(all, tmp);
