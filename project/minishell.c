@@ -89,10 +89,13 @@ int main(int ac, char **av, char **env)
 	(void) ac;
 	(void) av;
 	signal(SIGINT, sigint_handler);
+	signal(SIGQUIT, sigquit_handler);
 	start_all(&all, env);
 	while (1)
 	{
 		if (fill_all(&all) != -1)
+//		show_program_name();
+//		if (line_getter(&all))
 		{
 			while (all.line && *all.line && check_line(&all) && \
 			dollar_handler(&all) && parser2(&all))

@@ -163,16 +163,16 @@ int get_next_command(t_all *all, int i)
 				curr_line = NULL;
 				i = get_next_word(all->line, i, &curr_line);
 				i = skip_spaces(all->line, i);
-				if ((parse_word(curr_line, command, args, ft_strdup(all->pwd)
-				) < 0))
+				if ((parse_word(curr_line, command, args,
+					ft_strdup(all->pwd)) < 0))
 					all->parse_error = 1;
 				free(curr_line);
 				curr_line = NULL;
 			}
 			if (*args)
 				command->flag_command = get_command2((char *)(*args)->content);
-			else if (command->flag_command == not_found || 
-			command->redirect_type & NO_FILENAME)
+			if ((command->flag_command == not_found && !*args) || 
+				command->redirect_type & NO_FILENAME)
 			{
 				all->parse_error = 1;
 				if (command->redirect_type & NO_FILENAME)
