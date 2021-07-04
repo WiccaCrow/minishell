@@ -89,6 +89,9 @@ int				check_line(t_all *all);
 
 int 			parser(t_all *all);
 int 			parser2(t_all *all);
+int				heredoc_handle(t_all *all, int i);
+int				do_heredoc_redirects(t_list **args);
+
 int				get_args(t_all *all, t_command *command, int i);
 int				dollar_handler(t_all *all);
 int				add_command(t_all *all, t_command *command);

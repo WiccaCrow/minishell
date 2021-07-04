@@ -78,9 +78,9 @@ int 	set_redirect(const char *word)
 		if (word[0] == '>' && word[1] == '>' && word[2] == 0)
 				return (APPEND | NO_FILENAME);
 		if (word[0] == '<' && word[1] == '<' && word[2] != 0)
-				return (LIM_READ);
+				return (HEREDOC);
 		if (word[0] == '<' && word[1] == '<' && word[2] == 0)
-				return (LIM_READ | NO_FILENAME);
+				return (HEREDOC | NO_FILENAME);
 		if (word[0] == '>' && word[1] != 0)
 				return (WRITE);
 		if (word[0] == '>' && word[1] == 0)
@@ -154,10 +154,11 @@ int get_next_command(t_all *all, int i)
 	command = (t_command *)ft_calloc(1, sizeof (t_command));
 	if (command)
 	{
+		command->input_fd = heredoc_handle(all, i);
+		command->output_fd = 1;
 		args = (t_list **)ft_calloc(1, sizeof(t_list *));
 		if (args)
 		{
-			command->output_fd = 1;
 			while (all->line[i] && all->line[i] != ';' && all->line[i] != '|')
 			{
 				curr_line = NULL;
@@ -173,14 +174,14 @@ int get_next_command(t_all *all, int i)
 				command->flag_command = get_command2((char *)(*args)->content);
 			if ((command->flag_command == not_found && !*args) || 
 				command->redirect_type & NO_FILENAME)
+				
 			{
 				all->parse_error = 1;
 				if (command->redirect_type & NO_FILENAME)
-				{
-					write(STDOUT_FILENO, SYN_ERR, 47);
-					write(STDOUT_FILENO, "newline\'\n", 9);
-				}
+					write(STDOUT_FILENO, SYN_ERR "newline\'\n", 56);
 			}
+			if (command->input_fd < 0 || command->output_fd < 0)
+				all->parse_error = 1;
 			if (command->flag_command)
 				remove_first(args);
 			args_list_to_arr2(args, command);
