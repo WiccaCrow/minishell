@@ -1,4 +1,4 @@
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 /************************************
  * 				subjoin_env			*
@@ -7,34 +7,26 @@
 /* Start variables value:
  * 		subjoin_env(all, i, -1);
  * Variables description, code comments:
- * 		char **env_new; future new env-array with 
- * 								new env variables.
- * 		int index; the index of the search string 
- * 						 in the current env array.
+ * 		char **env_new; future new env-array with new env variables.
+ * 		int index; the index of the search string in the current env array.
  * 		if (all->env[index] == NULL)
  * 			env_new[--i] = ft_strdup((*all->commands)->args[j]);
- * 			//if in the env array was no such 
- * 			// variable, create it.
+ * 			if in the env array was no such variable, create it.
  * Description:
- * 		The export command allow parameters and 
- * 		functions to be added to and deleted from the 
- * 		environment. If the value of a parameter in 
- * 		the environment is modified, the new value 
- * 		becomes part of the environment, replacing the 
- * 		old. 
- * 		The environment inherited by any executed 
- * 		command consists of the shell’s initial 
- * 		environment, whose values may be modified in 
- * 		the shell, less any pairs removed by the unset 
- * 		command, plus any additions via the export 
- * 		command.
+ * 		The export command allow parameters and functions to be added to and
+ * 		deleted from the environment. If the value of a parameter in the
+ * 		environment is modified, the new value becomes part of the
+ * 		environment, replacing the old.
+ * 		The environment inherited by any executed command consists of the
+ * 		shell’s initial environment, whose values may be modified in the
+ * 		shell, less any pairs removed by the unset command, plus any additions
+ * 		via the export command.
  * 
  * Contains functions:
  * 		1. count_lines;
  * 		2. export_args_to_new_env;
- * 			Add new variable to my env array or
- * 			overwrites existing env variable with new 
- * 			value.
+ * 			Add new variable to my env array or	overwrites existing env
+ * 			variable with new value.
 */
 
 void	subjoin_env(t_all *all, int i, int j)
@@ -78,61 +70,50 @@ void	subjoin_env(t_all *all, int i, int j)
  * **********************************
 */
 /* Description:
- *		Determines the number of strings in the 
- *		future env array.
+ *		Determines the number of strings in the future env array.
  * Start variables value:
  * 		count_lines(all, "export", i, j);
  * Variables description, code comments:
- * 	int index; index of the string in env array
+ * 		int index; index of the string in env array
  *	
  *	1. while ((*all->commands)->args[++j])
- *		Until all the arguments in the argument array 
- *		have been iterated over, the following actions 
- *		are performed for each argument:
+ *		Until all the arguments in the argument array have been iterated over,
+ *		the following actions are performed for each argument:
  *	
  *	1.1. if (!check_valid_args(all, oper_name, j, 1))
  *			continue;
  *			
- *		checks the validity of the entered arguments. 
- * 		if argument not validity print message about it and 
- * 		go to next argument.
+ *		checks the validity of the entered arguments. If argument not validity
+ *		print message about it and go to next argument.
  * 	1.2. if (check_double_args(&((*all->commands)->args[j])))
  * 				continue;
- *  	checks for the presence of the same argument among 
- * 		subsequent arguments.
- * 		If argument is repeat among next arguments go to 
- * 		next argument.
+ *  	checks for the presence of the same argument among subsequent arguments.
+ * 		If argument is repeat among next arguments go to next argument.
  * 	1.3. index = find_env_str(all, oper_name, j, env);
- * 		find the env index of the string or null if env array
- * 		don't contain matching string.
+ * 		find the env index of the string or null if env array don't contain
+ * 		matching string.
  * 	1.4. if (!ft_strncmp(oper_name, "export", ft_strlen(oper_name)))
- * 		checks for which operation the function is applied:
- * 		export or unset.
+ * 		checks for which operation the function is applied:	export or unset.
  * 1.4.1. oper_name export.
  * 			if (all->env[index] == NULL)
  * 				++nb_env_lines;
- * 		If in 1.3. env array don't contain matching string, 
- * 		the future number of lines in the new env array will 
- * 		increase.
+ * 		If in 1.3. env array don't contain matching string, the future number
+ * 		of lines in the new env array will increase.
  * 1.4.2. oper_name unset.
  * 			if (all->env[index])
  * 				--nb_env_lines;
- * 		If in 1.3. env array contain matching string, 
- * 		the future number of lines in the new env array will 
- * 		decrease.
+ * 		If in 1.3. env array contain matching string, the future number of
+ * 		lines in the new env array will decrease.
 */
 /* Contains functions:
  * 		1. check_valid_args;
- * 			checks the validity of the entered arguments, 
- * 			0/1 flag - print / no message about the 
- * 			validity of the arguments
+ * 			checks the validity of the entered arguments, 0/1 flag -
+ * 			print / no message about the validity of the arguments
  * 		2. check_double_args;
- * 			checks for the presence of the same argument 
- * 			among subsequent arguments 1 - repeats, 
- * 			0 - no repeats
+ * 			checks for the presence of the same argument among subsequent
+ * 			arguments 1 - repeats, 0 - no repeats
  * 		3. find_env_str;
- * 			find and return the env index of the string 
- * 			or null.
+ * 			find and return the env index of the string or null.
  * 		fibft. ft_strncmp;
  * 		fibft. ft_strlen;
 */
@@ -147,7 +128,6 @@ int	count_lines(t_all *all, char *oper_name, int nb_env_lines, int j)
 			continue;
 		if (check_double_args(&((*all->commands)->args[j]), 1))
 			continue;
-printf("args[j] = %s\n", (*all->commands)->args[j]);
 		index = find_env_str(all, oper_name, j, all->env);
 		if (!ft_strncmp(oper_name, "export", ft_strlen(oper_name)))
 		{
@@ -160,7 +140,6 @@ printf("args[j] = %s\n", (*all->commands)->args[j]);
 				--nb_env_lines;
 		}
 	}
-printf("nb_env_lines = %d\n", nb_env_lines);
 	return (nb_env_lines);
 }
 
@@ -171,27 +150,21 @@ printf("nb_env_lines = %d\n", nb_env_lines);
 /* Start variables value:
  * 		export_args_to_new_env(all, j, env_new);
  * Description:
- * 			Add new variable to my env array or
- * 			overwrites existing env variable with new 
- * 			value.
- * 			Change index i if function add new 
- * 			variable to my env array.
+ * 			Add new variable to my env array or	overwrites existing env
+ * 			variable with new value.
+ * 			Change index i if function add new variable to my env array.
  * 
  * Contains functions:
  * 		1. check_valid_args;
- * 			checks the validity of the entered arguments, 
- * 			0/1 flag - print / no message about the 
- * 			validity of the arguments
+ * 			checks the validity of the entered arguments, 0/1 flag -
+ * 			print / no message about the validity of the arguments
  * 		2. check_double_args;
- * 			checks for the presence of the same argument 
- * 			among subsequent arguments 1 - repeats, 
- * 			0 - no repeats
+ * 			checks for the presence of the same argument among subsequent
+ * 			arguments 1 - repeats, 0 - no repeats
  * 		3. find_env_str;
- * 			find and return the env index of the string 
- * 			or null.
+ * 			find and return the env index of the string or null.
  * 		4. change_env_str;
- * 			overwrites existing env variable with new 
- * 			value.
+ * 			overwrites existing env variable with new value.
  * 		fibft. ft_strdup;
  * 		fibft. ft_strchr;
 */
@@ -226,10 +199,9 @@ void	export_args_to_new_env(t_all *all, int j, char **env_new)
  * **********************************
 */
 /* Variables description, code comments:
- * 		flag_print. 0/1 flag print/no message about the 
- * 			validity of the arguments.
- * 		oper_name. 	Operation for wich the function is applied:
- * 			export or unset.
+ * 		flag_print. 0/1 flag print/no message about the validity of the
+ * 		arguments.
+ * 		oper_name. Operation for wich the function is applied:	export or unset.
  * Description:
  * 		checks the validity of the entered arguments.
  * Contains functions:
@@ -245,7 +217,7 @@ int	check_valid_args(t_all *all, char *oper_name, int j, int flag_print)
 	i = 0;
 	if (((*all->commands)->args[j][i] == '+' && (*all->commands)->args[j][i + 1] == '=') ||
             (*all->commands)->args[j][i] == '=')
-		return (print_not_valid(all, (*all->commands)->args[j], oper_name, flag_print));
+		return (print_not_valid((*all->commands)->args[j], oper_name, flag_print));
 	while ((*all->commands)->args[j][i] != '\0')
 	{
 		if (((*all->commands)->args[j][i] == '=' && !ft_strncmp(oper_name, "export", 6)) ||
@@ -258,7 +230,7 @@ int	check_valid_args(t_all *all, char *oper_name, int j, int flag_print)
              (*all->commands)->args[j][i] == '_'))
 				++i;
 		else
-			return (print_not_valid(all, (*all->commands)->args[j], oper_name, flag_print));
+			return (print_not_valid((*all->commands)->args[j], oper_name, flag_print));
 	}
 	return (1);
 }
@@ -268,14 +240,13 @@ int	check_valid_args(t_all *all, char *oper_name, int j, int flag_print)
  * **********************************
 */
 /* Description:
- * 		The function iterates over all subsequent arguments 
- * 		as long as there are arguments or until the first 
- * 		match of a variable within an argument.
+ * 		The function iterates over all subsequent arguments as long as there
+ * 		are arguments or until the first match of a variable within an argument.
  * Return value:
- * 		If the desired variable is missing in subsequent 
- * 		arguments, the function returns 0.
- * 		If the desired variable is found in the subsequent 
- * 		arguments, the function returns 1.
+ * 		If the desired variable is missing in subsequent arguments, the
+ * 		function returns 0.
+ * 		If the desired variable is found in the subsequent arguments, the
+ * 		function returns 1.
  * Contains functions:
  * 		find_next_double_arg;
  * 		libft. ft_strchr;

@@ -1,32 +1,30 @@
-#include "../../includes/minishell.h"//"minishell.h"
+#include "minishell.h"
 
 /************************************
  * 			1. executable			*
  * **********************************
 */
 /* Description:
- * 		Function do search and do launch the right 
- * 		executable (based on the PATH variable or by 
- * 		using relative or absolute path).
+ * 		Function do search and do launch the right executable (based on the
+ * 		PATH variable or by using relative or absolute path).
  * Return value:
- * 		The function returns 1 if the name of the 
- * 		executable file was entered (with an absolute, 
- * 		relative path, or the file lies in one of the 
- * 		paths in env-variable PATH) or a path was specified.
+ * 		The function returns 1 if the name of the executable file was entered
+ * 		(with an absolute, relative path, or the file lies in one of the paths
+ * 		in env-variable PATH) or a path was specified.
  * 		Otherwise, 0 will be returned.
  * Variables description, code comments:
  * 		1. pointer to struct t_all all with variables:
  * 			all->env. Env-variables array (for PATH);
- * 			(*all->commands)->args. Input line to check and run if it is executable.
+ * 			(*all->commands)->args. Input line to check and run if it
+ * 									is executable.
  * 		2. function variables:
  * 			path_from_env. Path for the executable file.
  * 			i. Iterator for path.
  * 			path.
  * 			path. Flag. Can be 1 or 0.
- * 				path = path_to_executable(all). If 0 - 
- * 					the file is running.
- * 					if path not 0 and g_completion_code not zero,
- * 						it was not file and not command.
+ * 				path = path_to_executable(all). If 0 - the file is running.
+ * 					if path not 0 and g_completion_code not zero, it was not
+ * 					file and not command.
  * 			com_name. Command name or executable name.
  * Contains functions:
  * 		1.1. executable_check_and_run;
@@ -67,19 +65,18 @@ int	executable(t_all *all, t_command *tmp)
  * **********************************
 */
 /* Description:
- * 		The function checks if the path contains the 
- * 		entered string (checks for the '/' character).
- * 		If the string consists entirely of a path, 
- * 		the message "is a directory" is displayed.
- * 		If the path in the string is found and not the 
- * 		entire string is a directory (are there characters 
- * 		after the last '/'), the function tries to follow 
- * 		the specified path. 
- * 		If the path does not exist or there is no file 
- * 		with the specified name at the end of the path, 
- * 		the message "No such file or directory" is displayed.
- * 		If the path is specified, it was possible to follow 
- * 		it, the function tries to start the executable file.
+ * 		The function checks if the path contains the entered string (checks
+ * 		for the '/' character).
+ * 		If the string consists entirely of a path, the message "is a
+ * 		directory" is displayed.
+ * 		If the path in the string is found and not the entire string is a
+ * 		directory (are there characters after the last '/'), the function
+ * 		tries to follow the specified path.
+ * 		If the path does not exist or there is no file with the specified
+ * 		name at the end of the path, the message "No such file or directory"
+ * 		is displayed.
+ * 		If the path is specified, it was possible to follow it, the function
+ * 		tries to start the executable file.
  * Return value:
  * 		0 if executable was find and running.
  * 		-1 if file was find and not executable.
@@ -89,7 +86,8 @@ int	executable(t_all *all, t_command *tmp)
  * 		1.1.2. executable_error_print;
 */
 
-int	executable_check_and_run(t_all *all, char *filename_with_path, int have_path, t_command *tmp)
+int	executable_check_and_run(t_all *all, char *filename_with_path,
+								int have_path, t_command *tmp)
 {
     struct stat buf;
 
@@ -102,7 +100,7 @@ int	executable_check_and_run(t_all *all, char *filename_with_path, int have_path
         repointer_to_filename_with_path(&tmp->args[0], filename_with_path);
         if (tmp->end_flag&START_PIPE || tmp->end_flag&PIPE)
         {
-            all->fd0 = pipe_23(all, tmp);
+//            all->fd0 = pipe_23(all, tmp);
             return (0);
         }
         else
@@ -127,26 +125,24 @@ int	executable_check_and_run(t_all *all, char *filename_with_path, int have_path
 /* Description:
  * 		1) The function looks for the '/' character.
  * 		2) The function checks if only the '.'
- * 			Character has been entered.
- * 			If yes, completion code is set to 1.
+ * 			Character has been entered.	If yes, completion code is set to 1.
  * Return value:
- * 		If the string com_name contain '/' character or
- * 		contain only '.', return 1.
- * 		else it return 0.
+ * 		If the string com_name contain '/' character or	contain only '.',
+ * 		return 1. Else it return 0.
 */
 
 int	check_command_sourse(char *com_name)
 {
     if (com_name[0] == '.' && com_name[1] == '\0')
     {
-        write(STDERR_FILENO, "minishell: This command is missing from the subject.\n", 54);
-        write(STDERR_FILENO, "In the shell, . is a builtin command ", 38);
-        write(STDERR_FILENO, "in its own right, an alias for 'source',", 41);
-        write(STDERR_FILENO, "which is used to read in a shell script ", 41);
-        write(STDERR_FILENO, "and execute its commands in the current ", 41);
-        write(STDERR_FILENO, "shell rather than spawning a subshell, t", 41);
-        write(STDERR_FILENO, "ypically used for scripts that set envir", 41);
-        write(STDERR_FILENO, "onment variables that you want to use later.\n", 46);
+        write(STDERR_FILENO, "minishell: This command is missing from the", 43);
+        write(STDERR_FILENO, " subject.\nIn the shell, . is a builtin com", 42);
+        write(STDERR_FILENO, "mand in its own right, an alias for 'source", 43);
+        write(STDERR_FILENO, "',which is used to read in a shell script a", 43);
+        write(STDERR_FILENO, "nd execute its commands in the current shel", 43);
+        write(STDERR_FILENO, "l rather than spawning a subshell, typicall", 43);
+        write(STDERR_FILENO, "y used for scripts that set environment var", 43);
+        write(STDERR_FILENO, "iables that you want to use later.\n", 35);
         return (g_completion_code = 1);
     }
     if (com_name[0] == '.' && com_name[1] == '.' && com_name[2] == '\0')
@@ -161,10 +157,8 @@ int	check_command_sourse(char *com_name)
  * **********************************
 */
 /* Description:
- * 		Set value error_code to *code_to_on.
- * 		Print error message error_message for
- * 		input string com_name (command, directory,
- * 		executable, etc.).
+ * 		Set value error_code to *code_to_on. Print error message error_message
+ * 		for input string com_name (command, directory, executable, etc.).
  * Return value:
  * 		Integer 1.
 */
@@ -185,20 +179,19 @@ int	executable_error_print(char *com_name, char *error_message, int error_code)
 /* Description:
  * 		A function runs an executable using functions fork() and execve().
  * Return value:
- * 		Integer 0. If the file was found and the
- * 		function launched it.
+ * 		Integer 0. If the file was found and the function launched it.
  * 		Else return not zero (1 or compiletion code).
 */
 
 int		fork_execve(t_all *all, char *com_name)
 {
     int		ret;
-    pid_t	pid;
+    pid_t	onepid;
     int		rv;
 
     ret = 2;
-    pid = fork();
-    if (pid == 0)
+	onepid = fork();
+    if (onepid == 0)
     {
         ret = execve(com_name, (*all->commands)->args, all->env);
         if (ret == -1)
@@ -206,12 +199,12 @@ int		fork_execve(t_all *all, char *com_name)
             exit(rv = 2);
         }
     }
-    else if (pid < 0)
+    else if (onepid < 0)
     {
         write(STDERR_FILENO, "minishell: fork error. try again\n", 34);
         g_completion_code = 1;
         return (1);
     }
-    wait(NULL);
+	wait_status_fork(onepid);
     return (!ret);
 }

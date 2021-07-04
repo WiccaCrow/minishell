@@ -139,7 +139,6 @@ void	start_all(t_all *all, char **env)
 	all->parse_error = 0;
 	all->line = NULL;
 	all->commands = NULL;
-    all->tmp = NULL;///////////////////////
 	all->pwd = getcwd(NULL, 0);
 	init_env(all, env);
 	shlvl_set(all);

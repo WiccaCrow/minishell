@@ -1,4 +1,4 @@
-#include "../../includes/minishell.h"//"minishell.h"
+#include "minishell.h"
 
 /************************************
  * 				 path_env			*
@@ -75,4 +75,25 @@ void	repointer_to_filename_with_path(char **args0, char *filename_with_path)
 		free(*args0);
 		*args0 = filename_with_path;
 	}
+}
+
+/****************************************
+ * 		wait_status_pipes	*
+ * **************************************
+*/
+/* Description:
+ * 		The function processes the return value from the fork and fills in
+ * 		the g_completion_code from WIFEXITED(status) or WEXITSTATUS(status).
+*/
+void	wait_status_fork(pid_t onepid)
+{
+	int status;
+	int option;
+
+	option = 0;
+	waitpid(onepid, &status, option);
+	g_completion_code = WIFEXITED(status);
+	if (g_completion_code)
+		g_completion_code = WEXITSTATUS(status);
+//	printf("WEXITSTATUS = %d onepid = %d\n", g_completion_code, onepid);
 }
