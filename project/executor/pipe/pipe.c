@@ -13,6 +13,8 @@ int pipe_last(t_all *all, t_command *tmp)//исполняет команду, к
 	all->waitpid = fork();
 	if (!all->waitpid)                                        // executor();
 	{
+		if (tmp->output_fd != 1)
+			dup2(tmp->output_fd, 1);
 		if (tmp->input_fd == 0)
 			dup2(all->fd0, tmp->input_fd);
 		else
@@ -37,8 +39,13 @@ int	pipe_1st_midle(t_all *all, t_command *tmp)//исполняет все ком
 		all->waitpid = fork();
 		if (!all->waitpid)
 		{
+			if (tmp->output_fd == 1)
+				dup2(file_pipes[1], tmp->output_fd);                         // всё, что писалось бы в терминал, теперь пишется в то место, куда записалось file_pipes[1] (то есть после dup2)
+			else
+				dup2(tmp->output_fd, 1);
+
 			dup2(file_pipes[1], tmp->output_fd);                         // всё, что писалось бы в терминал, теперь пишется в то место, куда записалось file_pipes[1] (то есть после dup2)
-//			dup2(file_pipes[1], 1);                         // всё, что писалось бы в терминал, теперь пишется в то место, куда записалось file_pipes[1] (то есть после dup2)
+
 			close(file_pipes[0]);
 
 			if (tmp->input_fd == 0)
@@ -65,11 +72,8 @@ int	all_pipes(t_all *all, t_command *tmp)// запускает на паралл
 {
 	all->fd0 = tmp->input_fd;
 
-//	all->fd0 = tmp->output_fd;
-
 	while (tmp->end_flag&PIPE || tmp->end_flag&START_PIPE)
 	{
-		printf("|%s| outputfd = %d, inputfd = %d\n", tmp->args[0],tmp->output_fd, tmp->input_fd);
 		g_completion_code = 0;
 		if (tmp->flag_command == 0)
 			executor(all, tmp);
