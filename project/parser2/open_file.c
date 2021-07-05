@@ -26,7 +26,6 @@ int open_tmp_file(char *stop_str)
 			curr_line = NULL;
 		}
 		write (fd, line, gnl_strlen(line));
-//		write (STDOUT_FILENO, line, ft_strlen(line));
 		free(line);
 		close(fd);
 		fd = open(TMP_FILE, O_RDONLY, 0644);
@@ -69,9 +68,6 @@ int open_file(t_command *command, char *filename, char *pwd)
 		{
 			executable_error_print(filename, ": No such file or directory\n",
 						  1);
-//			write(STDOUT_FILENO, "minishell: ", 11);
-//			write(STDOUT_FILENO, filename, ft_strlen(filename));
-//			write(STDOUT_FILENO, ": No such file or directory\n", 28);
 			return (-1);
 		}
 		if (input_fd < 0)
