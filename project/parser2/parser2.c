@@ -15,6 +15,8 @@ int show_commands(t_command **commands)
 		tmp = *commands;
 		while (tmp)
 		{
+			write(STDOUT_FILENO, CURSIVE, 4);
+			write(STDOUT_FILENO, "CURSIVE\n", 8);
 			printf("command flag = %d\n", tmp->flag_command);
 			printf("redirect flag = %d\n", tmp->redirect_type);
 			printf("input fd = %d\n", tmp->input_fd);
@@ -30,6 +32,7 @@ int show_commands(t_command **commands)
 				}
 			}
 			tmp = tmp->next;
+			write(STDOUT_FILENO, NONECOLOR, 4);
 		}
 	}
 	return (0);

@@ -15,6 +15,7 @@
 
 # define NAME "DULCIE&GRVELVA > "
 # define NONECOLOR "\x1B[0m"
+# define CURSIVE "\033[3m"
 # define GOLD "\033[40;33m"
 # define COM_NOT_FOUND ": command not found\n"
 # define SYN_ERR "minishell: syntax error near unexpected token `"
