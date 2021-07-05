@@ -25,8 +25,8 @@ int open_tmp_file(char *stop_str)
 			free(curr_line);
 			curr_line = NULL;
 		}
-		write (fd, line, ft_strlen(line));
-		write (STDOUT_FILENO, line, ft_strlen(line));
+		write (fd, line, gnl_strlen(line));
+//		write (STDOUT_FILENO, line, ft_strlen(line));
 		free(line);
 		close(fd);
 		fd = open(TMP_FILE, O_RDONLY, 0644);
