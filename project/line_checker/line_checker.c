@@ -1,64 +1,9 @@
 #include "minishell.h"
 
-static int is_token(const char *line)
-{
-	if (!line)
-		return (0);
-	if (!ft_strncmp(line, ";", 2))
-		return (1);
-	if (!ft_strncmp(line, ";;", 3))
-		return (2);
-	if (!ft_strncmp(line, "|", 2))
-		return (3);
-	if (!ft_strncmp(line, "&&", 3))
-		return (4);
-	if (!ft_strncmp(line, "||", 3))
-		return (5);
-	if (!ft_strncmp(line, ">>", 2))
-		return (6);
-	if (!ft_strncmp(line, "<<", 2))
-		return (7);
-	return (0);
-}
-static int is_redirect(char c, const char *tmp_line)
-{
-	if (tmp_line && tmp_line[0] == '>' && c != '>')
-		return (1);
-	if (tmp_line && tmp_line[0] == '<' && c != '<')
-		return (1);
-	return (0);
-}
-
-static int	get_next_word(char *line, int i, char **tmp_line)
-{
-	int	flag;
-
-	flag = 0;
-	while (line[i] && !is_token(*tmp_line) && !is_redirect(line[i], *tmp_line))
-	{
-		if (line[i] == '\\' && !(flag & QUOTE) && !(flag & SHIELD))
-			flag = flag | SHIELD;
-		else if (line[i] == '\"' && !(flag & SHIELD) && !(flag & QUOTE))
-			flag = flag ^ DOUBLE_QUOTE;
-		else if (line[i] == '\'' && !(flag & SHIELD) && !(flag & DOUBLE_QUOTE))
-			flag = flag ^ QUOTE;
-		else if ((line[i] != ' ') || flag)
-		{
-			*tmp_line = add_chr(*tmp_line, line[i]);
-			if ((flag & SHIELD))
-				flag = flag & ~(SHIELD);
-			i++;
-		}
-		else
-			return (i);
-	}
-	return (i);
-}
-
 char	set_type(const char *word)
 {
-	int type;
-	
+	int	type;
+
 	type = set_redirect(word);
 	if (type & NO_FILENAME)
 		return (NOFILE_REDIRECT);
@@ -66,10 +11,9 @@ char	set_type(const char *word)
 	|| word[0] == '<')
 		return (TOKEN);
 	return (WORD);
-	
 }
 
-static int token_err(char curr, char prev)
+static int	token_err(char curr, char prev)
 {
 	if (!prev && curr & TOKEN)
 		return (1);
@@ -83,7 +27,7 @@ static int token_err(char curr, char prev)
 int	check_word(char *word, char *prev_type)
 {
 	char	curr_type;
-	
+
 	curr_type = set_type(word);
 	if (curr_type & WORD)
 	{
@@ -99,11 +43,11 @@ int	check_word(char *word, char *prev_type)
 	return (1);
 }
 
-int check_line(t_all *all)
+int	check_line(t_all *all)
 {
 	int		i;
 	char	*word;
-	char 	prev_type;
+	char	prev_type;
 
 	if (all && all->line)
 	{
@@ -112,8 +56,8 @@ int check_line(t_all *all)
 		while (all->line[i])
 		{
 			word = NULL;
-			i = get_next_word(all->line, i, &word);
-			if (!check_word(word, &prev_type)) 
+			i = get_next_word_lc(all->line, i, &word);
+			if (!check_word(word, &prev_type))
 			{
 				write(STDOUT_FILENO, SYN_ERR, 47);
 				write(STDOUT_FILENO, word, ft_strlen(word));

@@ -79,6 +79,7 @@ int				show_program_name(void);
 int				fill_all(t_all *all);
 int				line_getter(t_all *all);
 int				check_line(t_all *all);
+int				get_next_word_lc(char *line, int i, char **tmp_line);
 int				parser2(t_all *all);
 int				heredoc_handle(t_all *all, int i);
 int				do_heredoc_redirects(t_list **args);

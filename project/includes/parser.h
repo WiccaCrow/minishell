@@ -22,4 +22,5 @@ int		remove_first(t_list **args);
 int		set_redirect(const char *word);
 int		open_tmp_file(char *stop_str);
 
+
 #endif 
