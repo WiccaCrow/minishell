@@ -12,7 +12,7 @@
  * возвращаем копию команды из истории
 */
 
-int		show_prev_command(char **history, t_line *line)
+int	show_prev_command(char **history, t_line *line)
 {
 	if (!(line->tmp_line) && !history[line->hist_pos])
 	{
@@ -23,8 +23,8 @@ int		show_prev_command(char **history, t_line *line)
 		line->pos--;
 	if (line->hist_pos > 0)
 		line->hist_pos--;
-	line->pos += write(STDOUT_FILENO, history[line->hist_pos], gnl_strlen
-		(history[line->hist_pos]));
+	line->pos += write(STDOUT_FILENO, history[line->hist_pos], \
+		gnl_strlen(history[line->hist_pos]));
 	free(line->curr_line);
 	line->curr_line = gnl_strjoin(NULL, history[line->hist_pos]);
 	if (line->curr_line)
@@ -44,33 +44,34 @@ int		show_prev_command(char **history, t_line *line)
  * возвращаем копию команды из истории
 */
 
-int		show_next_command(char **history, t_line *line)
+static int	put_tmp_line(t_line *line)
+{
+	line->hist_pos = line->hist_len;
+	line->pos += write(STDOUT_FILENO, line->tmp_line, \
+			ft_strlen(line->tmp_line));
+	free(line->curr_line);
+	line->curr_line = gnl_strjoin(NULL, line->tmp_line);
+	return (1);
+}
 
+int	show_next_command(char **history, t_line *line)
 {
 	if (!(line->tmp_line) && !history[line->hist_pos])
-	{
 		line->tmp_line = gnl_strjoin(NULL, line->curr_line);
-	}
 	while (line->pos && !tputs(cursor_left, 1, ft_putchar) && \
 					!tputs(tgetstr("ce", 0), 1, ft_putchar))
 		line->pos--;
 	if (line->hist_pos < line->hist_len - 1)
 	{
 		line->hist_pos++;
-		line->pos += write(STDOUT_FILENO, history[line->hist_pos],
-					  ft_strlen(history[line->hist_pos]));
+		line->pos += write(STDOUT_FILENO, history[line->hist_pos], \
+			ft_strlen(history[line->hist_pos]));
 		free(line->curr_line);
 		line->curr_line = gnl_strjoin(NULL, history[line->hist_pos]);
 		return (1);
 	}
 	else if (line->tmp_line)
-	{
-		line->hist_pos = line->hist_len;
-		line->pos += write(STDOUT_FILENO, line->tmp_line, ft_strlen(line->tmp_line));
-		free(line->curr_line);
-		line->curr_line = gnl_strjoin(NULL, line->tmp_line);
-		return (1);
-	}
+		return (put_tmp_line(line));
 	else
 	{
 		free(line->curr_line);
@@ -88,16 +89,16 @@ int		show_next_command(char **history, t_line *line)
  * в адрес истории сплитим полученную суммарную строку
 */
 
-int		add_to_history(char *line, char ***history)
+int	add_to_history(char *line, char ***history)
 {
-	int i;
-	char *history_line;
+	int		i;
+	char	*history_line;
 
 	i = 0;
 	if (line && history && *history)
 	{
 		history_line = NULL;
-		while((*history)[i])
+		while ((*history)[i])
 		{
 			if (history_line)
 				history_line = gnl_strjoin(history_line, "\n");
@@ -121,10 +122,10 @@ int		add_to_history(char *line, char ***history)
  * Функция считает длину массива(истории)
 */
 
-int		history_len(char **history)
+int	history_len(char **history)
 {
-	int len;
-	
+	int	len;
+
 	len = 0;
 	if (history)
 		while (history[len])

@@ -1,13 +1,22 @@
 #include "../includes/minishell.h"
 
 /**
+ * Функция выводит один символ в стандартный вывод
+*/
+
+int	ft_putchar(int c)
+{
+	return ((int)write(STDOUT_FILENO, &c, 1));
+}
+
+/**
  * Функция добавления символа в строку
  * 
  * Добавляет символ в указанную позицию в строку, остаток строки сдвигается 
  * на 1 символ, позиция курсора также сдвигается на 1 позицию вправо
 */
 
-int 		add_chr_to_pos(t_line *line, char c)
+int	add_chr_to_pos(t_line *line, char c)
 {
 	char	*new_str;
 	size_t	size;
@@ -34,8 +43,8 @@ int 		add_chr_to_pos(t_line *line, char c)
 		new_str[i] = 0;
 		free(line->curr_line);
 		line->curr_line = new_str;
-		size = write(STDIN_FILENO, &new_str[line->pos], ft_strlen(&new_str[line->pos]))
-				- 1;
+		size = write(STDIN_FILENO, &new_str[line->pos], \
+			ft_strlen (&new_str[line->pos])) - 1;
 		while (size--)
 			tputs(cursor_left, 1, ft_putchar);
 		line->pos++;
@@ -54,11 +63,11 @@ int 		add_chr_to_pos(t_line *line, char c)
  * на 1 символ, позиция курсора также сдвигается на 1 позицию влево
 */
 
-int			remove_chr_from_pos(t_line *line)
+int	remove_chr_from_pos(t_line *line)
 {
 	char	*new_str;
 	size_t	size;
-	size_t 	i;
+	size_t	i;
 
 	if (line->pos)
 	{
@@ -92,5 +101,3 @@ int			remove_chr_from_pos(t_line *line)
 	}
 	return (0);
 }
-
-

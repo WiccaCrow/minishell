@@ -10,7 +10,7 @@
 
 static int	check_end_of_input(const char *line)
 {
-	int i;
+	int	i;
 	int	flag;
 
 	flag = 0;
@@ -43,7 +43,7 @@ static int	check_end_of_input(const char *line)
  * если нет, предлагаем пользователю продолжить ввод
 */
 
-int		enter_handle(t_line *line)
+int	enter_handle(t_line *line)
 {
 	if (line->main_line)
 		line->main_line = gnl_strjoin(line->main_line, "\n");
@@ -92,7 +92,7 @@ int 	key_left_handle(t_line *line)
 	return (0);
 }
 
-int		control_d_handle(t_line *line)
+int	control_d_handle(t_line *line)
 {
 	if (line)
 	{
