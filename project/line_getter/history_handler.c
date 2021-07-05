@@ -23,10 +23,10 @@ int		show_prev_command(char **history, t_line *line)
 		line->pos--;
 	if (line->hist_pos > 0)
 		line->hist_pos--;
-	line->pos += write(STDOUT_FILENO, history[line->hist_pos], ft_strlen
-	(history[line->hist_pos]));
+	line->pos += write(STDOUT_FILENO, history[line->hist_pos], gnl_strlen
+		(history[line->hist_pos]));
 	free(line->curr_line);
-	line->curr_line = ft_strdup(history[line->hist_pos]);
+	line->curr_line = gnl_strjoin(NULL, history[line->hist_pos]);
 	if (line->curr_line)
 		return (1);
 	return (0);

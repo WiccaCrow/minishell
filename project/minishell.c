@@ -93,9 +93,9 @@ int main(int ac, char **av, char **env)
 	start_all(&all, env);
 	while (1)
 	{
-		if (fill_all(&all) != -1)
-//		show_program_name();
-//		if (line_getter(&all))
+//		if (fill_all(&all) != -1)
+		show_program_name();
+		if (line_getter(&all))
 		{
 			printf("иду из филл олл\n");
 

@@ -68,7 +68,7 @@ int		enter_handle(t_line *line)
 
 int 	key_right_handle(t_line *line)
 {
-	if (line->pos < ft_strlen(line->curr_line))
+	if (line->pos < gnl_strlen(line->curr_line))
 	{
 		line->pos++;
 		tputs(cursor_right, 1, ft_putchar);
