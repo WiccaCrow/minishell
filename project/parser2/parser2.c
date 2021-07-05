@@ -127,7 +127,7 @@ int parse_word(char *word, t_command *command, t_list **args, char *pwd)
 	if (command->redirect_type && (command->redirect_type & NO_FILENAME))
 	{
 		if (open_file(command, word, pwd) < 0)
-			return (-1);
+			return (0);
 	}
 	else
 	{
@@ -180,8 +180,8 @@ int get_next_command(t_all *all, int i)
 				if (command->redirect_type & NO_FILENAME)
 					write(STDOUT_FILENO, SYN_ERR "newline\'\n", 56);
 			}
-			if (command->input_fd < 0 || command->output_fd < 0)
-				all->parse_error = 1;
+//			if (command->input_fd < 0 || command->output_fd < 0)
+//				all->parse_error = 1;
 			if (command->flag_command)
 				remove_first(args);
 			args_list_to_arr2(args, command);

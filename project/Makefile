@@ -65,6 +65,7 @@ re:			fclean all
 
 %.o:		%.c $(HDR)
 			@$(CCF) -c $< -o $@
+
 			@echo $@ compilled
 
 norm:
