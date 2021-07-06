@@ -161,4 +161,6 @@ int				pipe_1st_midle(t_all *all, t_command *tmp);
 int				pipe_last(t_all *all, t_command *tmp);
 void			wait_status_fork(pid_t onepid);
 
+void	ft_free(void **pointer);
+
 #endif

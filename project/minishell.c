@@ -129,11 +129,32 @@ write(STDOUT_FILENO, NONECOLOR, 4);
 		}
 		else
 			break ;
-		free(all.line);
-		all.line = NULL;
+		ft_free((void**)&all.line);
+		// free(all.line);
+		// all.line = NULL;
 	}
 	exit_clean(&all);
 	return (0);
+}
+
+/************************************
+ * 			 ft_free				*
+ * **********************************
+*/
+/* Description:
+ * 	Your pointer is *pointer. Example:
+ *		char *str;
+ *		ft_free((void**)&str);
+ * 	The function free pointer if pointer not NULL.
+*/
+
+void	ft_free(void **pointer)
+{
+	if (*pointer)
+	{
+		free(*pointer);
+		*pointer = NULL;
+	}
 }
 
 /************************************
