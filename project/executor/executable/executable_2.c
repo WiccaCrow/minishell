@@ -83,17 +83,30 @@ void	repointer_to_filename_with_path(char **args0, char *filename_with_path)
 */
 /* Description:
  * 		The function processes the return value from the fork and fills in
- * 		the g_completion_code from WIFEXITED(status) or WEXITSTATUS(status).
+ * 		the g_completion_code from WEXITSTATUS(status) or WIFSIGNALED(status), or WSTOPSIG(status).
 */
 void	wait_status_fork(pid_t onepid)
 {
 	int status;
 	int option;
+	int	ex;
+	int	ter;
+	int	st;
 
+	ex = 0;
+	ter = 0;
 	option = 0;
 	waitpid(onepid, &status, option);
-	g_completion_code = WIFEXITED(status);
-	if (g_completion_code)
+	ex = WIFEXITED(status);
+	if (ex)
 		g_completion_code = WEXITSTATUS(status);
-//	printf("WEXITSTATUS = %d onepid = %d\n", g_completion_code, onepid);
+	else
+		ter = WIFSIGNALED(status);
+	if (!ex && ter)
+		g_completion_code = WTERMSIG(status);
+	else
+		st = WIFSTOPPED(status);
+	if (!ex && !ter && st)
+		g_completion_code = WSTOPSIG(status);
+	// printf("WEXITSTATUS = %d onepid = %d\n", g_completion_code, onepid);
 }

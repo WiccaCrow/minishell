@@ -103,8 +103,8 @@ int executor(t_all *all, t_command *tmp)
 		exec_export(all);
 	else if (tmp->flag_command == unset)
 		exec_unset(all);
-	else
-		write(tmp->output_fd, "other command\n", 15);
+	// else
+	// 	write(tmp->output_fd, "other command\n", 15);
 	// all_args_free(all);
 
 // write(1, "test executor\n", 14);

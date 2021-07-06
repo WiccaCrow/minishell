@@ -27,17 +27,18 @@ int pipe_last(t_all *all, t_command *tmp)//исполняет команду, к
 			else if (g_completion_code == 0)
 				executor(all, tmp);
 		}
+		else
+			exit(1);
 		exit (g_completion_code);
 	}
 	close(all->fd0);
-	wait_status_fork(all->waitpid);
 	return (0);
 }
 
 int	pipe_1st_midle(t_all *all, t_command *tmp)//исполняет все команды, которые заканчиваются на пайп
 {
 	int	file_pipes[2];
-//int ret;
+
 	if (pipe(file_pipes) == 0)
 	{
 		all->waitpid = fork();
@@ -54,10 +55,6 @@ int	pipe_1st_midle(t_all *all, t_command *tmp)//исполняет все ком
 
 			if (tmp->input_fd == 0)
 				dup2(all->fd0, tmp->input_fd);
-//			if (tmp->input_fd < 0)
-//			{
-//				executable_error_print(char *com_name, char *error_message, int error_code);
-//			}
 			else
 				dup2(tmp->input_fd, 0);
 			if (tmp->input_fd >= 0)
@@ -67,12 +64,13 @@ int	pipe_1st_midle(t_all *all, t_command *tmp)//исполняет все ком
 				else if (g_completion_code == 0)
 					executor(all, tmp);
 			}
+			else
+				exit(1);
 			exit (g_completion_code);
 		}
 		if (tmp->end_flag&START_PIPE && tmp->end_flag&PIPE)
 			close(all->fd0);
 		close(file_pipes[1]);
-		wait_status_fork(all->waitpid);
 		return (file_pipes[0]);
 	}
 	return (0);
@@ -80,8 +78,12 @@ int	pipe_1st_midle(t_all *all, t_command *tmp)//исполняет все ком
 
 int	all_pipes(t_all *all, t_command *tmp)// запускает на параллельное выполнение команды с пайпами
 {
-	all->fd0 = tmp->input_fd;
+	int		nb_p;
+	pid_t	*pid;
 
+	nb_p = 0;
+	pid = nb_pipes(tmp);
+	all->fd0 = tmp->input_fd;
 	while (tmp->end_flag&PIPE || tmp->end_flag&START_PIPE)
 	{
 		g_completion_code = 0;
@@ -91,28 +93,33 @@ int	all_pipes(t_all *all, t_command *tmp)// запускает на паралл
 			all->fd0 = pipe_1st_midle(all, tmp);
 		else
 			pipe_last(all, tmp);
+		pid[nb_p++] = all->waitpid;
 		tmp = tmp->next;
 		if (tmp == NULL)
 			break;
 		g_completion_code = 0;
 	}
+	all->waitpid = 0;
+	while (nb_p--)
+		wait_status_fork(pid[all->waitpid++]);
 	return (0);
 }
 
-//int	nb_pipes(t_command *tmp)//считатет количество пайпов подряд
-//{
-//	t_command *for_count;
-//	int	nb_p;
-//
-//	all->waitpid = 0;///////////////////////
-//	nb_p = 0;
-//	for_count = tmp;
-//	while (for_count->end_flag&PIPE)
-//	{
-//		++nb_p;
-//		for_count = for_count->next;
-//		if (for_count == NULL)
-//			break;
-//	}
-//	return (nb_p);
-//}
+pid_t	*nb_pipes(t_command *tmp)//считатет количество пайпов подряд
+{
+	t_command	*for_count;
+	int			nb_p;
+	pid_t		*pid;
+
+	nb_p = 0;
+	for_count = tmp;
+	while (for_count->end_flag&PIPE)
+	{
+		++nb_p;
+		for_count = for_count->next;
+		if (for_count == NULL)
+			break;
+	}
+	pid = (pid_t*)malloc(nb_p * sizeof(pid_t));
+	return (pid);
+}

@@ -52,7 +52,7 @@ int exec_echo(t_all *all)
 	echo_check_flag_n(all, &i, &flag_n);
 	while ((*all->commands)->args[i])
 	{
-		printf("output_fd = %d\n", (*all->commands)->output_fd);
+		// printf("output_fd = %d\n", (*all->commands)->output_fd);
 		ret += write((*all->commands)->output_fd, (*all->commands)->args[i], ft_strlen((*all->commands)->args[i]));
 		// ret += write(STDOUT_FILENO, (*all->commands)->args[i], ft_strlen((*all->commands)->args[i]));
 		if ((*all->commands)->args[++i])
