@@ -125,6 +125,7 @@ write(STDOUT_FILENO, NONECOLOR, 4);
 write(STDOUT_FILENO, "\x1b[32m", 8);
 printf("иду на следующий филл олл\n");
 write(STDOUT_FILENO, NONECOLOR, 4);
+			free_commands(all.commands);
 		}
 		else
 			break ;

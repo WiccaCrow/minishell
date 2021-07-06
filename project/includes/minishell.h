@@ -67,7 +67,6 @@ typedef struct s_all {
 	t_command			**commands;
 	int					fd0;
 	pid_t				waitpid;
-	// pid_t				pid;
 }						t_all;
 
 void			start_all(t_all *all, char **env);
