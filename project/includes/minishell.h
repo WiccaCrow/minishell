@@ -155,7 +155,7 @@ void			env_shlvl_increase_1part(t_all *all, int index);
 void			env_shlvl_increase_2part(t_all *all, int index, int nb, \
 					char **env_new_shlvl);
 
-int				all_pipes(t_all *all, t_command *tmp);
+void				all_pipes(t_all *all, t_command *tmp);
 pid_t			*nb_pipes(t_command *tmp);
 int				pipe_1st_midle(t_all *all, t_command *tmp);
 int				pipe_last(t_all *all, t_command *tmp);

@@ -1,13 +1,5 @@
 #include "minishell.h"
 
-//int	pipe_23(t_all *all, t_command *tmp)//запускает на исполнение команды с пайпами между команд в функции pipe_1st_midle, команду после последнего пайпа в функции pipe_last
-//{
-//	if (tmp->end_flag&PIPE)
-//		return (pipe_1st_midle(all, tmp));
-//	else
-//		return (pipe_last(all, tmp));
-//}
-
 int pipe_last(t_all *all, t_command *tmp)//исполняет команду, которая только начинается на пайп (команда после последнего пайпа)
 {
 	all->waitpid = fork();
@@ -76,7 +68,16 @@ int	pipe_1st_midle(t_all *all, t_command *tmp)//исполняет все ком
 	return (0);
 }
 
-int	all_pipes(t_all *all, t_command *tmp)// запускает на параллельное выполнение команды с пайпами
+/************************************
+ * 				all_pipes			*
+ * **********************************
+*/
+/* Description:
+ * 		The function launches a command with 
+ * 		pipes for parallel execution.
+*/
+
+void	all_pipes(t_all *all, t_command *tmp)// запускает на параллельное выполнение команды с пайпами
 {
 	int		nb_p;
 	pid_t	*pid;
@@ -102,10 +103,23 @@ int	all_pipes(t_all *all, t_command *tmp)// запускает на паралл
 	all->waitpid = 0;
 	while (nb_p--)
 		wait_status_fork(pid[all->waitpid++]);
-	return (0);
 }
 
-pid_t	*nb_pipes(t_command *tmp)//считатет количество пайпов подряд
+/************************************
+ * 				nb_pipes			*
+ * **********************************
+*/
+/* Description:
+ * 		The function allocates a memory area for 
+ * 		pid_t *pid array for process or process 
+ * 		group IDs (return value from function fork()).
+ * 
+ * Return value::
+ * 		Pointer to allocates a memory area for 
+ * 		pid_t *pid.
+*/
+
+pid_t	*nb_pipes(t_command *tmp)
 {
 	t_command	*for_count;
 	int			nb_p;
