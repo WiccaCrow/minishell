@@ -1,9 +1,9 @@
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 /************************************
  * 				exec_cd				*
  * **********************************
-*/ 
+*/
 /* Description:
  * 		Change working directory.
  * 		Change env value: PWD, OLDPWD.
@@ -14,28 +14,29 @@
  * libft.	ft_strjoin;
 */
 
-int	exec_cd(t_all *all)
+int	exec_cd(t_all *all, t_command *tmp)
 {
 	int		ret_chdir;
 	int		i;
+	char	*err;
 
-    g_completion_code = 0;
+	g_completion_code = 0;
 	i = 0;
-	if ((*all->commands)->args[0] == NULL)
+	if (tmp->args[0] == NULL)
 		return (g_completion_code = 0);
-	ret_chdir = chdir((*all->commands)->args[0]);
+	ret_chdir = chdir(tmp->args[0]);
 	if (ret_chdir == -1)
 	{
 		write(STDERR_FILENO, "minishell: cd: ", 16);
-		char *err = strerror(errno);
+		err = strerror (errno);
 		write(STDERR_FILENO, err, ft_strlen(err));
 		write(STDERR_FILENO, "\n", 1);
-        g_completion_code = 1;
+		g_completion_code = 1;
 	}
 	else
 	{
 		change_oldpwd(all);
-		change_pwd(all);	
+		change_pwd(all);
 	}
 	return (g_completion_code);
 }
@@ -69,7 +70,8 @@ void	change_pwd(t_all *all)
 		all->env[i] = ft_strjoin("PWD=", all->pwd);
 		if (all->env[i] == NULL)
 		{
-			write(STDERR_FILENO, "cd: malloc error, can't change PWD in env\n", 43);
+			write(STDERR_FILENO, "cd: malloc error, can't change PWD in env\n",
+				43);
 			all->env[i] = pwd_env;
 		}
 		else
@@ -92,22 +94,23 @@ void	change_oldpwd(t_all *all)
 {
 	int		j;
 	char	*oldpwd_env;
-	int     i;
+	int		i;
 
-    i = get_my_env_index(all->env, "PWD", 3);
-    j = get_my_env_index(all->env, "OLDPWD", 6);
-    oldpwd_env = all->env[j];
-    if (all->env[i] && all->env[j])
-        all->env[j] = ft_strjoin("OLD", all->env[i]);
+	i = get_my_env_index(all->env, "PWD", 3);
+	j = get_my_env_index(all->env, "OLDPWD", 6);
+	oldpwd_env = all->env[j];
+	if (all->env[i] && all->env[j])
+		all->env[j] = ft_strjoin("OLD", all->env[i]);
 	else if (all->env[j])
 		all->env[j] = ft_strdup("OLDPWD=");
-    if (oldpwd_env && all->env[j] == NULL)
-    {
-        write(STDERR_FILENO, "cd: malloc error, can't change OLDPWD in env\n", 46);
-        all->env[j] = oldpwd_env;
-    }
-    else
-        free(oldpwd_env);
+	if (oldpwd_env && all->env[j] == NULL)
+	{
+		write(STDERR_FILENO, "cd: malloc error, can't change OLDPWD in env\n",
+			46);
+		all->env[j] = oldpwd_env;
+	}
+	else
+		free(oldpwd_env);
 }
 
 /************************************
@@ -144,8 +147,9 @@ int	get_my_env_index(char **my_env, char *env_str, size_t len_env_str)
 	while (my_env[++i])
 	{
 		cmp = ft_strncmp(my_env[i], env_str, len_env_str);
-        if (cmp == 0 && (my_env[i][len_env_str] == '=' || my_env[i][len_env_str] == '\0'))
-			break;
+		if (cmp == 0 && (my_env[i][len_env_str] == '='
+			|| my_env[i][len_env_str] == '\0'))
+			break ;
 	}
 	return (i);
 }

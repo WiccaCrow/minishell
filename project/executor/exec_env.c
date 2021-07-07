@@ -1,9 +1,9 @@
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 /************************************
  * 			exec_env				*
  * **********************************
-*/ 
+*/
 /* Description:
  * 		Print my env array.
  * 
@@ -12,25 +12,28 @@
  * libft.	ft_strchr;
 */
 
-void	exec_env(t_all *all)
+void	exec_env(t_all *all, t_command *tmp)
 {
 	int	i;
 
 	i = -1;
-    g_completion_code = 0;
-	if ((*all->commands)->args[0])
+	g_completion_code = 0;
+	if (tmp->args[0])
 	{
-		write((*all->commands)->output_fd, "env: must be without any ", 26);
-		write((*all->commands)->output_fd, "options and any arguments\n", 27);
-        g_completion_code = 127;
+		write(tmp->output_fd, "env: must be without any ", 25);
+		write(tmp->output_fd, "options and any arguments\n", 26);
+		g_completion_code = 127;
 	}
 	else
+	{
 		while (all->env[++i])
 		{
 			if (ft_strchr(all->env[i], '='))
 			{
-				write((*all->commands)->output_fd, all->env[i], ft_strlen(all->env[i]));
-				write((*all->commands)->output_fd, "\n", 1);
+				write(tmp->output_fd, all->env[i],
+					ft_strlen(all->env[i]));
+				write(tmp->output_fd, "\n", 1);
 			}
 		}
+	}
 }

@@ -63,6 +63,7 @@ typedef struct s_all {
 	char				**env;
 	char				*pwd;
 	int					len_env_str;
+	int					nb_arg;
 	char				parse_error;
 	t_command			**commands;
 	int					fd0;
@@ -96,47 +97,46 @@ int				executor(t_all *all, t_command *tmp);
 void			command_not_found(t_all *all, t_command *tmp);
 void			print_command_not_found(t_command *tmp);
 void			completion_code_malloc_error(char *array_null, char *open_name);
-int				exec_echo(t_all *all);
-int				exec_cd(t_all *all);
+int				exec_echo(t_command *tmp);
+void			echo_check_flag_n(t_command *tmp, int *i, int *flag_n);
+int				exec_cd(t_all *all, t_command *tmp);
 int				get_my_env_index(char **my_env, char *env_str, \
 					size_t len_env_str);
 void			change_oldpwd(t_all *all);
 void			change_pwd(t_all *all);
 void			exec_pwd(t_all *all, t_command *tmp);
-void			exec_env(t_all *all);
-int				exec_export(t_all *all);
+void			exec_env(t_all *all, t_command *tmp);
+int				exec_export(t_all *all, t_command *tmp);
 int				count_env_lines(t_all *all);
-void			sort_env(t_all *all, int i, int k, int j);
+void			sort_env(t_all *all, t_command *tmp, int i, int j);
 int				do_sort_index(char ***sort_env_index, int **sort, int i);
 int				ft_strcmp_s1_less_s2(char *str1, char *str2);
-void			print_export(t_all *all, char **sort_env_index);
+void			print_export(t_command *tmp, char **sort_env_index);
 void			free_sort_index(char **sort_env_index, int *sort);
-void			subjoin_env(t_all *all, int i, int j);
-int				count_lines(t_all *all, char *oper_name, int nb_env_lines, \
-					int j);
-void			export_args_to_new_env(t_all *all, int j, char **env_new);
-int				check_valid_args(t_all *all, char *oper_name, int j, \
-					int flag_print);
+void			subjoin_env(t_all *all, t_command *tmp, int i);
+char	**create_new_env_array(t_all *all, t_command *tmp, int i);
+int				count_lines(t_all *all, t_command *tmp, char *oper_name, int nb_env_lines);
+int			export_args_to_new_env(t_all *all, t_command *tmp, char **env_new);
+int				check_valid_args(char *argj, char *oper_name, int flag_print);
 int				print_not_valid(char *args_name, char *operation_name, \
 					int flag_print);
 int				check_double_args(char **args, int find_plus);
 int				find_next_double_arg(char **args, int find_plus, int nb_args, \
 					int i);
-int				find_env_str(t_all *all, char *oper_name, int j, char **env);
-void			change_env_str(t_all *all, int j, int index, char **env);
-void			create_env_str(t_all *all, int j, char **env, int *i);
+int				find_env_str(t_all *all, t_command *tmp, char *oper_name, char **env);
+int			change_env_str(t_all *all, t_command *tmp, int index, char **env);
+int			create_env_str(t_all *all, t_command *tmp, char **env, int *i);
 void			check_arg_pwd(t_all *all);
-int				exec_unset(t_all *all);
-void			exec_unset_find_env_str(t_all *all, char *oper_name);
+int				exec_unset(t_all *all, t_command *tmp);
+void			exec_unset_find_env_str(t_all *all, t_command *tmp, char *oper_name);
 void			exec_unset_do_new_env(t_all *all, char **env_new, int nb_lines);
-void			all_args_free(t_all *all);
-void			exec_exit(t_all *all);
+void			exec_exit(t_all *all, t_command *tmp);
 int				args_is_digit(char *args);
-int				exit_code(t_all *all);
-void			close_fd_output_input(t_all *all);
+int				exit_code(t_all *all, t_command *tmp);
+void			close_fd_output_input(t_command *tmp);
 
 int				executable(t_all *all, t_command *tmp);
-int				executable_check_and_run(t_all *all, char *filename_with_path, \
+int				executable_check_and_run(t_all *all, char *name_path, \
 					int have_path, t_command *tmp);
 int				check_command_sourse(char *com_name);
 int				executable_error_print(char *com_name, char *error_message, \

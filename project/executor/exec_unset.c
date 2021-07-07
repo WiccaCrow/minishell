@@ -1,4 +1,4 @@
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 /************************************
  * 			 exec_unset				*
@@ -16,23 +16,21 @@
  * 		exec_unset_do_new_env;
  */
 
-int	exec_unset(t_all *all)
+int	exec_unset(t_all *all, t_command *tmp)
 {
-	char 	**env_new;
+	char	**env_new;
 	int		i;
-	int		j;
 
-    g_completion_code = 0;
-	j = -1;
+	g_completion_code = 0;
 	i = count_env_lines(all);
-	i = count_lines(all, "unset", i, j);
+	i = count_lines(all, tmp, "unset", i);
 	env_new = (char **)malloc((i + 1) * sizeof(char *));
 	env_new[i] = NULL;
 	if (!env_new)
 		completion_code_malloc_error(NULL, "unset");
 	if (g_completion_code == 0)
 	{
-		exec_unset_find_env_str(all, "unset");
+		exec_unset_find_env_str(all, tmp, "unset");
 		exec_unset_do_new_env(all, env_new, i);
 	}
 	return (0);
@@ -57,17 +55,16 @@ int	exec_unset(t_all *all)
  * 		find_env_str;
  */
 
-void	exec_unset_find_env_str(t_all *all, char *oper_name)
+void	exec_unset_find_env_str(t_all *all, t_command *tmp, char *oper_name)
 {
-	int	j;
 	int	index_env_str;
 
-	j = -1;
-	while ((*all->commands)->args[++j])
+	all->nb_arg = -1;
+	while (tmp->args[++all->nb_arg])
 	{
-		if (!check_valid_args(all, oper_name, j, 0))
-			continue;
-		index_env_str = find_env_str(all, oper_name, j, all->env);
+		if (!check_valid_args(tmp->args[all->nb_arg], oper_name, 0))
+			continue ;
+		index_env_str = find_env_str(all, tmp, oper_name, all->env);
 		if (all->env[index_env_str] != NULL)
 			all->env[index_env_str][0] = 0;
 	}

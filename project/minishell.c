@@ -261,7 +261,6 @@ void	exit_clean(t_all *all)
 		free(all->line);
 		all->line = NULL;
 	}
-	close_fd_output_input(all);
-	all_args_free(all);
+	free_commands(all->commands);
 	exit(g_completion_code);
 }

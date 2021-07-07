@@ -1,4 +1,4 @@
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 /************************************
  * 			args_is_digit			*
@@ -12,7 +12,7 @@
 
 int	args_is_digit(char *args)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (args[i] == '+' || args[i] == '-')
@@ -30,17 +30,17 @@ int	args_is_digit(char *args)
  * 		Exit with completion code.
 */
 
-void	exec_exit(t_all *all)
+void	exec_exit(t_all *all, t_command *tmp)
 {
 	int	pipe_on_of;
 
 	pipe_on_of = 0;
-	if ((*all->commands)->end_flag&PIPE)
+	if (tmp->end_flag & PIPE)
 		pipe_on_of = 1;
 	else
-	    write((*all->commands)->output_fd, "exit\n", 6);
-    g_completion_code = exit_code(all);
-	if ((((*all->commands)->args[0] && !(*all->commands)->args[1]) || !(*all->commands)->args[0]) && !pipe_on_of)
+		write(tmp->output_fd, "exit\n", 5);
+	g_completion_code = exit_code(all, tmp);
+	if (((tmp->args[0] && !tmp->args[1]) || !tmp->args[0]) && !pipe_on_of)
 		exit_clean(all);
 }
 
@@ -53,28 +53,28 @@ void	exec_exit(t_all *all)
  * 		Set completion code.
 */
 
-int	exit_code(t_all *all)
+int	exit_code(t_all *all, t_command *tmp)
 {
 	int	code;
 	int	i;
 
-	if ((*all->commands)->args[0] == NULL)
+	if (tmp->args[0] == NULL)
 		return (0);
 	i = -1;
-	if (args_is_digit((*all->commands)->args[0]))
+	if (args_is_digit(tmp->args[0]))
 	{
-		write((*all->commands)->output_fd, "bash: exit: ", 13);
-		write((*all->commands)->output_fd, (*all->commands)->args[0], ft_strlen((*all->commands)->args[0]));
-		write((*all->commands)->output_fd, ": numeric argument required\n", 29);
-        g_completion_code = 255;
+		write(tmp->output_fd, "bash: exit: ", 13);
+		write(tmp->output_fd, tmp->args[0], ft_strlen(tmp->args[0]));
+		write(tmp->output_fd, ": numeric argument required\n", 29);
+		g_completion_code = 255;
 		exit_clean(all);
 	}
-	if ((*all->commands)->args[1]!= NULL)
+	if (tmp->args[1] != NULL)
 	{
-		write((*all->commands)->output_fd, "minishell: exit: too many arguments\n", 37);
-		return(1);
+		write(tmp->output_fd, "minishell: exit: too many arguments\n", 37);
+		return (1);
 	}
-	code = ft_atoi((*all->commands)->args[0]);
+	code = ft_atoi(tmp->args[0]);
 	if (code < 0)
 		return (code + 256);
 	else if (code > 255)

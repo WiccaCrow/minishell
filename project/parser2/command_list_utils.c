@@ -17,6 +17,7 @@ int free_commands(t_command **commands)
 	tmp = *commands;
 	while (tmp)
 	{
+		close_fd_output_input(tmp);
 		tmp2 = tmp;
 		tmp = tmp->next;
 		free_command(tmp2);

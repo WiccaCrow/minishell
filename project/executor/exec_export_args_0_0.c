@@ -1,4 +1,4 @@
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 /************************************
  * 				exec_export			*
@@ -20,16 +20,16 @@
  * 		subjoin_env;
 */
 
-int	exec_export(t_all *all)
+int	exec_export(t_all *all, t_command *tmp)
 {
 	int	i;
 
-    g_completion_code = 0;
+	g_completion_code = 0;
 	i = count_env_lines(all);
-	if (!(*all->commands)->args[0])
-		sort_env(all, i, -1, 0);
+	if (!tmp->args[0])
+		sort_env(all, tmp, i, 0);
 	else
-		subjoin_env(all, i, -1);
+		subjoin_env(all, tmp, i);
 	return (0);
 }
 
@@ -65,14 +65,14 @@ int	count_env_lines(t_all *all)
  * 	free_sort_index;
 */
 
-void	    sort_env(t_all *all, int i, int k, int j)
+void	sort_env(t_all *all, t_command *tmp, int i, int j)
 {
 	int		j_zero;
 	char	**sort_env_index;
 	int		*sort;
+	int		k;
 
-    g_completion_code = do_sort_index(&sort_env_index, &sort, i);
-	if (g_completion_code)
+	if (do_sort_index(&sort_env_index, &sort, i))
 		return ;
 	j_zero = 0;
 	while (i)
@@ -88,7 +88,7 @@ void	    sort_env(t_all *all, int i, int k, int j)
 		sort_env_index[--i] = all->env[j];
 		sort[j] = 0;
 	}
-	print_export(all, sort_env_index);
+	print_export(tmp, sort_env_index);
 	free_sort_index(sort_env_index, sort);
 }
 
@@ -120,7 +120,7 @@ int	do_sort_index(char ***sort_env_index, int **sort, int i)
 /************************************
  * 		ft_strcmp_s1_less_s2		*
  * **********************************
-*/ 
+*/
 /* Description:
  * 		Compare two strings.
  * Return value:

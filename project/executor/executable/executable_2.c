@@ -25,9 +25,10 @@ char	**path_env(t_all *all)
 	path_env = ft_split(++path_env_value, ':');
 	if (path_env == NULL)
 	{
-        g_completion_code = 1;
+		g_completion_code = 1;
 		write(STDERR_FILENO, "minishell: ", 12);
-		write(STDERR_FILENO, (*all->commands)->args[0], ft_strlen((*all->commands)->args[0]));
+		write(STDERR_FILENO, (*all->commands)->args[0],
+			ft_strlen((*all->commands)->args[0]));
 		write(STDERR_FILENO, ": malloc error. Try again.\n", 28);
 	}
 	return (path_env);
@@ -78,17 +79,18 @@ void	repointer_to_filename_with_path(char **args0, char *filename_with_path)
 }
 
 /****************************************
- * 		wait_status_pipes	*
+ * 				wait_status_pipes		*
  * **************************************
 */
 /* Description:
  * 		The function processes the return value from the fork and fills in
- * 		the g_completion_code from WEXITSTATUS(status) or WIFSIGNALED(status), or WSTOPSIG(status).
+ * 		the g_completion_code from WEXITSTATUS(status) or WIFSIGNALED(status), 
+ * 		or WSTOPSIG(status).
 */
 void	wait_status_fork(pid_t onepid)
 {
-	int status;
-	int option;
+	int	status;
+	int	option;
 	int	ex;
 	int	ter;
 	int	st;
@@ -108,5 +110,4 @@ void	wait_status_fork(pid_t onepid)
 		st = WIFSTOPPED(status);
 	if (!ex && !ter && st)
 		g_completion_code = WSTOPSIG(status);
-	// printf("WEXITSTATUS = %d onepid = %d\n", g_completion_code, onepid);
 }

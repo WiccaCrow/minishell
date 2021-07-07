@@ -1,4 +1,4 @@
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 /************************************
  * 				exec_pwd			*
@@ -11,5 +11,5 @@ void	exec_pwd(t_all *all, t_command *tmp)
 {
 	write(tmp->output_fd, all->pwd, ft_strlen(all->pwd));
 	write(tmp->output_fd, "\n", 1);
-    g_completion_code = 0;
+	g_completion_code = 0;
 }
