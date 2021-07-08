@@ -89,6 +89,11 @@ void	all_pipes(t_all *all, t_command *tmp)
 
 	nb_p = 0;
 	pid = nb_pipes(tmp);
+	if (NULL == pid)
+	{
+		completion_code_malloc_error(NULL, "pipes");
+		return ;
+	}
 	all->fd0 = tmp->input_fd;
 	while (tmp->end_flag&PIPE || tmp->end_flag&START_PIPE)
 	{
@@ -108,6 +113,7 @@ void	all_pipes(t_all *all, t_command *tmp)
 	all->waitpid = 0;
 	while (nb_p--)
 		wait_status_fork(pid[all->waitpid++]);
+	free(pid);
 }
 
 /************************************
