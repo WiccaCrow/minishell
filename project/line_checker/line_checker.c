@@ -63,10 +63,10 @@ int	check_line(t_all *all)
 				write(STDOUT_FILENO, word, ft_strlen(word));
 				write(STDOUT_FILENO, "\'\n", 2);
 				g_completion_code = 258;
-				return (0);
+				return (all->check_line = 0);
 			}
 			i = skip_spaces(all->line, i);
 		}
 	}
-	return (1);
+	return (all->check_line = 1);
 }

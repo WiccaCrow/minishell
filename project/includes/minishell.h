@@ -67,6 +67,7 @@ typedef struct s_all {
 	char				parse_error;
 	t_command			**commands;
 	int					fd0;
+	int					check_line;
 	pid_t				waitpid;
 }						t_all;
 

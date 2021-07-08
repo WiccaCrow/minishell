@@ -75,9 +75,14 @@ int	pipe_1st_midle(t_all *all, t_command *tmp)//исполняет все ком
 /* Description:
  * 		The function launches a command with 
  * 		pipes for parallel execution.
+ * Code comments:
+ * 		pid_t *pid. Array of pids (pid[i] = fork()).
+ * 		all->fd0 = tmp->input_fd; Can be not 0, if was redirect.
+ * 		(tmp->end_flag&PIPE || tmp->end_flag&START_PIPE). 
+ * 			Command start or end with pipe.
 */
 
-void	all_pipes(t_all *all, t_command *tmp)// запускает на параллельное выполнение команды с пайпами
+void	all_pipes(t_all *all, t_command *tmp)
 {
 	int		nb_p;
 	pid_t	*pid;
@@ -89,7 +94,7 @@ void	all_pipes(t_all *all, t_command *tmp)// запускает на парал�
 	{
 		g_completion_code = 0;
 		if (tmp->flag_command == 0)
-			executor(all, tmp);
+			command_not_found(all, tmp);
 		if (tmp->end_flag&PIPE)
 			all->fd0 = pipe_1st_midle(all, tmp);
 		else
@@ -98,7 +103,7 @@ void	all_pipes(t_all *all, t_command *tmp)// запускает на парал�
 		tmp = tmp->next;
 		if (tmp == NULL)
 			break;
-		g_completion_code = 0;
+		// g_completion_code = 0;
 	}
 	all->waitpid = 0;
 	while (nb_p--)
