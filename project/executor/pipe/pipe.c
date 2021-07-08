@@ -20,8 +20,12 @@ int pipe_last(t_all *all, t_command *tmp)//исполняет команду, к
 				executor(all, tmp);
 		}
 		else
-			exit(1);
-		exit (g_completion_code);
+		{
+			g_completion_code = 1;
+			exit_clean(all);
+			// exit(1);
+		}
+		exit_clean(all);
 	}
 	close(all->fd0);
 	return (0);
@@ -57,8 +61,12 @@ int	pipe_1st_midle(t_all *all, t_command *tmp)//исполняет все ком
 					executor(all, tmp);
 			}
 			else
-				exit(1);
-			exit (g_completion_code);
+			{
+				g_completion_code = 1;
+				exit_clean(all);
+				// exit(1);
+			}
+			exit_clean(all);
 		}
 		if (tmp->end_flag&START_PIPE && tmp->end_flag&PIPE)
 			close(all->fd0);

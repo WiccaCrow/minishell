@@ -97,26 +97,26 @@ int main(int ac, char **av, char **env)
 		show_program_name();
 		if (line_getter(&all))
 		{
-write(STDOUT_FILENO, "\x1b[32m", 7);
+write(STDOUT_FILENO, "\x1b[32m", 8);
 printf("иду из филл олл\n");
 write(STDOUT_FILENO, NONECOLOR, 4);
 			while (all.line && *all.line && check_line(&all) && \
 			dollar_handler(&all) && parser2(&all))
 //				dollar_handler(&all) && parser2(&all) < 50)
 			{
-write(STDOUT_FILENO, "\x1b[32m", 7);
+write(STDOUT_FILENO, "\x1b[32m", 8);
 printf("зашла \n");
 write(STDOUT_FILENO, NONECOLOR, 4);
 				if ((*all.commands)->end_flag & START_PIPE || (*all.commands)->end_flag & PIPE)
 				{
-write(STDOUT_FILENO, "\x1b[32m", 7);
+write(STDOUT_FILENO, "\x1b[32m", 8);
 printf("зашла в pipe\n");
 write(STDOUT_FILENO, NONECOLOR, 4);
 					all_pipes(&all, *all.commands);
 				}
                 else if ((*all.commands)->input_fd != -1)
 				{
-write(STDOUT_FILENO, "\x1b[32m", 7);
+write(STDOUT_FILENO, "\x1b[32m", 8);
 printf("зашла в executor\n");
 write(STDOUT_FILENO, NONECOLOR, 4);
 					executor(&all, *all.commands);
@@ -256,12 +256,24 @@ int show_program_name(void)
 
 void	exit_clean(t_all *all)
 {
+	int	i;
+
 	wr_history(all->history);
 	if (all->line)
 	{
 		free(all->line);
 		all->line = NULL;
 	}
+	// char				**history;
+	if (all->env)
+	{
+		i = -1;
+		while (all->env[++i])
+			ft_free((void**)&all->env[i]);
+		free(all->env);
+		all->env = NULL;
+	}
+	ft_free((void**)&all->pwd);
 	free_commands(all->commands);
 	exit(g_completion_code);
 }
