@@ -48,10 +48,12 @@ int	get_next_word_lc(char *line, int i, char **tmp_line)
 			*tmp_line = add_chr(*tmp_line, line[i]);
 			if ((flag & SHIELD))
 				flag = flag & ~(SHIELD);
-			i++;
 		}
 		else
+		{
 			return (i);
+		}
+		i++;
 	}
 	return (i);
 }
