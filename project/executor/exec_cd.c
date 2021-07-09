@@ -18,7 +18,6 @@ int	exec_cd(t_all *all, t_command *tmp)
 {
 	int		ret_chdir;
 	int		i;
-	char	*err;
 
 	g_completion_code = 0;
 	i = 0;
@@ -26,13 +25,7 @@ int	exec_cd(t_all *all, t_command *tmp)
 		return (g_completion_code = 0);
 	ret_chdir = chdir(tmp->args[0]);
 	if (ret_chdir == -1)
-	{
-		write(STDERR_FILENO, "minishell: cd: ", 16);
-		err = strerror (errno);
-		write(STDERR_FILENO, err, ft_strlen(err));
-		write(STDERR_FILENO, "\n", 1);
-		g_completion_code = 1;
-	}
+		completion_code_int_ret_error("minishell: cd: ", 1);
 	else
 	{
 		change_oldpwd(all);

@@ -20,7 +20,7 @@ EXEC_SRCS	=	executor.c \
 				exec_export_args_1_0.c exec_export_args_1_1.c exec_export_args_1_2.c \
 				exec_unset.c exec_exit.c completion_code.c \
 				executable/executable_1.c executable/executable_2.c \
-				pipe/pipe.c
+				pipe/pipe_0.c pipe/pipe_1.c
 GNL_PATH	=	gnl_dir/
 GNL_SRCS	=	get_next_line.c get_next_line_utils.c
 SRCS		=	minishell.c fill_all.c signal_handler.c start_all/start_env_shlvl.c\

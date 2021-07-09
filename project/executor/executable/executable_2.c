@@ -79,7 +79,7 @@ void	repointer_to_filename_with_path(char **args0, char *filename_with_path)
 }
 
 /****************************************
- * 				wait_status_pipes		*
+ * 				wait_status_fork		*
  * **************************************
 */
 /* Description:
@@ -87,6 +87,7 @@ void	repointer_to_filename_with_path(char **args0, char *filename_with_path)
  * 		the g_completion_code from WEXITSTATUS(status) or WIFSIGNALED(status), 
  * 		or WSTOPSIG(status).
 */
+
 void	wait_status_fork(pid_t onepid)
 {
 	int	status;

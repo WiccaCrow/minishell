@@ -98,6 +98,8 @@ int				executor(t_all *all, t_command *tmp);
 void			command_not_found(t_all *all, t_command *tmp);
 void			print_command_not_found(t_command *tmp);
 void			completion_code_malloc_error(char *array_null, char *open_name);
+void			completion_code_int_ret_error(char *oper_name, int error_code);
+int				completion_code_fork_error(char *oper_name, char *err_text, int error_code);
 int				exec_echo(t_command *tmp);
 void			echo_check_flag_n(t_command *tmp, int *i, int *flag_n);
 int				exec_cd(t_all *all, t_command *tmp);
@@ -156,10 +158,14 @@ void			env_shlvl_increase_1part(t_all *all, int index);
 void			env_shlvl_increase_2part(t_all *all, int index, int nb, \
 					char **env_new_shlvl);
 
-void				all_pipes(t_all *all, t_command *tmp);
-pid_t			*nb_pipes(t_command *tmp);
+void			enter_the_pipes(t_all *all, t_command *tmp);
+pid_t			*nb_pipes(t_command *tmp, pid_t **pid);
+int				do_pipes(t_all *all, t_command *tmp, pid_t *pid);
 int				pipe_1st_midle(t_all *all, t_command *tmp);
+void			dupfd_in_pipe_1st_midle(t_all *all, t_command *tmp, int *file_pipes);
+void			exec_command_with_pipe(t_all *all, t_command *tmp);
 int				pipe_last(t_all *all, t_command *tmp);
+int				pipe_fork_if_error(t_all *all);
 void			wait_status_fork(pid_t onepid);
 
 void	ft_free(void **pointer);
