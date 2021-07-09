@@ -59,10 +59,10 @@ int	check_line(t_all *all)
 			i = get_next_word_lc(all->line, i, &word);
 			if (!check_word(word, &prev_type))
 			{
+				g_completion_code = 2 + 256 * (word[0] == ';');				
 				write(STDOUT_FILENO, SYN_ERR, 47);
 				write(STDOUT_FILENO, word, ft_strlen(word));
 				write(STDOUT_FILENO, "\'\n", 2);
-				g_completion_code = 2;
 				return (all->check_line = 0);
 			}
 			i = skip_spaces(all->line, i);
