@@ -16,6 +16,33 @@ int	ft_putchar(int c)
  * на 1 символ, позиция курсора также сдвигается на 1 позицию вправо
 */
 
+size_t	copy_line_begin(char *dest, const char *src, size_t end_pos)
+{
+	size_t	i;
+
+	i = 0;
+	while (src && src[i] && i < end_pos)
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	return (i);
+}
+
+size_t	copy_line_end(char *dest, const char *src, size_t start_pos)
+{
+	size_t	i;
+
+	i = start_pos;
+	while (src && src[i - 1])
+	{
+		dest[i] = src[i - 1];
+		i++;
+	}
+	dest[i] = 0;
+	return (i);
+}
+
 int	add_chr_to_pos(t_line *line, char c)
 {
 	char	*new_str;
@@ -28,19 +55,9 @@ int	add_chr_to_pos(t_line *line, char c)
 	{
 		if (c == '\n')
 			line->pos = ft_strlen(line->curr_line);
-		i = 0;
-		while (line->curr_line && line->curr_line[i] && i < line->pos)
-		{
-			new_str[i] = line->curr_line[i];
-			i++;
-		}
+		i = copy_line_begin(new_str, line->curr_line, line->pos);
 		new_str[i++] = c;
-		while (line->curr_line && line->curr_line[i - 1])
-		{
-			new_str[i] = line->curr_line[i - 1];
-			i++;
-		}
-		new_str[i] = 0;
+		copy_line_end(new_str, line->curr_line, i);
 		free(line->curr_line);
 		line->curr_line = new_str;
 		size = write(STDIN_FILENO, &new_str[line->pos], \
@@ -49,8 +66,7 @@ int	add_chr_to_pos(t_line *line, char c)
 			tputs(cursor_left, 1, ft_putchar);
 		line->pos++;
 		line->hist_pos = line->hist_len;
-		free(line->tmp_line);
-		line->tmp_line = NULL;
+		ft_free((void **)&line->tmp_line);
 		return (1);
 	}
 	return (0);
@@ -69,33 +85,21 @@ int	remove_chr_from_pos(t_line *line)
 	size_t	size;
 	size_t	i;
 
-	if (line->pos)
+	if (line->pos && !tputs(cursor_left, 1, ft_putchar) && \
+		!tputs(delete_character, 1, ft_putchar))
 	{
-		tputs(cursor_left, 1, ft_putchar);
-		tputs(delete_character, 1, ft_putchar);
 		size = gnl_strlen(line->curr_line);
-		new_str = (char *) malloc(sizeof(char) * size);
+		new_str = (char *)ft_calloc(size, sizeof(char));
 		if (new_str)
 		{
-			i = 0;
-			while (line->curr_line && line->curr_line[i] && i < (line->pos - 1))
-			{
-				new_str[i] = line->curr_line[i];
-				i++;
-			}
-			i++;
-			while (line->curr_line && line->curr_line[i - 1])
-			{
+			i = copy_line_begin(new_str, line->curr_line, line->pos - 1);
+			while (line->curr_line && line->curr_line[++i - 1])
 				new_str[i - 1] = line->curr_line[i];
-				i++;
-			}
-			new_str[i - 1] = 0;
 			free(line->curr_line);
 			line->curr_line = new_str;
 			line->pos--;
 			line->hist_pos = line->hist_len;
-			free(line->tmp_line);
-			line->tmp_line = NULL;
+			ft_free((void **)&line->tmp_line);
 			return (1);
 		}
 	}

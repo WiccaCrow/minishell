@@ -99,7 +99,8 @@ void			command_not_found(t_all *all, t_command *tmp);
 void			print_command_not_found(t_command *tmp);
 void			completion_code_malloc_error(char *array_null, char *open_name);
 void			completion_code_int_ret_error(char *oper_name, int error_code);
-int				completion_code_fork_error(char *oper_name, char *err_text, int error_code);
+int				completion_code_fork_error(char *oper_name, char *err_text, \
+					int error_code);
 int				exec_echo(t_command *tmp);
 void			echo_check_flag_n(t_command *tmp, int *i, int *flag_n);
 int				exec_cd(t_all *all, t_command *tmp);
@@ -117,21 +118,26 @@ int				ft_strcmp_s1_less_s2(char *str1, char *str2);
 void			print_export(t_command *tmp, char **sort_env_index);
 void			free_sort_index(char **sort_env_index, int *sort);
 void			subjoin_env(t_all *all, t_command *tmp, int i);
-char	**create_new_env_array(t_all *all, t_command *tmp, int i);
-int				count_lines(t_all *all, t_command *tmp, char *oper_name, int nb_env_lines);
-int			export_args_to_new_env(t_all *all, t_command *tmp, char **env_new);
+char			**create_new_env_array(t_all *all, t_command *tmp, int i);
+int				count_lines(t_all *all, t_command *tmp, char *oper_name, \
+					int nb_env_lines);
+int				export_args_to_new_env(t_all *all, t_command *tmp, \
+					char **env_new);
 int				check_valid_args(char *argj, char *oper_name, int flag_print);
 int				print_not_valid(char *args_name, char *operation_name, \
 					int flag_print);
 int				check_double_args(char **args, int find_plus);
 int				find_next_double_arg(char **args, int find_plus, int nb_args, \
 					int i);
-int				find_env_str(t_all *all, t_command *tmp, char *oper_name, char **env);
-int			change_env_str(t_all *all, t_command *tmp, int index, char **env);
-int			create_env_str(t_all *all, t_command *tmp, char **env, int *i);
+int				find_env_str(t_all *all, t_command *tmp, char *oper_name, \
+					char **env);
+int				change_env_str(t_all *all, t_command *tmp, int index, \
+					char **env);
+int				create_env_str(t_all *all, t_command *tmp, char **env, int *i);
 void			check_arg_pwd(t_all *all);
 int				exec_unset(t_all *all, t_command *tmp);
-void			exec_unset_find_env_str(t_all *all, t_command *tmp, char *oper_name);
+void			exec_unset_find_env_str(t_all *all, t_command *tmp, \
+					char *oper_name);
 void			exec_unset_do_new_env(t_all *all, char **env_new, int nb_lines);
 void			exec_exit(t_all *all, t_command *tmp);
 int				args_is_digit(char *args);
@@ -162,12 +168,13 @@ void			enter_the_pipes(t_all *all, t_command *tmp);
 pid_t			*nb_pipes(t_command *tmp, pid_t **pid);
 int				do_pipes(t_all *all, t_command *tmp, pid_t *pid);
 int				pipe_1st_midle(t_all *all, t_command *tmp);
-void			dupfd_in_pipe_1st_midle(t_all *all, t_command *tmp, int *file_pipes);
+void			dupfd_in_pipe_1st_midle(t_all *all, t_command *tmp, \
+					int *file_pipes);
 void			exec_command_with_pipe(t_all *all, t_command *tmp);
 int				pipe_last(t_all *all, t_command *tmp);
 int				pipe_fork_if_error(t_all *all);
 void			wait_status_fork(pid_t onepid);
 
-void	ft_free(void **pointer);
+void			ft_free(void **pointer);
 
 #endif
