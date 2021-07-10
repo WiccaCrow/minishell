@@ -72,7 +72,7 @@ pid_t	*nb_pipes(t_command *tmp, pid_t **pid)
 		if (for_count == NULL)
 			break ;
 	}
-	*pid = (pid_t *)malloc(nb_p * sizeof(pid_t));
+	*pid = (pid_t *)malloc((nb_p + 1) * sizeof(pid_t));
 	if (NULL == *pid)
 		completion_code_malloc_error(NULL, "pipes");
 	return (*pid);

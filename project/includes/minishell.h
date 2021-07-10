@@ -73,12 +73,14 @@ typedef struct s_all {
 
 void			start_all(t_all *all, char **env, char *av0);
 void			init_env(t_all *all, char **env, char *av0);
-int 			init_env_allocate_memory(t_all *all, char **env);
-void 			init_env_err_with_exit_msh(t_all *all, char *array_null, char *oper_name);
+int				init_env_allocate_memory(t_all *all, char **env);
+void			init_env_err_with_exit_msh(t_all *all, char *array_null, \
+					char *oper_name);
 void			init_env_path(t_all *all, char *av0, int i);
 void			init_env_av0_path(t_all *all, char *av0, char **av0_path);
 void			init_env_path_without_path(t_all *all, char *av0_path, int i);
-void			init_env_path_with_path(t_all *all, char *av0_path, int index_path, int j);
+void			init_env_path_with_path(t_all *all, char *av0_path, \
+					int index_path, int j);
 void			exit_clean(t_all *all);
 void			sigint_handler(int sig);
 void			sigquit_handler(int sig);

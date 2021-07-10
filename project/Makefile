@@ -2,8 +2,8 @@ NAME		=	minishell
 LIBFT		=	libft.a
 CCF			=	clang $(CFLAGS)
 RM			=	rm -f
-CFLAGS		=	-Wall -Wextra -Werror -g -I./includes/
-# CFLAGS		=	-Wall -Wextra -Werror -fsanitize=address -g3 -I./includes/
+#CFLAGS		=	-Wall -Wextra -Werror -g -I./includes/
+CFLAGS		=	-Wall -Wextra -Werror -fsanitize=address -g3 -I./includes/
 LG_PATH		=	line_getter/
 LG_SRCS		=	line_getter.c line_utils.c history_handler.c term_switch.c key_handlers.c \
 				rdwr_history.c
