@@ -1,4 +1,4 @@
-#include "../includes/minishell.h"//"minishell.h"
+#include "minishell.h"
 
 /************************************
  * 		env_shlvl_increase_1part	*
@@ -52,15 +52,16 @@ void	env_shlvl_increase_1part(t_all *all, int index)
 	env_shlvl_increase_2part(all, index, nb, &env_new_shlvl);
 }
 
-void	env_shlvl_increase_2part(t_all *all, int index, int nb, char **env_new_shlvl)
+void	env_shlvl_increase_2part(t_all *all, int index, int nb,
+								 char **env_new_shlvl)
 {
 	if (nb == 1000)
 		*env_new_shlvl = ft_strdup("SHLVL=");
 	if (nb > 1000)
 	{
-		write(STDERR_FILENO, "minishell: warning: shell level (", 34);
+		write(STDERR_FILENO, "minishell: warning: shell level (", 33);
 		ft_putnbr_fd(nb, STDERR_FILENO);
-		write(STDERR_FILENO, ") too high, resetting to 1\n", 28);
+		write(STDERR_FILENO, ") too high, resetting to 1\n", 27);
 		*env_new_shlvl = ft_strdup("SHLVL=1");
 	}
 	if (*env_new_shlvl)
@@ -69,7 +70,8 @@ void	env_shlvl_increase_2part(t_all *all, int index, int nb, char **env_new_shlv
 		all->env[index] = *env_new_shlvl;
 	}
 	else
-		write(STDERR_FILENO, "Executable SHLVL: malloc error. Don't create new SHLVL\n", 56);
+		write(STDERR_FILENO,
+			  "msh: SHLVL: malloc error. Don't create new SHLVL\n", 49);
 }
 
 /************************************
@@ -94,7 +96,8 @@ void	env_shlvl_set_0or1(t_all *all, int index, int shlvl)
 		shlvl_new = ft_strdup("SHLVL=0");
 	if (shlvl_new == NULL)
 	{
-		write(STDERR_FILENO, "Executable SHLVL: malloc error. Don't create new SHLVL\n", 56);
+		write(STDERR_FILENO,
+			  "msh: SHLVL: malloc error. Don't create new SHLVL\n", 48);
 		return ;
 	}
 	free(all->env[index]);
@@ -126,7 +129,8 @@ void	env_shlvl_null_create(t_all *all, int i)
 		env_new[i] = ft_strdup("SHLVL=1");
 		if (env_new[i] == NULL)
 		{
-			write(STDERR_FILENO, "Executable SHLVL: malloc error. Don't create new SHLVL\n", 56);
+			write(STDERR_FILENO,
+				  "msh: SHLVL: malloc error. Don't create new SHLVL\n", 48);
 			free(env_new);
 		}
 		else
@@ -138,7 +142,8 @@ void	env_shlvl_null_create(t_all *all, int i)
 		}
 	}
 	else
-		write(STDERR_FILENO, "Executable SHLVL: malloc error. Don't create new SHLVL\n", 56);
+		write(STDERR_FILENO,
+			  "msh: SHLVL: malloc error. Don't create new SHLVL\n", 48);
 }
 
 /************************************
@@ -150,6 +155,9 @@ void	env_shlvl_null_create(t_all *all, int i)
  * 		variable in the env-array. If no string is found,
  * 		a new string with the value "SHLVL=1" is created 
  * 		in the env-array (function: env_shlvl_null_create).
+ * Code comments, start:
+ * 		void	shlvl_set(t_all *all, int index, int i)
+ * 				shlvl_set(       all,     0,         0)
  * Contains functions:
  * 		get_my_env_index;
  * 		count_env_lines;
@@ -159,32 +167,30 @@ void	env_shlvl_null_create(t_all *all, int i)
  * 		env_shlvl_increase_1part;
 */
 
-void	shlvl_set(t_all *all)
+void	shlvl_set(t_all *all, int index, int i)
 {
-		int		index;
-		int		i;
-
-		index = get_my_env_index(all->env, "SHLVL", 5);
-		if (all->env[index] == NULL)
+	index = get_my_env_index(all->env, "SHLVL", 5);
+	if (all->env[index] == NULL)
+	{
+		i = count_env_lines(all) + 1;
+		env_shlvl_null_create(all, i);
+	}
+	else
+	{
+		if (all->env[index][6] == '\0')
+			env_shlvl_set_0or1(all, index, 1);
+		else if (all->env[index][6] != '+')
 		{
-			i = count_env_lines(all) + 1;
-			env_shlvl_null_create(all, i);
-		}
-		else
-		{
-			if (all->env[index][6] == '\0')
-				env_shlvl_set_0or1(all, index, 1);
-			else if (all->env[index][6] != '+')
+			if (!args_is_digit(&(all->env[index][6])))
 			{
-				if (!args_is_digit(&(all->env[index][6])))
-				{
-					if (all->env[index][6] == '-' && !(all->env[index][6] == '-' && all->env[index][7] == '0' && all->env[index][8] == '\0'))
-						env_shlvl_set_0or1(all, index, 0);
-					else
-						env_shlvl_increase_1part(all, index);
-				}
+				if (all->env[index][6] == '-' && !(all->env[index][6] == '-'
+					&& all->env[index][7] == '0' && all->env[index][8] == '\0'))
+					env_shlvl_set_0or1(all, index, 0);
 				else
-					env_shlvl_set_0or1(all, index, 1);
+					env_shlvl_increase_1part(all, index);
 			}
+			else
+				env_shlvl_set_0or1(all, index, 1);
 		}
+	}
 }

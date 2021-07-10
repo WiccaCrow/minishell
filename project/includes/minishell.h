@@ -71,8 +71,14 @@ typedef struct s_all {
 	pid_t				waitpid;
 }						t_all;
 
-void			start_all(t_all *all, char **env);
-void			init_env(t_all *all, char **env);
+void			start_all(t_all *all, char **env, char *av0);
+void			init_env(t_all *all, char **env, char *av0);
+int 			init_env_allocate_memory(t_all *all, char **env);
+void 			init_env_err_with_exit_msh(t_all *all, char *array_null, char *oper_name);
+void			init_env_path(t_all *all, char *av0, int i);
+void			init_env_av0_path(t_all *all, char *av0, char **av0_path);
+void			init_env_path_without_path(t_all *all, char *av0_path, int i);
+void			init_env_path_with_path(t_all *all, char *av0_path, int index_path, int j);
 void			exit_clean(t_all *all);
 void			sigint_handler(int sig);
 void			sigquit_handler(int sig);
@@ -157,7 +163,7 @@ char			**path_env(t_all *all);
 char			*join_directory_and_command(char *directory, \
 					char *command_name);
 
-void			shlvl_set(t_all *all);
+void			shlvl_set(t_all *all, int index, int i);
 void			env_shlvl_null_create(t_all *all, int i);
 void			env_shlvl_set_0or1(t_all *all, int index, int shlvl);
 void			env_shlvl_increase_1part(t_all *all, int index);
