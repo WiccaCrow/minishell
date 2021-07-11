@@ -71,6 +71,8 @@ typedef struct s_all {
 	pid_t				waitpid;
 }						t_all;
 
+int				show_commands(t_command **commands);
+
 void			start_all(t_all *all, char **env, char *av0);
 void			init_env(t_all *all, char **env, char *av0);
 int				init_env_allocate_memory(t_all *all, char **env);
@@ -96,7 +98,7 @@ int				do_heredoc_redirects(t_list **args);
 
 int				dollar_handler(t_all *all);
 int				add_command(t_all *all, t_command *command);
-enum e_command	get_command2(char *word);
+enum e_command	get_command(char *word);
 int				args_list_to_arr2(t_list **args, t_command *command);
 int				set_start_pipes(t_all *all);
 int				open_file(t_command *command, char *filename, char *pwd);

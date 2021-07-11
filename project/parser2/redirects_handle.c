@@ -1,9 +1,9 @@
 #include "minishell.h"
 
-int do_heredoc_redirects(t_list **args)
+int	do_heredoc_redirects(t_list **args)
 {
 	t_list	*tmp;
-	int 	redirect_type;
+	int		redirect_type;
 	int		fd;
 
 	fd = 0;

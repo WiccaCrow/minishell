@@ -5,97 +5,31 @@
  * только для одной комманды
 */
 
-int show_commands(t_command **commands)
-{
-	t_command *tmp;
-	int i;
-	
-	if (commands)
-	{
-		tmp = *commands;
-		while (tmp)
-		{
-			write(STDOUT_FILENO, CURSIVE, 8);
-			printf("command flag = %d\n", tmp->flag_command);
-			printf("redirect flag = %d\n", tmp->redirect_type);
-			printf("input fd = %d\n", tmp->input_fd);
-			printf("output fd = %d\n", tmp->output_fd);
-			printf("end flag = %d\n", tmp->end_flag);
-			i = 0;
-			if (tmp->args)
-			{
-				while (tmp->args[i])
-				{
-					printf("arg %d:\"%s\"\n", i, tmp->args[i]);
-					i++;
-				}
-			}
-			write(STDOUT_FILENO, NONECOLOR, 4);
-			tmp = tmp->next;
-		}
-	}
-	return (0);
-}
-
-static int	get_next_word(char *line, int i, char **tmp_line)
-{
-	int	flag;
-
-	flag = 0;
-	while (line[i])
-	{
-		if (line[i] == '\\' && !(flag & QUOTE) && !(flag & SHIELD))
-		{
-			flag = flag | SHIELD;
-			i++;
-		}
-		else if (line[i] == '\"' && !(flag & SHIELD) && !(flag & QUOTE))
-		{
-			flag = flag ^ DOUBLE_QUOTE;
-			i++;
-		}
-		else if (line[i] == '\'' && !(flag & SHIELD) && !(flag & DOUBLE_QUOTE))
-		{
-			flag = flag ^ QUOTE;
-			i++;
-		}
-		else if ((line[i] != ' ' && line[i] != ';' && line[i] != '|') || flag)
-		{
-			*tmp_line = add_chr(*tmp_line, line[i++]);
-			if (line[i])
-				flag = flag & ~(SHIELD);
-		}
-		else
-			return (i);
-	}
-	return (i);
-}
-
 int 	set_redirect(const char *word)
 {
 	if (word)
 	{
 		if (word[0] == '>' && word[1] == '>' && word[2] != 0)
-				return (APPEND);
+			return (APPEND);
 		if (word[0] == '>' && word[1] == '>' && word[2] == 0)
-				return (APPEND | NO_FILENAME);
+			return (APPEND | NO_FILENAME);
 		if (word[0] == '<' && word[1] == '<' && word[2] != 0)
-				return (HEREDOC);
+			return (HEREDOC);
 		if (word[0] == '<' && word[1] == '<' && word[2] == 0)
-				return (HEREDOC | NO_FILENAME);
+			return (HEREDOC | NO_FILENAME);
 		if (word[0] == '>' && word[1] != 0)
-				return (WRITE);
+			return (WRITE);
 		if (word[0] == '>' && word[1] == 0)
-				return (WRITE | NO_FILENAME);
+			return (WRITE | NO_FILENAME);
 		if (word[0] == '<' && word[1] != 0)
-				return (READ);
+			return (READ);
 		if (word[0] == '<' && word[1] == 0)
-				return (READ | NO_FILENAME);
+			return (READ | NO_FILENAME);
 	}
 	return (0);
 }
 
-char *get_filename(char *word)
+char	*get_filename(char *word)
 {
 	if (word)
 	{
@@ -108,10 +42,10 @@ char *get_filename(char *word)
 	return (NULL);
 }
 
-int parse_redirect(t_command *command, char *word, char *pwd)
+int	parse_redirect(t_command *command, char *word, char *pwd)
 {
-	char *filename;
-	
+	char	*filename;
+
 	if (!(command->redirect_type & NO_FILENAME))
 	{
 		filename = get_filename(word);
@@ -124,7 +58,7 @@ int parse_redirect(t_command *command, char *word, char *pwd)
 	return (0);
 }
 
-int parse_word(char *word, t_command *command, t_list **args, char *pwd)
+int	parse_word(char *word, t_command *command, t_list **args, char *pwd)
 {
 	if (command->redirect_type && (command->redirect_type & NO_FILENAME))
 	{
@@ -147,10 +81,10 @@ int parse_word(char *word, t_command *command, t_list **args, char *pwd)
 	return (0);
 }
 
-int get_next_command(t_all *all, int i)
+int	get_next_command(t_all *all, int i)
 {
 	t_command	*command;
-	char 		*curr_line;
+	char		*curr_line;
 	t_list		**args;
 
 	command = (t_command *)ft_calloc(1, sizeof (t_command));
@@ -164,7 +98,7 @@ int get_next_command(t_all *all, int i)
 			while (all->line[i] && all->line[i] != ';' && all->line[i] != '|')
 			{
 				curr_line = NULL;
-				i = get_next_word(all->line, i, &curr_line);
+				i = get_next_word_lc(all->line, i, &curr_line);
 				i = skip_spaces(all->line, i);
 				if ((parse_word(curr_line, command, args, all->pwd) < 0))
 					all->parse_error = 1;
@@ -172,10 +106,9 @@ int get_next_command(t_all *all, int i)
 				curr_line = NULL;
 			}
 			if (*args)
-				command->flag_command = get_command2((char *)(*args)->content);
-			if ((command->flag_command == not_found && !*args) || 
+				command->flag_command = get_command((char *) (*args)->content);
+			if ((command->flag_command == not_found && !*args) || \
 				command->redirect_type & NO_FILENAME)
-				
 			{
 				all->parse_error = 1;
 				if (command->redirect_type & NO_FILENAME)
@@ -191,7 +124,8 @@ int get_next_command(t_all *all, int i)
 			{
 				command->end_flag = PIPE;
 				i++;
-			} else
+			}
+			else
 				command->end_flag = 0;
 			command->next = NULL;
 			add_command(all, command);
@@ -200,7 +134,7 @@ int get_next_command(t_all *all, int i)
 	return (i);
 }
 
-int parser2(t_all *all)
+int	parser2(t_all *all)
 {
 	int			i;
 

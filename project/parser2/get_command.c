@@ -23,7 +23,7 @@ static int	is_command(const char *word, const char *command)
  * Функция ищет команды в строке и возвращает ее код
 */
 
-enum e_command	get_command2(char *word)
+enum e_command	get_command(char *word)
 {
 	int		j;
 	char	*commands[10];
