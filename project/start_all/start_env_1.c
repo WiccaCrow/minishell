@@ -90,10 +90,9 @@ void	init_env_path_with_path(t_all *all, char *av0_path, int index_path,
 	av_len = ft_strlen(av0_path);
 	path_split = ft_split(all->env[index_path], ':');
 	if (NULL == path_split)
-	{
 		ft_free((void **)&av0_path);
+	if (NULL == path_split)
 		init_env_err_with_exit_msh(all, NULL, "minishell: init_env");
-	}
 	while (path_split[++j])
 		if (0 == ft_strncmp(av0_path, path_split[j], av_len))
 			break ;
@@ -102,6 +101,7 @@ void	init_env_path_with_path(t_all *all, char *av0_path, int index_path,
 		all->env[index_path] = ft_strjoin(all->env[index_path], ":");
 		if (NULL == all->env[index_path])
 		{
+			free_char_array(path_split);
 			ft_free((void **)&av0_path);
 			init_env_err_with_exit_msh(all, NULL, "minishell: init_env");
 		}
@@ -109,4 +109,5 @@ void	init_env_path_with_path(t_all *all, char *av0_path, int index_path,
 		ft_free((void **)&av0_path);
 		init_env_err_with_exit_msh(all, all->env[index_path], "msh: init_env");
 	}
+	free_char_array(path_split);
 }

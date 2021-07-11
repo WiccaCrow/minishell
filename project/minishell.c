@@ -82,6 +82,8 @@ int g_completion_code; // код возврата ошибки $?
  * Мэйн на ридлайне для дебага
  */
 
+//#include <unistd.h>
+
 int main(int ac, char **av, char **env)
 {
 	t_all	all;
@@ -91,6 +93,7 @@ int main(int ac, char **av, char **env)
 	signal(SIGINT, sigint_handler);
 	signal(SIGQUIT, sigquit_handler);
 	start_all(&all, env, av[0]);
+printf("FOPEN_MAX = |%d|\n", FOPEN_MAX);
 	while (1)
 	{
 		if (fill_all(&all) != -1)
@@ -100,9 +103,8 @@ int main(int ac, char **av, char **env)
 write(STDOUT_FILENO, "\x1b[32m", 6);
 printf("иду из филл олл\n");
 write(STDOUT_FILENO, NONECOLOR, 4);
-			while (all.line && *all.line && check_line(&all) && \
+			while (all.line && 	printf("зашла all.line\n") && *all.line && printf("зашла *all.line\n") && check_line(&all) && \
 			dollar_handler(&all) && parser2(&all))
-//				dollar_handler(&all) && parser2(&all) < 50)
 			{
 write(STDOUT_FILENO, "\x1b[32m", 6);
 printf("зашла \n");

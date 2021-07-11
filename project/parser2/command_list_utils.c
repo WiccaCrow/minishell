@@ -2,7 +2,13 @@
 
 static int	free_command(t_command *command)
 {
+	int i;
+
+	i = -1;
 	free_char_array(command->args);
+	if (command->args)
+		while (command->args[++i])
+			ft_free((void **)&(command->args[i]));
 	command->args = NULL;
 	free(command);
 	command = NULL;
@@ -24,7 +30,8 @@ int	free_commands(t_command **commands)
 			tmp = tmp->next;
 			free_command(tmp2);
 		}
-		free(commands);
+		if (commands)
+			free(commands);
 		commands = NULL;
 	}
 	return (0);
