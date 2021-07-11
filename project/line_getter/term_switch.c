@@ -4,10 +4,10 @@
  * Функция переключает терминал в НЕканонический режим
 */
 
-int		canon_off(void)
+int	canon_off(void)
 {
 	struct termios	term;
-	
+
 	if (!tcgetattr(0, &term))
 	{
 		term.c_lflag &= ~(ECHO);
@@ -22,7 +22,7 @@ int		canon_off(void)
  * Функция переключает терминал в канонический режим
 */
 
-int		canon_on(void)
+int	canon_on(void)
 {
 	struct termios	term;
 
@@ -35,4 +35,3 @@ int		canon_on(void)
 	}
 	return (-1);
 }
-

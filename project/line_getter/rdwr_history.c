@@ -37,12 +37,12 @@ char	**get_history(void)
  * Функция читает файл в строку 
 */
 
-char 		*rd_history(int fd)
+char	*rd_history(int fd)
 {
 	char	*history_line;
 	char	*line;
 	int		ret;
-	
+
 	history_line = NULL;
 	ret = get_next_line(fd, &line);
 	while (ret > 0)
@@ -70,7 +70,7 @@ char 		*rd_history(int fd)
 
 int	free_char_array(char **history)
 {
-	int i;
+	int	i;
 
 	if (history)
 	{
@@ -91,11 +91,11 @@ int	free_char_array(char **history)
  * Функция пишет истоию в файл
 */
 
-int		wr_history(char **history)
+int	wr_history(char **history)
 {
-	int i;
-	int ret;
-	int fd;
+	int	i;
+	int	ret;
+	int	fd;
 
 	ret = 0;
 	fd = open(HIST_FILE, O_CREAT | O_RDWR | O_TRUNC | O_APPEND, 0644);
