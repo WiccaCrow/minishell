@@ -76,7 +76,7 @@ int open_file(t_command *command, char *filename, char *pwd)
 			command->input_fd = input_fd;
 			return (-1);
 		}
-		else if (!(command->redirect_type & HEREDOC))
+		else if (command->redirect_type & READ)
 			command->input_fd = input_fd;
 	}
 	return (0);
