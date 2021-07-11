@@ -1,4 +1,4 @@
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 /**
  * Функция проверяет, является ли поданная строка командой 
@@ -6,8 +6,8 @@
 
 static int	is_command(const char *word, const char *command)
 {
-	int i;
-	
+	int	i;
+
 	if (command)
 	{
 		i = 0;
@@ -25,8 +25,8 @@ static int	is_command(const char *word, const char *command)
 
 enum e_command	get_command2(char *word)
 {
-	int	j;
-	char *commands[10];
+	int		j;
+	char	*commands[10];
 
 	commands[0] = "echo";
 	commands[1] = "cd";
@@ -41,6 +41,6 @@ enum e_command	get_command2(char *word)
 	j = 0;
 	while (++j <= 10)
 		if (word && is_command(word, commands[j - 1]))
-			return j;
+			return (j);
 	return (0);
 }

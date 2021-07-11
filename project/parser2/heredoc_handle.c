@@ -1,10 +1,10 @@
 #include "minishell.h"
 
-int heredoc_handle(t_all *all, int i)
+int	heredoc_handle(t_all *all, int i)
 {
-	int 		fd;
-	char 		*word;
-	t_list		**args;
+	int		fd;
+	char	*word;
+	t_list	**args;
 
 	fd = 0;
 	args = (t_list **)ft_calloc(1, sizeof(t_list *));
@@ -22,4 +22,3 @@ int heredoc_handle(t_all *all, int i)
 	}
 	return (fd);
 }
-

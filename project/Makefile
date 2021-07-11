@@ -10,7 +10,7 @@ LG_SRCS		=	line_getter.c line_utils.c history_handler.c term_switch.c key_handle
 LC_PATH		=	line_checker/
 LC_SRCS		=	line_checker.c get_next_word.c
 PARSER2_PATH	=	parser2/
-PARSER2_SRCS	=	parser2.c heredoc_handle.c redirects_handle.c \
+PARSER2_SRCS	=	parser2.c heredoc_handle.c redirects_handle.c open_tmp_file.c\
 					get_command.c argument_handlers.c open_file.c get_command_utils.c \
                     add_command.c crop_line.c dollar_handler.c command_list_utils.c parser_utils.c
 EXEC_PATH	=	executor/
