@@ -122,10 +122,7 @@ write(STDOUT_FILENO, NONECOLOR, 4);
 				}
             }
 			if (all.check_line)
-			{
-				free_commands(all.commands);
-				all.commands = NULL;
-			}
+				free_commands(&all.commands);
 write(STDOUT_FILENO, "\x1b[32m", 6);
 printf("иду на следующий филл олл\n");
 write(STDOUT_FILENO, NONECOLOR, 4);
@@ -230,7 +227,6 @@ void	exit_clean(t_all *all)
 		free(all->line);
 		all->line = NULL;
 	}
-	// char				**history;
 	if (all->env)
 	{
 		i = -1;
@@ -240,6 +236,6 @@ void	exit_clean(t_all *all)
 		all->env = NULL;
 	}
 	ft_free((void**)&all->pwd);
-	free_commands(all->commands);
+	free_commands(&all->commands);
 	exit(g_completion_code);
 }

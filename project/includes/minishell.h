@@ -102,7 +102,7 @@ enum e_command	get_command(char *word);
 int				args_list_to_arr2(t_list **args, t_command *command);
 int				set_start_pipes(t_all *all);
 int				open_file(t_command *command, char *filename, char *pwd);
-int				free_commands(t_command **commands);
+int				free_commands(t_command ***commands);
 
 int				executor(t_all *all, t_command *tmp);
 void			command_not_found(t_all *all, t_command *tmp);
