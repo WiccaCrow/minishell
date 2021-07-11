@@ -212,6 +212,7 @@ int	create_env_str(t_all *all, t_command *tmp, char **env, int *i)
 			++all->len_env_str;
 		}
 	}
+	free(env[*i]);
 	env[*i] = ft_strdup(tmp->args[all->nb_arg]);
 	if (env[*i] == NULL)
 	{

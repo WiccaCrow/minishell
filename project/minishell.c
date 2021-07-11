@@ -100,32 +100,22 @@ printf("FOPEN_MAX = |%d|\n", FOPEN_MAX);
 //		show_program_name();
 //		if (line_getter(&all))
 		{
-write(STDOUT_FILENO, "\x1b[32m", 6);
+write(STDOUT_FILENO, "\x1b[32m", 5);
 printf("иду из филл олл\n");
-write(STDOUT_FILENO, NONECOLOR, 4);
-			while (all.line && 	printf("зашла all.line\n") && *all.line && printf("зашла *all.line\n") && check_line(&all) && \
+write(STDOUT_FILENO, NONECOLOR, 5);
+			while (all.line && 	*all.line && check_line(&all) && \
 			dollar_handler(&all) && parser2(&all))
 			{
 				if ((*all.commands)->end_flag & START_PIPE || (*all.commands)->end_flag & PIPE)
-				{
-write(STDOUT_FILENO, "\x1b[32m", 6);
-printf("зашла в pipe\n");
-write(STDOUT_FILENO, NONECOLOR, 4);
 					enter_the_pipes(&all, *all.commands);
-				}
                 else if ((*all.commands)->input_fd != -1)
-				{
-write(STDOUT_FILENO, "\x1b[32m", 6);
-printf("зашла в executor\n");
-write(STDOUT_FILENO, NONECOLOR, 4);
 					executor(&all, *all.commands);
-				}
             }
 			if (all.check_line)
 				free_commands(&all.commands);
-write(STDOUT_FILENO, "\x1b[32m", 6);
+write(STDOUT_FILENO, "\x1b[32m", 5);
 printf("иду на следующий филл олл\n");
-write(STDOUT_FILENO, NONECOLOR, 4);
+write(STDOUT_FILENO, NONECOLOR, 5);
 		}
 		else
 			break ;
@@ -174,9 +164,6 @@ void	ft_free(void **pointer)
 
 void	start_all(t_all *all, char **env, char *av0)
 {
-//	int	i;
-//
-//	i = 0;
     g_completion_code = 0;
 	all->parse_error = 0;
 	all->line = NULL;
@@ -186,8 +173,6 @@ void	start_all(t_all *all, char **env, char *av0)
 	init_env(all, env, av0);
 	shlvl_set(all, 0, 0);
 	all->history = get_history();
-//	while (all->env[i] && ft_strncmp(all->env[i], "PWD=", 4))
-//		++i;
 }
 
 /************************************

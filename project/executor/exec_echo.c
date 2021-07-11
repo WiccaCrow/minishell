@@ -61,7 +61,7 @@ int	exec_echo(t_command *tmp)
 	}
 	if (flag_n)
 		ret += write(tmp->output_fd, "\n", 1);
-	if (tmp->output_fd != 1)
-		close(tmp->output_fd);
+//	if (tmp->output_fd != 1)
+//		close(tmp->output_fd);
 	return (ret > 0);
 }

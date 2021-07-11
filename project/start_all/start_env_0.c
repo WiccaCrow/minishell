@@ -124,10 +124,11 @@ void	init_env_path(t_all *all, char *av0, int i)
 	int		index_path;
 	char	*av0_path;
 
+	av0_path = NULL;
 	init_env_av0_path(all, av0, &av0_path);
 	index_path = get_my_env_index(all->env, "PATH", 4);
-	if (NULL == all->env[index_path] && av0_path)
+	if (NULL == all->env[index_path])
 		init_env_path_without_path(all, av0_path, i);
-	else if (av0_path)
+	else
 		init_env_path_with_path(all, av0_path, index_path, -1);
 }

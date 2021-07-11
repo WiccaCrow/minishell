@@ -56,7 +56,10 @@ int	executable(t_all *all, t_command *tmp)
 		com_name = join_directory_and_command(path_from_env[i], tmp->args[0]);
 		completion_code_malloc_error(com_name, tmp->args[0]);
 		path = executable_check_and_run(all, com_name, 0, tmp);
+		if (path !=0)
+			ft_free((void **)&com_name);
 	}
+	free_char_array(path_from_env);
 	return (path == -1);
 }
 
@@ -100,8 +103,8 @@ int	executable_check_and_run(t_all *all, char *name_path,
 		repointer_to_filename_with_path(&tmp->args[0], name_path);
 		if (tmp->end_flag & START_PIPE || tmp->end_flag & PIPE)
 			return (0);
-		else
-			return (fork_execve(all, tmp, name_path));
+		fork_execve(all, tmp);
+		return (0);
 	}
 	else if (stat(name_path, &buf) == 0)
 		return (executable_error_print(name_path, ": Permission denied\n", 126));
@@ -180,7 +183,7 @@ int	executable_error_print(char *com_name, char *error_message, int error_code)
  * 		Else return not zero (1 or compiletion code).
 */
 
-int	fork_execve(t_all *all, t_command *tmp, char *com_name)
+int	fork_execve(t_all *all, t_command *tmp)
 {
 	int		ret;
 	pid_t	onepid;
@@ -194,7 +197,7 @@ int	fork_execve(t_all *all, t_command *tmp, char *com_name)
 		dup2(tmp->output_fd, 1);
 		if (tmp->input_fd != -1)
 		{
-			ret = execve(com_name, tmp->args, all->env);
+			ret = execve(tmp->args[0], tmp->args, all->env);
 			if (ret == -1)
 				exit (2);
 		}

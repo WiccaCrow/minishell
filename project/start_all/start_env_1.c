@@ -24,8 +24,6 @@ void	init_env_av0_path(t_all *all, char *av0, char **av0_path)
 	av_len = ft_strlen(av0);
 	while (av_len && '/' != av0[av_len - 1])
 		--av_len;
-	if (!av_len)
-		return ;
 	*av0_path = (char *)malloc(sizeof(char) * (av_len + 1));
 	init_env_err_with_exit_msh(all, *av0_path, "minishell: init_env");
 	(*av0_path)[av_len] = '\0';
@@ -33,7 +31,10 @@ void	init_env_av0_path(t_all *all, char *av0, char **av0_path)
 		(*av0_path)[av_len] = av0[av_len];
 	av_len = ft_strlen(*av0_path);
 	if (!ft_strncmp(*av0_path, "./", av_len))
+	{
+		free(*av0_path);
 		(*av0_path) = getcwd(NULL, 0);
+	}
 	else
 		(*av0_path)[av_len - 1] = '\0';
 }
@@ -86,28 +87,32 @@ void	init_env_path_with_path(t_all *all, char *av0_path, int index_path,
 {
 	int		av_len;
 	char	**path_split;
+	char	*tmp;
 
 	av_len = ft_strlen(av0_path);
 	path_split = ft_split(all->env[index_path], ':');
 	if (NULL == path_split)
-		ft_free((void **)&av0_path);
-	if (NULL == path_split)
+	{
+		ft_free((void **) &av0_path);
 		init_env_err_with_exit_msh(all, NULL, "minishell: init_env");
+	}
 	while (path_split[++j])
 		if (0 == ft_strncmp(av0_path, path_split[j], av_len))
 			break ;
 	if (NULL == path_split[j])
 	{
-		all->env[index_path] = gnl_strjoin(all->env[index_path], ":");
-		if (NULL == all->env[index_path])
+		tmp = ft_strjoin(all->env[index_path], ":");
+		if (NULL == tmp)
 		{
 			free_char_array(path_split);
 			ft_free((void **)&av0_path);
 			init_env_err_with_exit_msh(all, NULL, "minishell: init_env");
 		}
-		all->env[index_path] = gnl_strjoin(all->env[index_path], av0_path);
+		tmp = gnl_strjoin(tmp, av0_path);
 		ft_free((void **)&av0_path);
-		init_env_err_with_exit_msh(all, all->env[index_path], "msh: init_env");
+		init_env_err_with_exit_msh(all, tmp, "msh: init_env");
+		free(all->env[index_path]);
+		all->env[index_path] = tmp;
 	}
 	free_char_array(path_split);
 }
