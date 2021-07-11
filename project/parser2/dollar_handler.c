@@ -87,10 +87,14 @@ int	get_arg_from_env(int i, t_all *all)
 {
 	char	*key;
 	char	*value;
+	int 	ret;
 
 	key = get_key(i, all->line);
 	value = get_value(key, all);
-	return (replace_key(&all->line, key, value, i));
+	ret = replace_key(&all->line, key, value, i);
+	ft_free((void *)&key);
+	ft_free((void *)&value);
+	return (ret);
 }
 
 /**
