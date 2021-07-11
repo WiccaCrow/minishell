@@ -65,6 +65,7 @@ int	check_line(t_all *all)
 				write(STDOUT_FILENO, "\'\n", 2);
 				return (all->check_line = 0);
 			}
+			ft_free((void *)&word);
 			i = skip_spaces(all->line, i);
 		}
 	}

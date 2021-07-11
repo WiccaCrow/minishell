@@ -62,7 +62,6 @@ int open_file(t_command *command, char *filename, char *pwd)
 			input_fd = open(full_path, O_RDONLY);
 		}
 		command->redirect_type = command->redirect_type & ~(NO_FILENAME);
-		free(pwd);
 		free(full_path);
 		if (command->output_fd < 0)
 		{
