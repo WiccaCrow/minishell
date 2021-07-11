@@ -90,7 +90,7 @@ int main(int ac, char **av, char **env)
 	(void) av;
 	signal(SIGINT, sigint_handler);
 	signal(SIGQUIT, sigquit_handler);
-	start_all(&all, env);
+	start_all(&all, env, av[0]);
 	while (1)
 	{
 		if (fill_all(&all) != -1)
@@ -173,58 +173,22 @@ void	ft_free(void **pointer)
  *          init our shell commands
  */
 
-void	start_all(t_all *all, char **env)
+void	start_all(t_all *all, char **env, char *av0)
 {
-	int	i;
-
-	i = 0;
+//	int	i;
+//
+//	i = 0;
     g_completion_code = 0;
 	all->parse_error = 0;
 	all->line = NULL;
 	all->commands = NULL;
 	all->pwd = getcwd(NULL, 0);
-	init_env(all, env);
-	shlvl_set(all);
+	all->env = NULL;
+	init_env(all, env, av0);
+	shlvl_set(all, 0, 0);
 	all->history = get_history();
-	while (all->env[i] && ft_strncmp(all->env[i], "PWD=", 4))
-		++i;
-}
-
-/************************************
- * 		1.1.1. init_env     		*
- * **********************************
-*/
-/* Description:
- *       do copy env;
- * 		Function add OLDPWD and add PWD with 
- * 		real pwd value if env don't contain 
- * 		PWD or OLDPWD.
- */
-
-void	init_env(t_all *all, char **env)
-{
-    int i;
-	int	index_oldpwd;
-	int	index_pwd;
-
-    i = -1;
-    while (env[++i])
-		;
-	index_oldpwd = get_my_env_index(env, "OLDPWD", 6);
-	index_pwd = get_my_env_index(env, "PWD", 3);
-	if (!env[index_oldpwd] && !env[index_pwd])
-		i +=2;
-	else if (!env[index_oldpwd] || !env[index_pwd])
-		i += 1;
-    all->env = (char**)malloc(sizeof(char*) * (i + 1));
-    all->env[i] = NULL;
-	i = -1;
-	while (env[++i])
-		all->env[i] = ft_strdup(env[i]);
-	if (env[index_oldpwd] == NULL)
-		all->env[i] = ft_strdup("OLDPWD");
-	if (env[index_pwd] == NULL)
-		all->env[++i] = ft_strjoin("PWD=", all->pwd);
+//	while (all->env[i] && ft_strncmp(all->env[i], "PWD=", 4))
+//		++i;
 }
 
 /************************************

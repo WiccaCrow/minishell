@@ -106,5 +106,3 @@ void	close_fd_output_input(t_command *tmp)
 		tmp->input_fd = 0;
 	}
 }
-
-//echo m$PWD$USER$
