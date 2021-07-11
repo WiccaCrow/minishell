@@ -30,12 +30,24 @@ static int	is_redirect(char c, const char *tmp_line)
 	return (0);
 }
 
+int is_word_ended(char c, const char *tmp_line, int flag)
+{
+	if (is_redirect(c, tmp_line) && !flag)
+		return (1);
+	if (is_token(tmp_line) && !flag)
+		return (1);
+	if (tmp_line && *tmp_line && !ft_strchr(">;|&", (int)*tmp_line) && \
+		ft_strchr(">;|&", (int)c) && !flag)
+		return (1);
+	return (0);
+}
+
 int	get_next_word_lc(char *line, int i, char **tmp_line)
 {
 	int	flag;
 
 	flag = 0;
-	while (line[i] && !is_token(*tmp_line) && !is_redirect(line[i], *tmp_line))
+	while (line[i] && !is_word_ended(line[i], *tmp_line, flag))
 	{
 		if (line[i] == '\\' && !(flag & QUOTE) && !(flag & SHIELD))
 			flag = flag | SHIELD;
