@@ -2,16 +2,20 @@
 
 static int	free_command(t_command *command)
 {
-	int i;
-
-	i = -1;
-	free_char_array(command->args);
+printf("test 4.1\n");
 	if (command->args)
-		while (command->args[++i])
-			ft_free((void **)&(command->args[i]));
-	command->args = NULL;
-	free(command);
-	command = NULL;
+	{
+		free_char_array(command->args);
+		command->args = NULL;
+	}
+printf("test 4.2\n");
+	if  (command)
+	{
+printf("test 4.3\n");
+		free(command);
+printf("test 4.4\n");
+		command = NULL;
+	}
 	return (0);
 }
 
@@ -19,7 +23,7 @@ int	free_commands(t_command **commands)
 {
 	t_command	*tmp;
 	t_command	*tmp2;
-
+printf("test 1\n");
 	if (commands)
 	{
 		tmp = *commands;
@@ -30,9 +34,11 @@ int	free_commands(t_command **commands)
 			tmp = tmp->next;
 			free_command(tmp2);
 		}
+printf("test 6\n");
 		if (commands)
 			free(commands);
 		commands = NULL;
 	}
+printf("test 7\n");
 	return (0);
 }

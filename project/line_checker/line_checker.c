@@ -51,6 +51,7 @@ int	check_line(t_all *all)
 
 	if (all && all->line)
 	{
+		all->check_line = 0;
 		i = skip_spaces(all->line, 0);
 		prev_type = 0;
 		while (all->line[i])

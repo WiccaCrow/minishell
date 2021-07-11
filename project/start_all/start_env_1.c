@@ -98,14 +98,14 @@ void	init_env_path_with_path(t_all *all, char *av0_path, int index_path,
 			break ;
 	if (NULL == path_split[j])
 	{
-		all->env[index_path] = ft_strjoin(all->env[index_path], ":");
+		all->env[index_path] = gnl_strjoin(all->env[index_path], ":");
 		if (NULL == all->env[index_path])
 		{
 			free_char_array(path_split);
 			ft_free((void **)&av0_path);
 			init_env_err_with_exit_msh(all, NULL, "minishell: init_env");
 		}
-		all->env[index_path] = ft_strjoin(all->env[index_path], av0_path);
+		all->env[index_path] = gnl_strjoin(all->env[index_path], av0_path);
 		ft_free((void **)&av0_path);
 		init_env_err_with_exit_msh(all, all->env[index_path], "msh: init_env");
 	}

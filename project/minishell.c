@@ -106,9 +106,6 @@ write(STDOUT_FILENO, NONECOLOR, 4);
 			while (all.line && 	printf("зашла all.line\n") && *all.line && printf("зашла *all.line\n") && check_line(&all) && \
 			dollar_handler(&all) && parser2(&all))
 			{
-write(STDOUT_FILENO, "\x1b[32m", 6);
-printf("зашла \n");
-write(STDOUT_FILENO, NONECOLOR, 4);
 				if ((*all.commands)->end_flag & START_PIPE || (*all.commands)->end_flag & PIPE)
 				{
 write(STDOUT_FILENO, "\x1b[32m", 6);
@@ -125,7 +122,10 @@ write(STDOUT_FILENO, NONECOLOR, 4);
 				}
             }
 			if (all.check_line)
+			{
 				free_commands(all.commands);
+				all.commands = NULL;
+			}
 write(STDOUT_FILENO, "\x1b[32m", 6);
 printf("иду на следующий филл олл\n");
 write(STDOUT_FILENO, NONECOLOR, 4);
