@@ -6,8 +6,8 @@
 
 int	add_command(t_all *all, t_command *command)
 {
-	t_command *tmp;
-	
+	t_command	*tmp;
+
 	if (all && all->commands && command)
 	{
 		if (!(*all->commands))
@@ -20,5 +20,5 @@ int	add_command(t_all *all, t_command *command)
 			tmp = tmp->next;
 		tmp->next = command;
 	}
-	return(0);
+	return (0);
 }

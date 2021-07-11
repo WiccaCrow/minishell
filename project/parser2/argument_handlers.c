@@ -1,4 +1,4 @@
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 /**
  * Функция пишет лист аргументов в массив строк
@@ -8,8 +8,8 @@ int	args_list_to_arr2(t_list **args, t_command *command)
 {
 	size_t	size;
 	t_list	*tmp;
-	int 	i;
-	
+	int		i;
+
 	size = ft_lstsize(*args) + 1;
 	command->args = (char **)malloc(sizeof(char *) * size);
 	if (command->args)
@@ -21,7 +21,7 @@ int	args_list_to_arr2(t_list **args, t_command *command)
 		}
 		tmp = *args;
 		i = 0;
-		while(tmp)
+		while (tmp)
 		{
 			command->args[i++] = (char *) tmp->content;
 			tmp = tmp->next;
@@ -36,18 +36,16 @@ int	args_list_to_arr2(t_list **args, t_command *command)
  * Функция очищает лист 
 */
 
-int clear_list2(t_list **args)
+int	clear_list2(t_list **args)
 {
-	t_list *tmp;
-	t_list *tmp2;
-	
+	t_list	*tmp;
+	t_list	*tmp2;
+
 	tmp = *args;
 	while (tmp)
 	{
 		tmp2 = tmp;
 		tmp = tmp->next;
-//		free(tmp->content);
-//		tmp->content = NULL;
 		free(tmp2);
 		tmp2 = NULL;
 	}
@@ -56,10 +54,10 @@ int clear_list2(t_list **args)
 	return (0);
 }
 
-int remove_first(t_list **args)
+int	remove_first(t_list **args)
 {
-	t_list *tmp;
-	
+	t_list	*tmp;
+
 	if (args)
 	{
 		tmp = *args;

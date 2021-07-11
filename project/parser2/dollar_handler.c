@@ -1,13 +1,13 @@
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 /**
  * Функция получает ключ в командной строке
 */
 
-char *get_key(int i, char *line)
+char	*get_key(int i, char *line)
 {
-	char *key;
-	
+	char	*key;
+
 	key = ft_strdup(&line[i + 1]);
 	if (key)
 	{
@@ -28,16 +28,14 @@ char *get_key(int i, char *line)
  * Функция получает значение переменной из env по ее ключу
 */
 
-char *get_value(const char *key, t_all *all)
+char	*get_value(const char *key, t_all *all)
 {
-	int	i;
-	int	j;
-	char *value;
+	int		i;
+	int		j;
+	char	*value;
 
 	if (key && *key == '?')
-	{
 		return (ft_itoa(g_completion_code));
-	}
 	i = 0;
 	while (key && all->env[i])
 	{
@@ -58,42 +56,41 @@ char *get_value(const char *key, t_all *all)
  * Функция заменяет переменную в строке на ее значение
 */
 
+static int	replace_key(char **line, char *key, const char *value, int i)
+{
+	char	*result;
+	size_t	size;
+	int		j;
+	int		k;
+
+	size = ft_strlen((*line)) - ft_strlen(key) + ft_strlen(value);
+	result = (char *)ft_calloc(size, sizeof (char));
+	if (result)
+	{
+		j = -1;
+		while (++j < i)
+			result[j] = (*line)[j];
+		k = j + (int)ft_strlen(key) + 1;
+		j--;
+		while (value[++j - i])
+			result[j] = value[j - i];
+		while ((*line)[k])
+			result[j++] = (*line)[k++];
+		free((*line));
+		(*line) = result;
+		return (0);
+	}
+	return (1);
+}
+
 int	get_arg_from_env(int i, t_all *all)
 {
 	char	*key;
 	char	*value;
-	char	*result;
-	size_t	size;
-	int 	j;
-	int 	k;
-	
+
 	key = get_key(i, all->line);
 	value = get_value(key, all);
-	size = ft_strlen(all->line) - ft_strlen(key) + ft_strlen(value);
-	result = (char *)ft_calloc(size, sizeof (char));
-	if (result)
-	{
-		j = 0;
-		while (j < i)
-		{
-			result[j] = all->line[j];
-			j++;
-		}
-		k = j + (int)ft_strlen(key) + 1;
-		while (value[j - i])
-		{
-			result[j] = value[j - i];
-			j++;
-		}
-		while (all->line[k])
-		{
-			result[j++] = all->line[k++];
-		}
-		free(all->line);
-		all->line = result;
-		return (0);
-	}
-	return (1);
+	return (replace_key(&all->line, key, value, i));
 }
 
 /**
@@ -105,35 +102,26 @@ int	get_arg_from_env(int i, t_all *all)
 
 int	dollar_handler(t_all *all)
 {
-	int		i;
-	int 	flag;
-	
+	int	i;
+	int	flag;
+
 	i = 0;
 	flag = 0;
 	while (all->line[i] && all->line[i] != ';')
 	{
 		if (all->line[i] == '\\' && !(flag))
-		{
 			flag = flag | SHIELD;
-			i++;
-		}
 		else if (all->line[i] == '\'' && !(flag & SHIELD))
-		{
 			flag = flag ^ QUOTE;
-			i++;
-		}
 		else if (all->line[i] == '$' && !flag)
 		{
 			get_arg_from_env(i, all);
-			i = 0;
+			i = -1;
 		}
 		else
-		{
 			if ((flag & SHIELD) && all->line[i])
 				flag = flag & ~(SHIELD);
-			i++;
-		}
+		i++;
 	}
-	return(1);
-	
+	return (1);
 }

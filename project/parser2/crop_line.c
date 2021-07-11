@@ -4,10 +4,10 @@
  * Функция находит первый неэкранированный символ ';' в строке 
 */
 
-int 	get_semicolon(const char *line)
+int	get_semicolon(const char *line)
 {
-	int i;
-	int flag;
+	int	i;
+	int	flag;
 
 	i = 0;
 	flag = 0;
@@ -34,11 +34,11 @@ int 	get_semicolon(const char *line)
  * строке 
 */
 
-int 	crop_line(char **line)
+int	crop_line(char **line)
 {
-	int i;
-	int j;
-	char *new_line;
+	int		i;
+	int		j;
+	char	*new_line;
 
 	i = get_semicolon(*line);
 	if (i)
@@ -52,7 +52,7 @@ int 	crop_line(char **line)
 				new_line[j++] = (*line)[i++];
 			free(*line);
 			*line = new_line;
-			return(1);
+			return (1);
 		}
 	}
 	free(*line);

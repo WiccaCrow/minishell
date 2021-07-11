@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static int free_command(t_command *command)
+static int	free_command(t_command *command)
 {
 	free_char_array(command->args);
 	command->args = NULL;
@@ -9,12 +9,12 @@ static int free_command(t_command *command)
 	return (0);
 }
 
-int free_commands(t_command **commands)
+int	free_commands(t_command **commands)
 {
-	t_command *tmp;
-	t_command *tmp2;
+	t_command	*tmp;
+	t_command	*tmp2;
 
-	if(commands)
+	if (commands)
 	{
 		tmp = *commands;
 		while (tmp)
