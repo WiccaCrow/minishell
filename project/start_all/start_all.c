@@ -18,11 +18,7 @@
 void	start_all(t_all *all, char **env, char *av0)
 {
 	ft_memset(all, 0, sizeof(t_all));
-	// g_completion_code = 0;
-	// all->parse_error = 0;
-	// all->line = NULL;
-	// all->commands = NULL;
-	// all->env = NULL;
+	g_completion_code = 0;
 	all->pwd = getcwd(NULL, 0);
 	init_env(all, env, av0);
 	shlvl_set(all, 0, 0);

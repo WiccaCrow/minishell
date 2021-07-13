@@ -61,6 +61,7 @@ typedef struct s_all {
 	char				*line;
 	char				**history;
 	char				**env;
+	char				**path_split;
 	char				*pwd;
 	int					len_env_str;
 	int					nb_arg;
@@ -82,7 +83,8 @@ void			init_env_path(t_all *all, char *av0, int i);
 void			init_env_av0_path(t_all *all, char *av0, char **av0_path);
 void			init_env_path_without_path(t_all *all, char *av0_path, int i);
 void			init_env_path_with_path(t_all *all, char *av0_path, \
-					int index_path, int j);
+					int index_path);
+int				init_env_path_split(t_all *all, int index_path, char *av0_path);
 void			exit_clean(t_all *all);
 void			sigint_handler(int sig);
 void			sigquit_handler(int sig);
@@ -107,7 +109,7 @@ int				free_commands(t_command ***commands);
 int				executor(t_all *all, t_command *tmp);
 void			command_not_found(t_all *all, t_command *tmp);
 void			print_command_not_found(t_command *tmp);
-void			completion_code_malloc_error(char *array_null, char *open_name);
+void			completion_code_malloc_error(char *array_null, char *oper_name);
 void			completion_code_int_ret_error(char *oper_name, int error_code);
 int				completion_code_fork_error(char *oper_name, char *err_text, \
 					int error_code);
@@ -148,7 +150,8 @@ void			check_arg_pwd(t_all *all);
 int				exec_unset(t_all *all, t_command *tmp);
 void			exec_unset_find_env_str(t_all *all, t_command *tmp, \
 					char *oper_name);
-void			exec_unset_do_new_env(t_all *all, char **env_new, int nb_lines, int nb_old_env);
+void			exec_unset_do_new_env(t_all *all, char **env_new, \
+					int nb_lines, int nb_old_env);
 void			exec_exit(t_all *all, t_command *tmp);
 int				args_is_digit(char *args);
 int				exit_code(t_all *all, t_command *tmp);
@@ -163,7 +166,7 @@ int				executable_error_print(char *com_name, char *error_message, \
 void			repointer_to_filename_with_path(char **args0, \
 					char *filename_with_path);
 int				fork_execve(t_all *all, t_command *tmp);
-char			**path_env(t_all *all);
+void			path_env(t_all *all);
 char			*join_directory_and_command(char *directory, \
 					char *command_name);
 

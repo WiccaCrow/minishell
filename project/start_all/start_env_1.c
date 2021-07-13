@@ -82,29 +82,18 @@ void	init_env_path_without_path(t_all *all, char *av0_path, int i)
  * 		ft_strjoin;
  */
 
-void	init_env_path_with_path(t_all *all, char *av0_path, int index_path,
-								int j)
+void	init_env_path_with_path(t_all *all, char *av0_path, int index_path)
 {
-	int		av_len;
-	char	**path_split;
 	char	*tmp;
+	int		j;
 
-	av_len = ft_strlen(av0_path);
-	path_split = ft_split(all->env[index_path], ':');
-	if (NULL == path_split)
-	{
-		ft_free((void **) &av0_path);
-		init_env_err_with_exit_msh(all, NULL, "minishell: init_env");
-	}
-	while (path_split[++j])
-		if (0 == ft_strncmp(av0_path, path_split[j], av_len))
-			break ;
-	if (NULL == path_split[j])
+	j = init_env_path_split(all, index_path, av0_path);
+	if (NULL == all->path_split[j])
 	{
 		tmp = ft_strjoin(all->env[index_path], ":");
 		if (NULL == tmp)
 		{
-			free_char_array(path_split);
+			free_char_array(all->path_split);
 			ft_free((void **)&av0_path);
 			init_env_err_with_exit_msh(all, NULL, "minishell: init_env");
 		}
@@ -114,5 +103,46 @@ void	init_env_path_with_path(t_all *all, char *av0_path, int index_path,
 		free(all->env[index_path]);
 		all->env[index_path] = tmp;
 	}
-	free_char_array(path_split);
+	free_char_array(all->path_split);
+}
+
+/************************************
+ * 			init_env_path_split   	*
+ * **********************************
+*/
+/* Description:
+ * 		The function split PATH on paths to all->path_split.
+ * 		Checks if there is a path in the av0_path variable among
+ * 		the all->path_split strings.
+ * 		And returns its index in all->path_split.
+ * Return value:
+ * 		If among the rows in PATH there is av0_path, the index 
+ * 		of this string in the array is returned.
+ * 		If among the rows in PATH there is no av0_path, the 
+ * 		index of the NULL string in the array is returned.
+ * Contains functions:
+ * 		init_env_err_with_exit_msh;
+ * 		ft_strlen;
+ * 		ft_split;
+ * 		ft_free;
+ * 		ft_strncmp;
+ */
+
+int	init_env_path_split(t_all *all, int index_path, char *av0_path)
+{
+	int		av_len;
+	int		j;
+
+	av_len = ft_strlen(av0_path);
+	all->path_split = ft_split(all->env[index_path], ':');
+	if (NULL == all->path_split)
+	{
+		ft_free((void **) &av0_path);
+		init_env_err_with_exit_msh(all, NULL, "minishell: init_env");
+	}
+	j = -1;
+	while (all->path_split[++j])
+		if (0 == ft_strncmp(av0_path, all->path_split[j], av_len))
+			break ;
+	return (j);
 }

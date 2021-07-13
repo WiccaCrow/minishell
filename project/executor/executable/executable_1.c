@@ -35,7 +35,6 @@
 
 int	executable(t_all *all, t_command *tmp)
 {
-	char	**path_from_env;
 	char	*com_name;
 	int		i;
 	int		path;
@@ -46,20 +45,19 @@ int	executable(t_all *all, t_command *tmp)
 		return (1);
 	if (!path || (path && g_completion_code))
 		return (0);
-	path_from_env = path_env(all);
-	if (path_from_env == NULL)
+	path_env(all);
+	if (all->path_split == NULL)
 		return (1);
 	i = -1;
 	path = -1;
-	while (path_from_env[++i] && path == -1 && 0 == g_completion_code)
+	while (all->path_split[++i] && path == -1 && 0 == g_completion_code)
 	{
-		com_name = join_directory_and_command(path_from_env[i], tmp->args[0]);
-		completion_code_malloc_error(com_name, tmp->args[0]);
+		com_name = join_directory_and_command(all->path_split[i], tmp->args[0]);
 		path = executable_check_and_run(all, com_name, 0, tmp);
-		if (path !=0)
+		if (path != 0)
 			ft_free((void **)&com_name);
 	}
-	free_char_array(path_from_env);
+	free_char_array(all->path_split);
 	return (path == -1);
 }
 

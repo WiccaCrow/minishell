@@ -12,18 +12,20 @@
  * 		Two-dimensional array of path-strings.
 */
 
-char	**path_env(t_all *all)
+void	path_env(t_all *all)
 {
 	int		i;
 	char	*path_env_value;
-	char	**path_env;
 
 	i = get_my_env_index(all->env, "PATH", 4);
 	if (all->env[i] == NULL)
-		return (NULL);
+	{
+		all->path_split = NULL;
+		return ;
+	}
 	path_env_value = ft_strchr(all->env[i], '=');
-	path_env = ft_split(++path_env_value, ':');
-	if (path_env == NULL)
+	all->path_split = ft_split(++path_env_value, ':');
+	if (all->path_split == NULL)
 	{
 		g_completion_code = 1;
 		write(STDERR_FILENO, "minishell: ", 12);
@@ -31,7 +33,6 @@ char	**path_env(t_all *all)
 			ft_strlen((*all->commands)->args[0]));
 		write(STDERR_FILENO, ": malloc error. Try again.\n", 28);
 	}
-	return (path_env);
 }
 
 /************************************
@@ -56,6 +57,8 @@ char	*join_directory_and_command(char *directory, char *command_name)
 		free(tmp);
 		tmp = NULL;
 	}
+	else
+		completion_code_malloc_error(tmp, command_name);
 	return (command_name);
 }
 

@@ -87,7 +87,8 @@ void	exec_unset_find_env_str(t_all *all, t_command *tmp, char *oper_name)
  * 		from this strings to NULL.
  */
 
-void	exec_unset_do_new_env(t_all *all, char **env_new, int nb_lines, int nb_old_env)
+void	exec_unset_do_new_env(t_all *all, char **env_new,
+			int nb_lines, int nb_old_env)
 {
 	int	index_new;
 	int	index_old;

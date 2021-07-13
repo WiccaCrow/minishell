@@ -1,5 +1,5 @@
 #include "minishell.h"
-int g_completion_code; // код возврата ошибки $?
+int	g_completion_code; // код возврата ошибки $?
 
 /************************************
  * 		1. main						*
@@ -9,8 +9,8 @@ int g_completion_code; // код возврата ошибки $?
  * The start of the program begins in the minishell.c 
  * file with the main () function.
  */
- 
- /*
+
+/*
  * functions:
  * 1.1. start_all;
  * 			Start program with zero-structure (example, 
@@ -84,7 +84,7 @@ int g_completion_code; // код возврата ошибки $?
 
 //#include <unistd.h>
 
-int main(int ac, char **av, char **env)
+int	main(int ac, char **av, char **env)
 {
 	t_all	all;
 
