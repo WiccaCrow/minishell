@@ -58,6 +58,7 @@ int	pipe_last(t_all *all, t_command *tmp)
 {
 	int	err_dup;
 
+	err_dup = 0;
 	all->waitpid = fork();
 	if (!all->waitpid)
 	{
