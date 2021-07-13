@@ -24,7 +24,9 @@ EXEC_SRCS	=	executor.c \
 GNL_PATH	=	gnl_dir/
 GNL_SRCS	=	get_next_line.c get_next_line_utils.c
 SRCS		=	minishell.c fill_all.c signal_handler.c \
-				start_all/start_env_shlvl.c start_all/start_env_0.c start_all/start_env_1.c \
+				start_all/start_all.c \
+				start_all/start_env_shlvl.c \
+				start_all/start_env_0.c start_all/start_env_1.c \
 				$(addprefix $(PARSER2_PATH), $(PARSER2_SRCS)) \
 				$(addprefix $(LC_PATH), $(LC_SRCS)) \
 				$(addprefix $(EXEC_PATH), $(EXEC_SRCS)) \

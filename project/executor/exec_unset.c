@@ -19,19 +19,22 @@
 int	exec_unset(t_all *all, t_command *tmp)
 {
 	char	**env_new;
-	int		i;
+	int		i_old;
+	int		i_new;
 
 	g_completion_code = 0;
-	i = count_env_lines(all);
-	i = count_lines(all, tmp, "unset", i);
-	env_new = (char **)malloc((i + 1) * sizeof(char *));
+	i_old = count_env_lines(all);
+	i_new = count_lines(all, tmp, "unset", i_old);
+	if (i_new == i_old)
+		return (0);
+	env_new = (char **)malloc((i_new + 1) * sizeof(char *));
 	if (!env_new)
 		completion_code_malloc_error(NULL, "unset");
 	if (g_completion_code == 0)
 	{
-		env_new[i] = NULL;
+		env_new[i_new] = NULL;
 		exec_unset_find_env_str(all, tmp, "unset");
-		exec_unset_do_new_env(all, env_new, i);
+		exec_unset_do_new_env(all, env_new, i_new, i_old);
 	}
 	return (0);
 }
@@ -66,7 +69,7 @@ void	exec_unset_find_env_str(t_all *all, t_command *tmp, char *oper_name)
 			continue ;
 		index_env_str = find_env_str(all, tmp, oper_name, all->env);
 		if (all->env[index_env_str] != NULL)
-			all->env[index_env_str][0] = 0;
+			ft_free((void **)all->env + index_env_str);
 	}
 }
 
@@ -84,22 +87,18 @@ void	exec_unset_find_env_str(t_all *all, t_command *tmp, char *oper_name)
  * 		from this strings to NULL.
  */
 
-void	exec_unset_do_new_env(t_all *all, char **env_new, int nb_lines)
+void	exec_unset_do_new_env(t_all *all, char **env_new, int nb_lines, int nb_old_env)
 {
 	int	index_new;
-	int	counter_unset;
+	int	index_old;
 
 	index_new = -1;
-	counter_unset = 0;
+	index_old = 0;
 	while (++index_new < nb_lines)
 	{
-		while (all->env[index_new + counter_unset] != NULL && all->env[index_new + counter_unset][0] == 0)
-		{
-//			ft_free((void **)&(all->env[index_new + counter_unset++]));
-			free(all->env[index_new + counter_unset]);
-			++counter_unset;
-		}
-		env_new[index_new] = all->env[index_new + counter_unset];
+		while (all->env[index_old] == NULL && index_old < nb_old_env)
+			++index_old;
+		env_new[index_new] = all->env[index_old++];
 	}
 	free(all->env);
 	all->env = env_new;

@@ -148,7 +148,7 @@ void			check_arg_pwd(t_all *all);
 int				exec_unset(t_all *all, t_command *tmp);
 void			exec_unset_find_env_str(t_all *all, t_command *tmp, \
 					char *oper_name);
-void			exec_unset_do_new_env(t_all *all, char **env_new, int nb_lines);
+void			exec_unset_do_new_env(t_all *all, char **env_new, int nb_lines, int nb_old_env);
 void			exec_exit(t_all *all, t_command *tmp);
 int				args_is_digit(char *args);
 int				exit_code(t_all *all, t_command *tmp);

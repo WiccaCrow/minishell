@@ -3,98 +3,93 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: grvelva <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: mdulcie <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/09/27 21:21:24 by grvelva           #+#    #+#             */
-/*   Updated: 2020/12/18 12:20:04 by grvelva          ###   ########.fr       */
+/*   Created: 2020/11/13 00:59:23 by mdulcie           #+#    #+#             */
+/*   Updated: 2020/11/13 01:13:54 by mdulcie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include <stdlib.h>
 
-static size_t	ft_calcsize(char *s, char c)
+static void	ft_free(char **s, int dostr)
 {
-	size_t	result;
-
-	result = 1;
-	if (*s == 0)
-		return (0);
-	while (*(s + 1))
-	{
-		if (*s != c && *(s + 1) == c)
-			result++;
-		s++;
-	}
-	return (result);
+	if (*s == NULL)
+		while (dostr--)
+			free(*(--s));
+	free(s);
 }
 
-static size_t	ft_wrdlen(char *s, char c)
+static char	*ft_strdup_c(const char *s1, int count)
 {
-	size_t	result;
+	char	*c_copy;
 
-	result = 0;
-	while (*(s + result) != c && *(s + result))
-		result++;
-	return (++result);
+	if (!(c_copy = malloc((count + 1) * sizeof(char))))
+		return (NULL);
+	c_copy[count] = 0;
+	while (count--)
+		c_copy[count] = s1[count];
+	return (c_copy);
 }
 
-static void	ft_freeresult(char **res, size_t count)
+static int	ft_str(char const *s, char c)
 {
-	while (count > 0)
-	{
-		free(res[count]);
-		res[count] = NULL;
-		count--;
-	}
-	free(res);
-	res = NULL;
-}
-
-static void	ft_fillarr(char **result, char *str, size_t size, char c)
-{
-	size_t	i;
-	size_t	wrd_len;
+	int	i;
+	int	str;
 
 	i = 0;
-	while (i < size)
+	str = 0;
+	while (s[i])
 	{
-		if (*str != c)
-		{
-			wrd_len = ft_wrdlen(str, c);
-			result[i] = (char *)malloc(sizeof(char) * (wrd_len));
-			if (result[i])
-			{
-				ft_strlcpy(result[i++], str, wrd_len);
-				str = str + wrd_len - 1;
-			}
-			else
-			{
-				ft_freeresult(result, i);
-				break ;
-			}
-		}
-		str++;
+		while (s[i] == c)
+			i++;
+		s[i] ? str++ : 0;
+		while (s[i] && s[i] != c)
+			i++;
 	}
-	result[i] = 0;
+	return (str);
 }
 
-char	**ft_split(char const *s, char c)
+char		**ft_do_split(char const *s, char c, int i, char **massstr)
 {
-	char	*str;
-	size_t	res_size;
-	char	**result;
+	int	count;
+	int	dostr;
+	int	str;
 
-	if (s == NULL)
-		return (NULL);
-	str = ft_strtrim(s, &c);
-	if (!str)
-		return (NULL);
-	res_size = ft_calcsize(str, c);
-	result = (char **)malloc(sizeof(char *) * (res_size + 1));
-	if (result)
+	str = ft_str(s, c);
+	dostr = 0;
+	while (s[i] && massstr)
 	{
-		ft_fillarr(result, str, res_size, c);
+		count = 0;
+		while (s[i] && s[i] != c && count++ <= i)
+			++i;
+		++dostr;
+		if (!(*massstr = ft_strdup_c(&s[i - count], count)))
+			ft_free(massstr, dostr);
+		--str ? massstr++ : 0;
+		while (s[i] && s[i] == c)
+			++i;
 	}
-	free(str);
-	return (result);
+	return (massstr - (dostr - 1));
+}
+
+char		**ft_split(char const *s, char c)
+{
+	char	**massstr;
+	int		str;
+	int		i;
+
+	if (!s)
+		return (NULL);
+	massstr = NULL;
+	i = 0;
+	while (s[i] && s[i] == c)
+		++i;
+	str = ft_str(s, c);
+	if (!(massstr = (char**)malloc((str + 1) * sizeof(char*))))
+		return (NULL);
+	massstr[str] = NULL;
+	if (s[i])
+		ft_do_split(s, c, i, massstr);
+	return (massstr);
 }

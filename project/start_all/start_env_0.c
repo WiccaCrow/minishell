@@ -34,14 +34,15 @@ void	init_env(t_all *all, char **env, char *av0)
 		all->env[i] = ft_strdup(env[i]);
 		init_env_err_with_exit_msh(all, all->env[i], "minishell: init_env");
 	}
-	if (!get_my_env_index(env, "OLDPWD", 6))
-	{
-		all->env[i] = ft_strdup("OLDPWD");
-		init_env_err_with_exit_msh(all, all->env[i++], "minishell: init_env");
-	}
 	if (env[index_pwd] == NULL)
 	{
 		all->env[i] = ft_strjoin("PWD=", all->pwd);
+		init_env_err_with_exit_msh(all, all->env[i++], "minishell: init_env");
+	}
+	index_pwd = get_my_env_index(env, "OLDPWD", 6);
+	if (env[index_pwd] == NULL)
+	{
+		all->env[i] = ft_strdup("OLDPWD");
 		init_env_err_with_exit_msh(all, all->env[i++], "minishell: init_env");
 	}
 	init_env_path(all, av0, i);
@@ -60,25 +61,27 @@ void	init_env(t_all *all, char **env, char *av0)
 
 int	init_env_allocate_memory(t_all *all, char **env)
 {
-	int	i;
+	int	nb_env;
 	int	index_pwd_oldpwd;
+	int	nb_new_str;
 
-	i = -1;
-	while (env[++i])
-		;
+	nb_env = 0;
+	nb_new_str = 0;
+	while (env[nb_env])
+		++nb_env;
 	index_pwd_oldpwd = get_my_env_index(env, "PATH", 4);
 	if (!env[index_pwd_oldpwd])
-		++i;
+		++nb_new_str;
 	index_pwd_oldpwd = get_my_env_index(env, "OLDPWD", 6);
 	if (!env[index_pwd_oldpwd])
-		++i;
+		++nb_new_str;
 	index_pwd_oldpwd = get_my_env_index(env, "PWD", 3);
 	if (!env[index_pwd_oldpwd])
-		++i;
-	all->env = (char **)malloc(sizeof(char *) * (i + 1));
+		++nb_new_str;
+	all->env = (char **)malloc(sizeof(char *) * (nb_env + nb_new_str + 1));
 	if (NULL == all->env)
 		init_env_err_with_exit_msh(all, NULL, "minishell: init_env");
-	all->env[i] = NULL;
+	all->env[nb_env + nb_new_str] = NULL;
 	return (index_pwd_oldpwd);
 }
 
