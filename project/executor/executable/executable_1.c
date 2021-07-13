@@ -4,7 +4,7 @@
  * 			1. executable			*
  * **********************************
 */
-/* Description:
+/* Description: 
  * 		Function do search and do launch the right executable (based on the
  * 		PATH variable or by using relative or absolute path).
  * Return value:
