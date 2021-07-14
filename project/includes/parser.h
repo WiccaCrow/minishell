@@ -9,6 +9,7 @@
 # define READ 4
 # define HEREDOC 8
 # define NO_FILENAME 16
+# define PRE_FD 32
 # define TMP_FILE ".tmp_file"
 # define NOFILE_REDIRECT 1
 # define WORD 2

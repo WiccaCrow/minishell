@@ -22,6 +22,7 @@
 # define SYN_ERR "minishell: syntax error near unexpected token `"
 # define UNEXP_EOF "bash: unexpected EOF while looking for matching `\"\'\n"
 # define UNEXP_EOF2 "bash: syntax error: unexpected end of file"
+# define BAD_FD "Bad file descriptor"
 # define QUOTE 1
 # define DOUBLE_QUOTE 2
 # define SHIELD 4
@@ -97,7 +98,7 @@ int				get_next_word_lc(char *line, int i, char **tmp_line);
 int				parser2(t_all *all);
 int				heredoc_handle(t_all *all, int i);
 int				do_heredoc_redirects(t_list **args);
-
+int				handle_pre_fd(t_command *command, char *word);
 int				dollar_handler(t_all *all);
 int				add_command(t_all *all, t_command *command);
 enum e_command	get_command(char *word);

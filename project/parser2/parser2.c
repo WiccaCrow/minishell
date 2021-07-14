@@ -7,23 +7,28 @@
 
 int 	set_redirect(const char *word)
 {
+	int i;
+
 	if (word)
 	{
-		if (word[0] == '>' && word[1] == '>' && word[2] != 0)
+		i = 0;
+		while(ft_isdigit(word[i]))
+			i++;
+		if (word[i] == '>' && word[i + 1] == '>' && word[i + 2] != 0)
 			return (APPEND);
-		if (word[0] == '>' && word[1] == '>' && word[2] == 0)
+		if (word[i] == '>' && word[i + 1] == '>' && word[i + 2] == 0)
 			return (APPEND | NO_FILENAME);
-		if (word[0] == '<' && word[1] == '<' && word[2] != 0)
+		if (word[i] == '<' && word[i + 1] == '<' && word[i + 2] != 0)
 			return (HEREDOC);
-		if (word[0] == '<' && word[1] == '<' && word[2] == 0)
+		if (word[i] == '<' && word[i + 1] == '<' && word[i + 2] == 0)
 			return (HEREDOC | NO_FILENAME);
-		if (word[0] == '>' && word[1] != 0)
+		if (word[i] == '>' && word[i + 1] != 0)
 			return (WRITE);
-		if (word[0] == '>' && word[1] == 0)
+		if (word[i] == '>' && word[i + 1] == 0)
 			return (WRITE | NO_FILENAME);
-		if (word[0] == '<' && word[1] != 0)
+		if (word[i] == '<' && word[i + 1] != 0)
 			return (READ);
-		if (word[0] == '<' && word[1] == 0)
+		if (word[i] == '<' && word[i + 1] == 0)
 			return (READ | NO_FILENAME);
 	}
 	return (0);
@@ -46,6 +51,7 @@ int	parse_redirect(t_command *command, char *word, char *pwd)
 {
 	char	*filename;
 
+	
 	if (!(command->redirect_type & NO_FILENAME))
 	{
 		filename = get_filename(word);
@@ -55,6 +61,7 @@ int	parse_redirect(t_command *command, char *word, char *pwd)
 			return (1);
 		}
 	}
+	handle_pre_fd(command, word);
 	return (0);
 }
 
