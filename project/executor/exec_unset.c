@@ -51,14 +51,16 @@ int	exec_unset(t_all *all, t_command *tmp)
  * 		for validity. In the env array, 
  * 		finds strings with these valid 
  * 		arguments. If the strings are 
- * 		found, the function sets first 
- * 		charfrees in string to '\0'.
+ * 		found, the function free this 
+ * 		memory and set its pointer to 
+ * 		NULL.
  * 
  * 		oper_name - "export" or "unset".
  * 
  * Contains functions
  * 		check_valid_args;
  * 		find_env_str;
+ * 		ft_free;
  */
 
 void	exec_unset_find_env_str(t_all *all, t_command *tmp, char *oper_name)
@@ -81,13 +83,11 @@ void	exec_unset_find_env_str(t_all *all, t_command *tmp, char *oper_name)
  * **********************************
 */
 /* Description:
- * 		The function replaces the old 
- * 		env array with the new env 
- * 		array.
- *  	The function frees the memory 
- *      allocated for strings with '\0'
- *      first char and redirects pointers 
- * 		from this strings to NULL.
+ * 		The function fills a new array with non-zero 
+ * 		strings from the old array, and then frees 
+ * 		memory from under the old two-dimensional 
+ * 		array and changes the pointer from the freed 
+ * 		memory to the new array.
  */
 
 void	exec_unset_do_new_env(t_all *all, char **env_new,
