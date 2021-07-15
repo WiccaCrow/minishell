@@ -61,8 +61,7 @@ int	parse_redirect(t_command *command, char *word, char *pwd)
 			return (1);
 		}
 	}
-	handle_pre_fd(command, word);
-	return (0);
+	return (handle_pre_fd(command, word));
 }
 
 int	parse_word(char *word, t_command *command, t_list **args, char *pwd)
@@ -80,7 +79,7 @@ int	parse_word(char *word, t_command *command, t_list **args, char *pwd)
 			if (parse_redirect(command, word, pwd))
 				return (1);
 			else
-				return (2);
+				return (-1);
 		}
 		else
 			ft_lstadd_back(args, ft_lstnew(ft_strdup(word)));
