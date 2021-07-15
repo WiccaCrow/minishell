@@ -25,17 +25,20 @@ int	exec_unset(t_all *all, t_command *tmp)
 	g_completion_code = 0;
 	i_old = count_env_lines(all);
 	i_new = count_lines(all, tmp, "unset", i_old);
+	if (i_new < 0)
+		i_new = 0;
 	if (i_new == i_old)
 		return (0);
 	env_new = (char **)malloc((i_new + 1) * sizeof(char *));
-	if (!env_new)
-		completion_code_malloc_error(NULL, "unset");
-	if (g_completion_code == 0)
+	env_new[i_new] = NULL;
+	if (env_new)
 	{
-		env_new[i_new] = NULL;
-		exec_unset_find_env_str(all, tmp, "unset");
+		if (i_old)
+			exec_unset_find_env_str(all, tmp, "unset");
 		exec_unset_do_new_env(all, env_new, i_new, i_old);
 	}
+	else
+		completion_code_malloc_error(NULL, "unset");
 	return (0);
 }
 

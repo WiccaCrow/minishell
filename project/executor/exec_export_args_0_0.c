@@ -72,7 +72,7 @@ void	sort_env(t_all *all, t_command *tmp, int i, int j)
 	int		*sort;
 	int		k;
 
-	if (do_sort_index(&sort_env_index, &sort, i))
+	if (0 == i || do_sort_index(&sort_env_index, &sort, i))
 		return ;
 	j_zero = 0;
 	while (i)
