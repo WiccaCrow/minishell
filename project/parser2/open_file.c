@@ -25,7 +25,8 @@ int	check_fd(t_command *command, int input_fd, char *filename)
 	{
 		executable_error_print(filename, ": No such file or directory\n",
 			1);
-		command->input_fd = input_fd;
+		if (!(command->redirect_type & PRE_FD))
+			command->input_fd = input_fd;
 		return (-1);
 	}
 	else if (command->redirect_type & READ)
@@ -39,19 +40,25 @@ int	check_fd(t_command *command, int input_fd, char *filename)
 
 static int	open_to_write(char *full_path, t_command *command)
 {
+	int output_fd;
+
 	if (command->redirect_type & APPEND)
 	{
-		if (command->output_fd > 1)
+		if (command->output_fd > 1  && !(command->redirect_type & PRE_FD))
 			close(command->output_fd);
-		command->output_fd = open(full_path, O_CREAT | O_WRONLY | \
+		output_fd = open(full_path, O_CREAT | O_WRONLY | \
 				O_APPEND, 0644);
+		if (!(command->redirect_type & PRE_FD))
+			command->output_fd = output_fd;
 	}
 	if (command->redirect_type & WRITE)
 	{
 		if (command->output_fd > 1)
 			close(command->output_fd);
-		command->output_fd = open(full_path, O_CREAT | O_WRONLY | \
+		output_fd = open(full_path, O_CREAT | O_WRONLY | \
 				O_TRUNC, 0644);
+		if (!(command->redirect_type & PRE_FD))
+			command->output_fd = output_fd;
 	}
 	return (0);
 }

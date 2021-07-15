@@ -22,7 +22,7 @@
 # define SYN_ERR "minishell: syntax error near unexpected token `"
 # define UNEXP_EOF "bash: unexpected EOF while looking for matching `\"\'\n"
 # define UNEXP_EOF2 "bash: syntax error: unexpected end of file"
-# define BAD_FD "Bad file descriptor"
+# define BAD_FD ": Bad file descriptor\n"
 # define QUOTE 1
 # define DOUBLE_QUOTE 2
 # define SHIELD 4
