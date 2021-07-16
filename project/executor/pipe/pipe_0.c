@@ -39,6 +39,8 @@ void	enter_the_pipes(t_all *all, t_command *tmp)
 	while (nb_p--)
 		if (pid[++(all->waitpid)] > 0)
 			wait_status_fork(pid[all->waitpid]);
+	if (131 == g_completion_code)
+		write(1, "Quit: 3\n", 8);
 	signal(SIGINT, sigint_handler);
 	free(pid);
 }

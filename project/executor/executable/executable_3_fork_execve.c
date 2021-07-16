@@ -27,6 +27,8 @@ void	fork_execve(t_all *all, t_command *tmp)
 		g_completion_code = 1;
 	}
 	wait_status_fork(onepid);
+	if (131 == g_completion_code)
+		write(1, "Quit: 3\n", 8);
 	signal(SIGINT, sigint_handler);
 }
 
