@@ -18,6 +18,7 @@ int	check_fd(t_command *command, int input_fd, char *filename)
 	if (command->output_fd < 0)
 	{
 		executable_error_print(filename, ": No such file or directory\n", 1);
+		ft_free((void **)&filename);
 		return (-1);
 	}
 	if (input_fd < 0)
@@ -25,6 +26,7 @@ int	check_fd(t_command *command, int input_fd, char *filename)
 		executable_error_print(filename, ": No such file or directory\n", 1);
 		if (!(command->redirect_type & PRE_FD))
 			command->input_fd = input_fd;
+		ft_free((void **)&filename);
 		return (-1);
 	}
 	else if (command->redirect_type & READ)
@@ -33,6 +35,7 @@ int	check_fd(t_command *command, int input_fd, char *filename)
 			close((command->input_fd));
 		command->input_fd = input_fd;
 	}
+	ft_free((void **)&filename);
 	return (0);
 }
 
