@@ -1,43 +1,6 @@
 #include "minishell.h"
 
 /************************************
- * 		exec_command_with_pipe		*
- * **********************************
-*/
-/* Description:
- * 		Execute tmp->args[0] command (for pipes).
- * 
- * Return value::
- * 		0 if all->fd >=0.
- * 		1 if all->fd < 0.
- * Contains functions:
- * 	executor;
- * 	exit_clean;
-*/
-
-void	exec_command_with_pipe(t_all *all, t_command *tmp)
-{
-	if (tmp->input_fd >= 0)
-	{
-		if (tmp->flag_command == 0 && g_completion_code == 0)
-		{
-			if (-1 == execve(tmp->args[0], tmp->args, all->env))
-			{
-				write(STDERR_FILENO, "minishell: pipes: fork: error: \n", 32);
-				write(STDERR_FILENO, "execve return -1. Try again.\n", 29);
-			}
-		}
-		else if (0 == g_completion_code)
-			executor(all, tmp);
-	}
-	else
-	{
-		g_completion_code = 1;
-		exit_clean(all);
-	}
-}
-
-/************************************
  * 				pipe_last			*
  * **********************************
 */
@@ -49,6 +12,7 @@ void	exec_command_with_pipe(t_all *all, t_command *tmp)
  * 		0 if all good.
  * 		-1 if fork() returned -1.
  * Contains functions:
+ * 	pipe_last_dup;
  * 	exec_command_with_pipe;
  * 	exit_clean;
  * 	completion_code_fork_error;
@@ -56,23 +20,12 @@ void	exec_command_with_pipe(t_all *all, t_command *tmp)
 
 int	pipe_last(t_all *all, t_command *tmp)
 {
-	int	err_dup;
-
-	err_dup = 0;
+	signal(SIGINT, SIG_IGN);
 	all->waitpid = fork();
 	if (!all->waitpid)
 	{
-		if (1 != tmp->output_fd)
-			err_dup = dup2(tmp->output_fd, 1);
-		if (0 == tmp->input_fd && err_dup != -1)
-			err_dup = dup2(all->fd0, tmp->input_fd);
-		else if (-1 != err_dup)
-			err_dup = dup2(tmp->input_fd, 0);
-		if (-1 == err_dup)
-		{
-			completion_code_int_ret_error("minishell: pipe_last: dup err: ", 1);
-			exit_clean(all);
-		}
+		signal(SIGINT, sigint_handler);
+		pipe_last_dup(all, tmp);
 		exec_command_with_pipe(all, tmp);
 		exit_clean(all);
 	}
@@ -84,14 +37,44 @@ int	pipe_last(t_all *all, t_command *tmp)
 }
 
 /************************************
+ * 			pipe_last_dup			*
+ * **********************************
+*/
+/* Description:
+ * 		The function do dup2() for function pipe_last().
+ *
+ * Contains functions:
+ * 	completion_code_int_ret_error;
+ * 	exit_clean;
+*/
+
+void	pipe_last_dup(t_all *all, t_command *tmp)
+{
+	int	err_dup;
+
+	err_dup = 0;
+	if (1 != tmp->output_fd)
+		err_dup = dup2(tmp->output_fd, 1);
+	if (0 == tmp->input_fd && err_dup != -1)
+		err_dup = dup2(all->fd0, tmp->input_fd);
+	else if (-1 != err_dup)
+		err_dup = dup2(tmp->input_fd, 0);
+	if (-1 == err_dup)
+	{
+		completion_code_int_ret_error("minishell: pipe_last: dup err: ", 1);
+		exit_clean(all);
+	}
+}
+
+/************************************
  * 			pipe_1st_midle			*
  * **********************************
 */
 /* Description:
- * 		Function running commands ending in pipe.
+ * 		The function running commands ending in pipe.
  * 
  * Contains functions:
- * 	dupfd_in_pipe_1st_midle;
+ * 	pipe_1st_midle_dup;
  * 	exec_command_with_pipe;
  * 	exit_clean;
 */
@@ -102,30 +85,48 @@ int	pipe_1st_midle(t_all *all, t_command *tmp)
 
 	if (pipe(file_pipes) == 0)
 	{
+		signal(SIGINT, SIG_IGN);
 		all->waitpid = fork();
 		if (!all->waitpid)
 		{
-			dupfd_in_pipe_1st_midle(all, tmp, file_pipes);
+			signal(SIGINT, sigint_handler);
+			pipe_1st_midle_dup(all, tmp, file_pipes);
 			exec_command_with_pipe(all, tmp);
 			exit_clean(all);
 		}
-		if (tmp->end_flag & START_PIPE && tmp->end_flag & PIPE)
-			close(all->fd0);
-		close(file_pipes[1]);
-		if (-1 == all->waitpid)
-		{
-			close (file_pipes[0]);
-			return (-2);
-		}
-		return (file_pipes[0]);
+		return (pipe_1st_midle_return_closefd(all, tmp, file_pipes));
 	}
 	if (tmp->end_flag & START_PIPE)
 		close(all->fd0);
 	return (-1);
 }
 
+/****************************************
+ * 		pipe_1st_midle_return_closefd	*
+ * **************************************
+*/
+/* Description:
+ * 		The function close old fd (all->fd0) and return new output fd or -2 in
+ * 		case fork error (all->waitpid == -1).
+ * Return value:
+ * 		new output fd or -2 if was fork error.
+*/
+
+int	pipe_1st_midle_return_closefd(t_all *all, t_command *tmp, int *file_pipes)
+{
+	if (tmp->end_flag & START_PIPE && tmp->end_flag & PIPE)
+		close(all->fd0);
+	close(file_pipes[1]);
+	if (-1 == all->waitpid)
+	{
+		close (file_pipes[0]);
+		return (-2);
+	}
+	return (file_pipes[0]);
+}
+
 /************************************
- * 		dupfd_in_pipe_1st_midle		*
+ * 			pipe_1st_midle_dup		*
  * **********************************
 */
 /* Description:
@@ -137,7 +138,7 @@ int	pipe_1st_midle(t_all *all, t_command *tmp)
  * 	exit_clean;
 */
 
-void	dupfd_in_pipe_1st_midle(t_all *all, t_command *tmp, int *file_pipes)
+void	pipe_1st_midle_dup(t_all *all, t_command *tmp, int *file_pipes)
 {
 	int	err_dup;
 

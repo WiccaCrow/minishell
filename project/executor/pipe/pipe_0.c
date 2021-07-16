@@ -39,6 +39,7 @@ void	enter_the_pipes(t_all *all, t_command *tmp)
 	while (nb_p--)
 		if (pid[++(all->waitpid)] > 0)
 			wait_status_fork(pid[all->waitpid]);
+	signal(SIGINT, sigint_handler);
 	free(pid);
 }
 
@@ -162,4 +163,41 @@ int	pipe_fork_if_error(t_all *all)
 		completion_code_fork_error("minishell: pipes (fork -1): ",
 			"fork error\n", 1);
 	return (1);
+}
+
+/************************************
+ * 		exec_command_with_pipe		*
+ * **********************************
+*/
+/* Description:
+ * 		Execute tmp->args[0] command (for pipes).
+ *
+ * Return value::
+ * 		0 if all->fd >=0.
+ * 		1 if all->fd < 0.
+ * Contains functions:
+ * 	executor;
+ * 	exit_clean;
+*/
+
+void	exec_command_with_pipe(t_all *all, t_command *tmp)
+{
+	if (tmp->input_fd >= 0)
+	{
+		if (tmp->flag_command == 0 && g_completion_code == 0)
+		{
+			if (-1 == execve(tmp->args[0], tmp->args, all->env))
+			{
+				write(STDERR_FILENO, "minishell: pipes: fork: error: \n", 32);
+				write(STDERR_FILENO, "execve return -1. Try again.\n", 29);
+			}
+		}
+		else if (0 == g_completion_code)
+			executor(all, tmp);
+	}
+	else
+	{
+		g_completion_code = 1;
+		exit_clean(all);
+	}
 }

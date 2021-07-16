@@ -166,7 +166,9 @@ int				executable_error_print(char *com_name, char *error_message, \
 					int error_code);
 void			repointer_to_filename_with_path(char **args0, \
 					char *filename_with_path);
-int				fork_execve(t_all *all, t_command *tmp);
+void			fork_execve(t_all *all, t_command *tmp);
+void			fork_execve_if_fork(t_all *all, t_command *tmp);
+void			wait_status_fork(pid_t onepid);
 void			path_env(t_all *all);
 char			*join_directory_and_command(char *directory, \
 					char *command_name);
@@ -182,12 +184,14 @@ void			enter_the_pipes(t_all *all, t_command *tmp);
 pid_t			*nb_pipes(t_command *tmp, pid_t **pid);
 int				do_pipes(t_all *all, t_command *tmp, pid_t *pid);
 int				pipe_1st_midle(t_all *all, t_command *tmp);
-void			dupfd_in_pipe_1st_midle(t_all *all, t_command *tmp, \
+void			pipe_1st_midle_dup(t_all *all, t_command *tmp, \
+					int *file_pipes);
+int				pipe_1st_midle_return_closefd(t_all *all, t_command *tmp, \
 					int *file_pipes);
 void			exec_command_with_pipe(t_all *all, t_command *tmp);
 int				pipe_last(t_all *all, t_command *tmp);
+void			pipe_last_dup(t_all *all, t_command *tmp);
 int				pipe_fork_if_error(t_all *all);
-void			wait_status_fork(pid_t onepid);
 
 void			ft_free(void **pointer);
 

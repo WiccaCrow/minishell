@@ -63,7 +63,7 @@ int	exit_code(t_all *all, t_command *tmp)
 	i = -1;
 	if (args_is_digit(tmp->args[0]))
 	{
-		write(tmp->output_fd, "bash: exit: ", 13);
+		write(tmp->output_fd, "minishell: exit: ", 17);
 		write(tmp->output_fd, tmp->args[0], ft_strlen(tmp->args[0]));
 		write(tmp->output_fd, ": numeric argument required\n", 29);
 		g_completion_code = 255;
