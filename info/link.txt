@@ -82,7 +82,8 @@ https://ru.wikipedia.org/wiki/%D0%A4%D0%B0%D0%B9%D0%BB%D0%BE%D0%B2%D1%8B%D0%B9_%
 https://www.opennet.ru/man.shtml?topic=sysconf&category=3&russian=0
 
 ____________________________________
-
+спецсимволы
+https://sonikelf.ru/15-specialnyx-simvolov-komand-kotoryx-nuzhno-znat-dlya-raboty-bash-linux/
 ____________________________________
 
 ____________________________________
