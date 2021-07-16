@@ -68,7 +68,7 @@ int	parse_word(char *word, t_command *command, t_list **args, char *pwd)
 {
 	if (command->redirect_type && (command->redirect_type & NO_FILENAME))
 	{
-		if (open_file(command, word, pwd) < 0)
+		if (open_file(command, clear_word(ft_strdup(word)), pwd) < 0)
 			return (0);
 	}
 	else
@@ -82,7 +82,7 @@ int	parse_word(char *word, t_command *command, t_list **args, char *pwd)
 				return (-1);
 		}
 		else
-			ft_lstadd_back(args, ft_lstnew(ft_strdup(word)));
+			ft_lstadd_back(args, ft_lstnew(clear_word(ft_strdup(word))));
 	}
 	return (0);
 }
@@ -108,11 +108,12 @@ int	get_next_command(t_all *all, int i)
 				i = skip_spaces(all->line, i);
 				if ((parse_word(curr_line, command, args, all->pwd) < 0))
 					all->parse_error = 1;
-				free(curr_line);
-				curr_line = NULL;
+				ft_free((void **)&curr_line);
 			}
 			if (*args)
+			{
 				command->flag_command = get_command((char *) (*args)->content);
+			}
 			if ((command->flag_command == not_found && !*args) || \
 				command->redirect_type & NO_FILENAME)
 			{

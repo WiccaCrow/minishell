@@ -17,14 +17,12 @@ int	check_fd(t_command *command, int input_fd, char *filename)
 {
 	if (command->output_fd < 0)
 	{
-		executable_error_print(filename, ": No such file or directory\n",
-			1);
+		executable_error_print(filename, ": No such file or directory\n", 1);
 		return (-1);
 	}
 	if (input_fd < 0)
 	{
-		executable_error_print(filename, ": No such file or directory\n",
-			1);
+		executable_error_print(filename, ": No such file or directory\n", 1);
 		if (!(command->redirect_type & PRE_FD))
 			command->input_fd = input_fd;
 		return (-1);

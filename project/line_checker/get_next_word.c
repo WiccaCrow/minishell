@@ -76,7 +76,7 @@ int	get_next_word_lc(char *line, int i, char **tmp_line)
 			flag = flag ^ DOUBLE_QUOTE;
 		else if (line[i] == '\'' && !(flag & SHIELD) && !(flag & DOUBLE_QUOTE))
 			flag = flag ^ QUOTE;
-		else if ((line[i] != ' ') || flag)
+		if ((line[i] != ' ') || flag)
 		{
 			*tmp_line = add_chr(*tmp_line, line[i]);
 			if ((flag & SHIELD))

@@ -22,5 +22,7 @@ int		clear_list2(t_list **args);
 int		remove_first(t_list **args);
 int		set_redirect(const char *word);
 int		open_tmp_file(char *stop_str);
+int		clear_words(t_list **args);
+char 	*clear_word(char *word);
 
 #endif 
