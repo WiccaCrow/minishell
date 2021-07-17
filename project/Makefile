@@ -13,7 +13,7 @@ PARSER2_PATH	=	parser2/
 PARSER2_SRCS	=	parser2.c heredoc_handle.c redirects_handle.c open_tmp_file.c\
 					get_command.c argument_handlers.c open_file.c get_command_utils.c \
                     add_command.c crop_line.c dollar_handler.c command_list_utils.c parser_utils.c \
-                    handle_pre_fd.c clear_word.c
+                    handle_pre_fd.c clear_word.c fill_args.c
 EXEC_PATH	=	executor/
 EXEC_SRCS	=	executor.c \
 				exec_echo.c exec_cd.c exec_pwd.c exec_env.c \

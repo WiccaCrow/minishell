@@ -91,11 +91,11 @@ void			sigint_handler(int sig);
 void			sigquit_handler(int sig);
 int				show_program_name(void);
 
+int				parser2(t_all *all);
 int				fill_all(t_all *all);
 int				line_getter(t_all *all);
 int				check_line(t_all *all);
 int				get_next_word_lc(char *line, int i, char **tmp_line);
-int				parser2(t_all *all);
 int				heredoc_handle(t_all *all, int i);
 int				do_heredoc_redirects(t_list **args);
 int				handle_pre_fd(t_command *command, char *word);
@@ -106,6 +106,8 @@ int				args_list_to_arr2(t_list **args, t_command *command);
 int				set_start_pipes(t_all *all);
 int				open_file(t_command *command, char *filename, char *pwd);
 int				free_commands(t_command ***commands);
+int				fill_args(t_all *all, int i, t_command *command, t_list **args);
+
 
 int				executor(t_all *all, t_command *tmp);
 void			command_not_found(t_all *all, t_command *tmp);

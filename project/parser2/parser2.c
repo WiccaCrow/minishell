@@ -1,18 +1,13 @@
 #include "minishell.h"
 
-/**
- * Первый элемент из листа комманд пишет в старую структуру, где есть место 
- * только для одной комманды
-*/
-
-int 	set_redirect(const char *word)
+int	set_redirect(const char *word)
 {
-	int i;
+	int	i;
 
 	if (word)
 	{
 		i = 0;
-		while(ft_isdigit(word[i]))
+		while (ft_isdigit(word[i]))
 			i++;
 		if (word[i] == '>' && word[i + 1] == '>' && word[i + 2] != 0)
 			return (APPEND);
@@ -34,63 +29,39 @@ int 	set_redirect(const char *word)
 	return (0);
 }
 
-char	*get_filename(char *word)
+int	command_check(t_command *command, t_all *all, t_list **args)
 {
-	if (word)
+	if (*args)
+		command->flag_command = get_command((char *)(*args)->content);
+	if ((command->flag_command == not_found && !*args) || \
+				command->redirect_type & NO_FILENAME)
 	{
-		if ((word[0] == '>' && word[1] == '>') || \
-			(word[0] == '<' && word[1] == '<'))
-			return (ft_strdup(word + 2));
-		if (word[0] == '>' || word[0] == '<')
-			return (ft_strdup(word + 1));
+		all->parse_error = 1;
+		if (command->redirect_type & NO_FILENAME)
+			write(STDOUT_FILENO, SYN_ERR "newline\'\n", 56);
 	}
-	return (NULL);
+	if (command->flag_command)
+		remove_first(args);
+	return (0);
 }
 
-int	parse_redirect(t_command *command, char *word, char *pwd)
+int	set_command_end(t_command *command, t_all *all, int i)
 {
-	char	*filename;
-
-	
-	if (!(command->redirect_type & NO_FILENAME))
+	if (all->line[i] == ';')
+		command->end_flag = SEMICOLON;
+	else if (all->line[i] == '|')
 	{
-		filename = get_filename(word);
-		if (filename)
-		{
-			open_file(command, filename, pwd);
-			return (1);
-		}
-	}
-	return (handle_pre_fd(command, word));
-}
-
-int	parse_word(char *word, t_command *command, t_list **args, char *pwd)
-{
-	if (command->redirect_type && (command->redirect_type & NO_FILENAME))
-	{
-		if (open_file(command, clear_word(ft_strdup(word)), pwd) < 0)
-			return (0);
+		command->end_flag = PIPE;
+		i++;
 	}
 	else
-	{
-		command->redirect_type = set_redirect(word);
-		if (command->redirect_type)
-		{
-			if (parse_redirect(command, word, pwd))
-				return (1);
-			else
-				return (-1);
-		}
-		else
-			ft_lstadd_back(args, ft_lstnew(clear_word(ft_strdup(word))));
-	}
-	return (0);
+		command->end_flag = 0;
+	return (i);
 }
 
 int	get_next_command(t_all *all, int i)
 {
 	t_command	*command;
-	char		*curr_line;
 	t_list		**args;
 
 	command = (t_command *)ft_calloc(1, sizeof (t_command));
@@ -101,39 +72,11 @@ int	get_next_command(t_all *all, int i)
 		args = (t_list **)ft_calloc(1, sizeof(t_list *));
 		if (args)
 		{
-			while (all->line[i] && all->line[i] != ';' && all->line[i] != '|')
-			{
-				curr_line = NULL;
-				i = get_next_word_lc(all->line, i, &curr_line);
-				i = skip_spaces(all->line, i);
-				if ((parse_word(curr_line, command, args, all->pwd) < 0))
-					all->parse_error = 1;
-				ft_free((void **)&curr_line);
-			}
-			if (*args)
-			{
-				command->flag_command = get_command((char *) (*args)->content);
-			}
-			if ((command->flag_command == not_found && !*args) || \
-				command->redirect_type & NO_FILENAME)
-			{
-				all->parse_error = 1;
-				if (command->redirect_type & NO_FILENAME)
-					write(STDOUT_FILENO, SYN_ERR "newline\'\n", 56);
-			}
-			if (command->flag_command)
-				remove_first(args);
+			i = fill_args(all, i, command, args);
+			command_check(command, all, args);
 			args_list_to_arr2(args, command);
 			clear_list2(args);
-			if (all->line[i] == ';')
-				command->end_flag = SEMICOLON;
-			else if (all->line[i] == '|')
-			{
-				command->end_flag = PIPE;
-				i++;
-			}
-			else
-				command->end_flag = 0;
+			i = set_command_end(command, all, i);
 			command->next = NULL;
 			add_command(all, command);
 		}
@@ -143,7 +86,7 @@ int	get_next_command(t_all *all, int i)
 
 int	parser2(t_all *all)
 {
-	int			i;
+	int	i;
 
 	i = 0;
 	all->parse_error = 0;
@@ -157,7 +100,6 @@ int	parser2(t_all *all)
 			i = skip_spaces(all->line, i);
 		}
 		set_start_pipes(all);
-//		show_commands(all->commands);
 		crop_line(&(all->line));
 		if (all->parse_error == 0 && *(all->commands))
 			return (1);
