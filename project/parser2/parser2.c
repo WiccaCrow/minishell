@@ -157,7 +157,7 @@ int	parser2(t_all *all)
 			i = skip_spaces(all->line, i);
 		}
 		set_start_pipes(all);
-		show_commands(all->commands);
+//		show_commands(all->commands);
 		crop_line(&(all->line));
 		if (all->parse_error == 0 && *(all->commands))
 			return (1);

@@ -94,17 +94,17 @@ int	main(int ac, char **av, char **env)
 	signal(SIGINT, sigint_handler);
 	signal(SIGQUIT, sigquit_handler);
 	start_all(&all, env, av[0]);
-printf("FOPEN_MAX = |%d|\n", FOPEN_MAX);
+//printf("FOPEN_MAX = |%d|\n", FOPEN_MAX);
 	while (1)
 	{
-		if (fill_all(&all) != -1)
-//		show_program_name();
-//		if (line_getter(&all))
+//		if (fill_all(&all) != -1)
+		show_program_name();
+		if (line_getter(&all))
 		{
-			printf("%s\n", all.line);
-			write(STDOUT_FILENO, "\x1b[32m", 5);
-			printf("иду из филл олл\n");
-			write(STDOUT_FILENO, NONECOLOR, 5);
+//			printf("%s\n", all.line);
+//			write(STDOUT_FILENO, "\x1b[32m", 5);
+//			printf("иду из филл олл\n");
+//			write(STDOUT_FILENO, NONECOLOR, 5);
 			while (all.line && 	*all.line && check_line(&all) && \
 			dollar_handler(&all) && parser2(&all))
 			{
@@ -115,9 +115,9 @@ printf("FOPEN_MAX = |%d|\n", FOPEN_MAX);
             }
 			if (all.check_line)
 				free_commands(&all.commands);
-write(STDOUT_FILENO, "\x1b[32m", 5);
-printf("иду на следующий филл олл\n");
-write(STDOUT_FILENO, NONECOLOR, 5);
+//write(STDOUT_FILENO, "\x1b[32m", 5);
+//printf("иду на следующий филл олл\n");
+//write(STDOUT_FILENO, NONECOLOR, 5);
 		}
 		else
 			break ;

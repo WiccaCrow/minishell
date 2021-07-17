@@ -73,7 +73,7 @@ char	*get_line(t_all *all)
 	{
 		while (1)
 		{
-			ret = read(STDIN_FILENO, buff, 10);
+			ret = read(1, buff, 10);
 			buff[ret] = 0;
 			if (!char_handle(buff, &line, all))
 				break ;
@@ -91,6 +91,11 @@ char	*get_line(t_all *all)
 int	line_getter(t_all *all)
 {
 	all->line = get_line(all);
+	if (all->line)
+	{
+		write(STDOUT_FILENO, "\n", 1);
+		return (1);
+	}
 	write(STDOUT_FILENO, "\n", 1);
-	return (1);
+	return (0);
 }
