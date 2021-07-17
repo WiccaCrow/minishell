@@ -15,8 +15,8 @@
 
 static int	check_end_of_input(const char *line, int flag)
 {
-	int i;
-	
+	int	i;
+
 	if (line)
 	{
 		i = 0;
@@ -38,10 +38,10 @@ static int	check_end_of_input(const char *line, int flag)
 	return (0);
 }
 
-int fill_all(t_all *all)
+int	fill_all(t_all *all)
 {
 	char	*line;
-	int 	flag;
+	int		flag;
 
 	line = readline(GOLD NAME NONECOLOR);
 	all->line = gnl_strjoin(all->line, line);

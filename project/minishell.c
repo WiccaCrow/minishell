@@ -45,44 +45,8 @@ int	g_completion_code; // код возврата ошибки $?
 */
 
 /**
-* Мэйн на термкапах
-*/
-
-//int main(int ac, char **av, char **env)
-//{
-//	t_all	all;
-//
-//	(void) ac;
-//	(void) av;
-//	signal(SIGINT, sigint_handler);
-//	signal(SIGQUIT, sigquit_handler);
-//	start_all(&all, env);
-//	while (1)
-//	{
-//		show_program_name();
-//		if (line_getter(&all))
-//		{
-//			while (all.line && *all.line && check_line(&all) && \
-//			dollar_handler(&all) && parser2(&all))
-//			{
-//                if ((*all.commands)->end_flag & START_PIPE || (*all.commands)->end_flag & PIPE)
-//                    enter_the_pipes(&all, *all.commands);
-//                else
-//                    executor(&all, *all.commands);
-//            }
-//		}
-//		else
-//			break ;
-//	}
-//	exit_clean(&all);
-//	return (0);
-//}
-
-/**
  * Мэйн на ридлайне для дебага
  */
-
-//#include <unistd.h>
 
 int	main(int ac, char **av, char **env)
 {
@@ -104,14 +68,15 @@ int	main(int ac, char **av, char **env)
 //			write(STDOUT_FILENO, "\x1b[32m", 5);
 //			printf("иду из филл олл\n");
 //			write(STDOUT_FILENO, NONECOLOR, 5);
-			while (all.line && 	*all.line && check_line(&all) && \
+			while (all.line && *all.line && check_line(&all) && \
 			dollar_handler(&all) && parser2(&all))
 			{
-				if ((*all.commands)->end_flag & START_PIPE || (*all.commands)->end_flag & PIPE)
+				if ((*all.commands)->end_flag & START_PIPE || \
+					(*all.commands)->end_flag & PIPE)
 					enter_the_pipes(&all, *all.commands);
-                else if ((*all.commands)->input_fd != -1)
+				else if ((*all.commands)->input_fd != -1)
 					executor(&all, *all.commands);
-            }
+			}
 			if (all.check_line)
 				free_commands(&all.commands);
 //write(STDOUT_FILENO, "\x1b[32m", 5);
@@ -120,7 +85,7 @@ int	main(int ac, char **av, char **env)
 		}
 		else
 			break ;
-		ft_free((void**)&all.line);
+		ft_free((void **)&all.line);
 		// free(all.line);
 		// all.line = NULL;
 	}
@@ -159,7 +124,7 @@ void	ft_free(void **pointer)
  * command from the user.
 */
 
-int show_program_name(void)
+int	show_program_name(void)
 {
 	write(STDOUT_FILENO, GOLD, 8);
 	write(STDOUT_FILENO, NAME, ft_strlen(NAME));
@@ -189,11 +154,11 @@ void	exit_clean(t_all *all)
 	{
 		i = -1;
 		while (all->env[++i])
-			ft_free((void**)&all->env[i]);
+			ft_free((void **)&all->env[i]);
 		free(all->env);
 		all->env = NULL;
 	}
-	ft_free((void**)&all->pwd);
+	ft_free((void **)&all->pwd);
 	free_commands(&all->commands);
 	exit(g_completion_code);
 }
