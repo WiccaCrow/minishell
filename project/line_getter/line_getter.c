@@ -71,6 +71,7 @@ char	*get_line(t_all *all)
 	if (!canon_off() && termtype && tgetent(0, termtype) && \
 		!tputs(save_cursor, 1, ft_putchar))
 	{
+		show_program_name();
 		while (1)
 		{
 			ret = read(1, buff, 10);
@@ -96,6 +97,6 @@ int	line_getter(t_all *all)
 		write(STDOUT_FILENO, "\n", 1);
 		return (1);
 	}
-	write(STDOUT_FILENO, "\n", 1);
+//	write(STDOUT_FILENO, "\n", 1);
 	return (0);
 }

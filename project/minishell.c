@@ -98,7 +98,6 @@ int	main(int ac, char **av, char **env)
 	while (1)
 	{
 //		if (fill_all(&all) != -1)
-		show_program_name();
 		if (line_getter(&all))
 		{
 //			printf("%s\n", all.line);
