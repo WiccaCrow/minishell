@@ -17,7 +17,7 @@ char	*get_key(int i, char *line)
 			key[1] = 0;
 			return (key);
 		}
-		while (key[i] && key[i] != ' ' && key[i] != '"' && key[i] != '$')
+		while (key[i] && !ft_strchr(" \"\'$",key[i]))
 			i++;
 		key[i] = 0;
 	}
@@ -113,11 +113,13 @@ int	dollar_handler(t_all *all)
 	flag = 0;
 	while (all->line[i] && all->line[i] != ';')
 	{
-		if (all->line[i] == '\\' && !(flag))
+		if (all->line[i] == '\\' && !(flag & QUOTE) && !(flag & SHIELD))
 			flag = flag | SHIELD;
-		else if (all->line[i] == '\'' && !(flag & SHIELD))
+		else if (all->line[i] == '\"' && !(flag & SHIELD) && !(flag & QUOTE))
+			flag = flag ^ DOUBLE_QUOTE;
+		else if (all->line[i] == '\'' && !(flag & SHIELD) && !(flag & DOUBLE_QUOTE))
 			flag = flag ^ QUOTE;
-		else if (all->line[i] == '$' && !flag)
+		else if (all->line[i] == '$' && !(flag & SHIELD) && !(flag & QUOTE))
 		{
 			get_arg_from_env(i, all);
 			i = -1;

@@ -28,20 +28,3 @@ char *clear_word(char *word)
 	ft_free((void **)&word);
 	return (new_word);
 }
-
-int clear_words(t_list **args)
-{
-	t_list	*tmp;
-	
-	if (args)
-	{
-		tmp = *args;
-		while (tmp)
-		{
-			tmp->content = clear_word(tmp->content);
-			tmp = tmp->next;
-		}
-		return (1);
-	}
-	return (0);
-}

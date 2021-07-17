@@ -101,9 +101,10 @@ printf("FOPEN_MAX = |%d|\n", FOPEN_MAX);
 //		show_program_name();
 //		if (line_getter(&all))
 		{
-write(STDOUT_FILENO, "\x1b[32m", 5);
-printf("иду из филл олл\n");
-write(STDOUT_FILENO, NONECOLOR, 5);
+			printf("%s\n", all.line);
+			write(STDOUT_FILENO, "\x1b[32m", 5);
+			printf("иду из филл олл\n");
+			write(STDOUT_FILENO, NONECOLOR, 5);
 			while (all.line && 	*all.line && check_line(&all) && \
 			dollar_handler(&all) && parser2(&all))
 			{
