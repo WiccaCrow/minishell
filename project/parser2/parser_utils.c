@@ -20,7 +20,6 @@ int	set_start_pipes(t_all *all)
 	return (0);
 }
 
-
 int	show_commands(t_command **commands)
 {
 	t_command	*tmp;

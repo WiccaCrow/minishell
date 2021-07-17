@@ -68,8 +68,7 @@ int	get_line(t_all *all)
 
 	init_t_line(&line, all);
 	termtype = getenv("TERM");
-	if (!canon_off() && termtype && tgetent(0, termtype) && \
-		!tputs(save_cursor, 1, ft_putchar))
+	if (!canon_off() && termtype && tgetent(0, termtype))
 	{
 		show_program_name();
 		while (1)

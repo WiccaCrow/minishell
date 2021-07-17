@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-char *clear_word(char *word)
+char	*clear_word(char *word)
 {
 	int		i;
 	int		flag;

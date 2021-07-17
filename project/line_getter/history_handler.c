@@ -94,16 +94,15 @@ int	add_to_history(char *line, char ***history)
 	int		i;
 	char	*history_line;
 
-	i = 0;
+	i = -1;
 	if (line && history && *history)
 	{
 		history_line = NULL;
-		while ((*history)[i])
+		while ((*history)[++i])
 		{
 			if (history_line)
 				history_line = gnl_strjoin(history_line, "\n");
 			history_line = gnl_strjoin(history_line, (*history)[i]);
-			i++;
 		}
 		if (history_line)
 			history_line = gnl_strjoin(history_line, "\n");

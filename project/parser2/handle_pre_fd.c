@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-char *crop_redirect(char *word)
+char	*crop_redirect(char *word)
 {
 	int	i;
 
@@ -11,10 +11,10 @@ char *crop_redirect(char *word)
 	return (word);
 }
 
-int handle_pre_fd(t_command *command, char *word)
+int	handle_pre_fd(t_command *command, char *word)
 {
-	int fd;
-	
+	int	fd;
+
 	if (word && ft_isdigit(word[0]))
 	{
 		fd = ft_atoi(word);
@@ -23,7 +23,7 @@ int handle_pre_fd(t_command *command, char *word)
 		if (fd != 1)
 		{
 			command->redirect_type |= PRE_FD;
-			if (command->redirect_type & WRITE ||
+			if (command->redirect_type & WRITE || \
 				command->redirect_type & APPEND)
 				command->output_fd = fd;
 			else

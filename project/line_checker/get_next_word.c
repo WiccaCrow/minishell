@@ -39,7 +39,7 @@ static int	is_redirect(char c, const char *tmp_line)
 	return (0);
 }
 
-int is_word_num(const char *word)
+int	is_word_num(const char *word)
 {
 	int	i;
 
@@ -51,7 +51,7 @@ int is_word_num(const char *word)
 	return (word[i] == 0);
 }
 
-int is_word_ended(char c, const char *tmp_line, int flag)
+int	is_word_ended(char c, const char *tmp_line, int flag)
 {
 	if (is_token(tmp_line) && !flag)
 		return (1);
