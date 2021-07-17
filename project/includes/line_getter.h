@@ -41,5 +41,6 @@ int			free_char_array(char **history);
 int			add_to_history(char *line, char ***history);
 int			history_len(char **history);
 int			sigint_switcher(t_line *line);
+int			free_t_line(t_line *line);
 
 #endif

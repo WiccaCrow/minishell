@@ -1,4 +1,4 @@
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 /**
  * Функция проверяет достигли ли мы конца ввода
@@ -32,7 +32,7 @@ static int	check_end_of_input(const char *line)
 		}
 		return (!flag);
 	}
-	return (0);
+	return (1);
 }
 
 /**

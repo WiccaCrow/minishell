@@ -59,7 +59,7 @@ static int	char_handle(char *buff, t_line *line, t_all *all)
 	return (1);
 }
 
-char	*get_line(t_all *all)
+int	get_line(t_all *all)
 {
 	t_line			line;
 	ssize_t			ret;
@@ -80,9 +80,13 @@ char	*get_line(t_all *all)
 				break ;
 		}
 		if (!canon_on())
-			return (line.main_line);
+		{
+			all->line = gnl_strjoin(NULL, line.main_line);
+			free_t_line(&line);
+			return (1);
+		}
 	}
-	return (NULL);
+	return (0);
 }
 
 /**
@@ -91,12 +95,11 @@ char	*get_line(t_all *all)
 
 int	line_getter(t_all *all)
 {
-	all->line = get_line(all);
-	if (all->line)
+	if (get_line(all))
 	{
 		write(STDOUT_FILENO, "\n", 1);
 		return (1);
 	}
-//	write(STDOUT_FILENO, "\n", 1);
+	write(STDOUT_FILENO, "\n", 1);
 	return (0);
 }

@@ -111,6 +111,7 @@ int	add_to_history(char *line, char ***history)
 		if (history_line && free_char_array(*history))
 		{
 			*history = ft_split(history_line, '\n');
+			ft_free((void **)&history_line);
 			return (1);
 		}
 		return (0);
