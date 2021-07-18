@@ -199,4 +199,24 @@ int				pipe_fork_if_error(t_all *all);
 
 void			ft_free(void **pointer);
 
+t_list	**wildcard_open_read_dir(char *pwd, char *str_star);
+void	wildcard_fill_list(char *d_name, char *str_star, \
+			t_list **wc_star_list_begin);
+char	*wildcard_find_arg(char *d_name, char *str_star);
+int		wildcard_skip_star(char *str_star, int *i_star);
+int 	wildcard_first_character_matches(char *d_name, char *str_star, \
+			int i_star);
+int		wildcard_check_1st_midle_chars(char *d_name, char *str_star, \
+			int *i_d_name, int *i_star);
+char	*wildcard_check_last_chars(char *str_star, char *d_name, \
+			int i_star, int i_d_name);
+int		wildcard_strcmp_star_d_name(char *str_star, char *d_name, \
+			int *i_d_name);
+int		wildcard_strcmp_next_char(char *str_star, char *d_name, \
+			int *i_d_name, char **d_name_1st_next_char);
+int		wildcard_strcmp_return(int ret_strncmp, int len_star, int *i_d_name);
+int		wildcard_chrcmp_d_name(char str_star, char *d_name, int *i_d_name);
+void	wildcard_on_of_flag_brackets_slash(int *flag_brackets_slash,
+										   char *str_star, int *i_star);
+
 #endif

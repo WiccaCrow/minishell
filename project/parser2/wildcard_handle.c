@@ -54,7 +54,7 @@ int	wildcard_handle(t_all *all, t_list ***args)
 		{
 			if(is_wildcard((char *)tmp->content))
 			{
-				wc_list = function(all, (char *)tmp->content));
+				wc_list = wildcard_open_read_dir(all->pwd, (char *)tmp->content);
 				if (wc_list)
 					add_wclist_to_args(new_args, wc_list);
 				else

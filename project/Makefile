@@ -28,6 +28,7 @@ SRCS		=	minishell.c fill_all.c signal_handler.c \
 				start_all/start_all.c \
 				start_all/start_env_shlvl.c \
 				start_all/start_env_0.c start_all/start_env_1.c \
+				wildcard_star_1.c \
 				$(addprefix $(PARSER2_PATH), $(PARSER2_SRCS)) \
 				$(addprefix $(LC_PATH), $(LC_SRCS)) \
 				$(addprefix $(EXEC_PATH), $(EXEC_SRCS)) \

@@ -3,55 +3,40 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
+#include "minishell.h"
+///////////////////////////////////////////////////////////////////////////////
 
-void	wildcard_open_read_dir(char *pwd, char *str_star);
-void	wildcard_fill_list(char *d_name, char *str_star);
-char	*wildcard_find_arg(char *d_name, char *str_star);
-int		wildcard_skip_star(char *str_star, int *i_star);
-int		wildcard_check_1st_midle_chars(char *d_name, char *str_star, \
-			int *i_d_name, int *i_star);
-char	*wildcard_check_last_chars(char *str_star, char *d_name, \
-			int i_star, int i_d_name);
-int		wildcard_strcmp_star_d_name(char *str_star, char *d_name, \
-			int *i_d_name);
-int		wildcard_strcmp_next_char(char *str_star, char *d_name, \
-			int *i_d_name, char **d_name_1st_next_char);
-int		wildcard_strcmp_return(int ret_strncmp, int len_star, int *i_d_name);
-int		wildcard_chrcmp_d_name(char str_star, char *d_name, int *i_d_name);
-
-static char	*ft_strchr(const char *s, int c)
-{
-	char	*ptr;
-
-	ptr = (char *)s;
-	while (*ptr)
-	{
-		if (*ptr == (char)c)
-			return (ptr);
-		ptr++;
-	}
-	if ((char)c == 0)
-		return (ptr);
-	return (NULL);
-}
-
-int	main()
-{
-	// char 	pwd[] = "/Users/mdulcie/Desktop/untitled folder/";
-	// char	str_star[] = "wild*s*";
-	char 	pwd[] = "/Users/mdulcie";//ion
-	char	str_star[] = "**ion*s";
-
-	wildcard_open_read_dir(pwd, str_star);
-	return (0);
-}
+////////////////////////////////////////////////////////////////////////////////
+//int	main()
+//{
+//	t_list	**wildcard_star_list_begin;
+//	t_list	*tmp;
+//
+//	// char 	pwd[] = "/Users/mdulcie/Desktop/untitled folder/";
+//	// char	str_star[] = "wild*s*";
+//	char 	pwd[] = "/Users/mdulcie";//ion
+//	char	str_star[] = "'A'***";
+//
+//	wildcard_star_list_begin = wildcard_open_read_dir(pwd, str_star);
+//	if (wildcard_star_list_begin)
+//	{
+//		tmp = *wildcard_star_list_begin;
+//		while (tmp)
+//		{
+//			printf("args = |%s|\n", tmp->content);
+//			tmp = tmp->next;
+//		}
+//	}
+//	return (0);
+//}
 
 /************************************************
  * 				wildcard_open_read_dir			*
  * **********************************************
 */
 /* Description:
- * 			The function open current directory with opendir() and read it 
+ * 		The function open current directory with opendir() and read it
  * 		still and with readdir(). The function then uses closedir().
  * 
  * Contains functions:
@@ -60,27 +45,30 @@ int	main()
  * 
 */
 
-void	wildcard_open_read_dir(char *pwd, char *str_star)
+t_list	**wildcard_open_read_dir(char *pwd, char *str_star)
 {
 	DIR				*r_opndir;
 	struct dirent	*r_readdir;
+	t_list			**wc_star_list_begin;
 
+	wc_star_list_begin = (t_list **)ft_calloc(1, sizeof(t_list *));
 	r_opndir = opendir(pwd);
 	if (NULL == r_opndir)
 	{
-		printf("opendir error.\n");
-		return ;
+		completion_code_malloc_error(NULL, "Parser, wildcard *");
+		return (NULL);
 	}
 	else
 	{
 		r_readdir = readdir(r_opndir);
 		while (r_readdir)
 		{
-			wildcard_fill_list(r_readdir->d_name, str_star);
+			wildcard_fill_list(r_readdir->d_name, str_star, wc_star_list_begin);
 			r_readdir = readdir(r_opndir);
 		}
 	}
 	closedir(r_opndir);
+	return (wc_star_list_begin);
 }
 
 /************************************************
@@ -96,15 +84,18 @@ void	wildcard_open_read_dir(char *pwd, char *str_star)
  * 
 */
 
-void	wildcard_fill_list(char *d_name, char *str_star)//если не НАЛЛ вернулся, создать листок в список
+void	wildcard_fill_list(char *d_name, char *str_star, t_list **wc_star_list_begin)//если не НАЛЛ вернулся, создать листок в список
 {
-	char	*good;
+	char	*args;
 
-	good = NULL;
+	args = NULL;
 	if ('.' != d_name[0])
-		good = wildcard_find_arg(d_name, str_star);
-	if (good)
-		printf("\n_______\n%s\n", good);
+		args = wildcard_find_arg(d_name, str_star);
+	if (args)
+	{
+		printf("\n_______\n%s\n", args);
+		ft_lstadd_back(wc_star_list_begin, ft_lstnew(ft_strdup(args)));
+	}
 }
 
 /************************************************
@@ -132,10 +123,10 @@ char	*wildcard_find_arg(char *d_name, char *str_star)
 	i_d_name = 0;
 	i_star = 0;
 	char_in_d_name = 1;
-	while (wildcard_skip_star(str_star, &i_star) && char_in_d_name
-		&& d_name[i_d_name])
+	while (wildcard_skip_star(str_star, &i_star)
+		&& char_in_d_name && d_name[i_d_name])
 	{
-		if (0 == i_star && d_name[0] != str_star[0])
+		if (wildcard_first_character_matches(d_name, str_star, i_star))
 			return (NULL);
 		char_in_d_name = wildcard_check_1st_midle_chars(d_name,
 				str_star, &i_d_name, &i_star);
@@ -143,6 +134,20 @@ char	*wildcard_find_arg(char *d_name, char *str_star)
 	if (0 == str_star[i_star] && char_in_d_name)
 		return (wildcard_check_last_chars(str_star, d_name, i_star, i_d_name));
 	return (NULL);
+}
+
+/************************************************
+ * 		wildcard_first_character_matches		*
+ * **********************************************
+*/
+
+int wildcard_first_character_matches(char *d_name, char *str_star, int i_star)
+{
+	if ((0 == i_star && '\'' != str_star[0] && d_name[0] != str_star[0])
+		|| (0 == i_star && '\'' == str_star[0] && d_name[0] != str_star[1]))
+		return (1);
+	return (0);
+
 }
 
 /************************************************
@@ -188,7 +193,10 @@ int	wildcard_check_1st_midle_chars(char *d_name, char *str_star, int *i_d_name,
 		int *i_star)
 {
 	int	char_in_d_name;
+	int flag_brackets_slash;
 
+	flag_brackets_slash = 0;
+	wildcard_on_of_flag_brackets_slash(&flag_brackets_slash, str_star, i_star);
 	if (str_star[*i_star + 1] && '*' != str_star[*i_star + 1])
 	{
 		char_in_d_name = wildcard_strcmp_star_d_name(&str_star[*i_star],
@@ -203,6 +211,19 @@ int	wildcard_check_1st_midle_chars(char *d_name, char *str_star, int *i_d_name,
 		++(*i_star);
 	}
 	return (char_in_d_name);
+}
+
+void	wildcard_on_of_flag_brackets_slash(int *flag_brackets_slash,
+										   char *str_star, int *i_star)
+{
+	if ('\\' == str_star[*i_star] && !(*flag_brackets_slash & SHIELD) && !(*flag_brackets_slash & QUOTE))
+		*flag_brackets_slash = *flag_brackets_slash | SHIELD;
+	else if ('\'' == str_star[*i_star] && !(*flag_brackets_slash & SHIELD) && !(*flag_brackets_slash & DOUBLE_QUOTE))
+		*flag_brackets_slash = *flag_brackets_slash ^ QUOTE;
+	else if ('\"' == str_star[*i_star] && !(*flag_brackets_slash & SHIELD) && !(*flag_brackets_slash & QUOTE))
+		*flag_brackets_slash = *flag_brackets_slash ^ DOUBLE_QUOTE;
+
+
 }
 
 /************************************************
@@ -237,7 +258,7 @@ int	wildcard_strcmp_star_d_name(char *str_star, char *d_name, int *i_d_name)
 	ret_strncmp = 1;
 	while (d_name[*i_d_name] && ret_strncmp)
 	{
-		ret_strncmp = strncmp(d_name_1st_next_char, str_star, len_star);
+		ret_strncmp = ft_strncmp(d_name_1st_next_char, str_star, len_star);
 		if (!ret_strncmp)
 			break ;
 		++(*i_d_name);

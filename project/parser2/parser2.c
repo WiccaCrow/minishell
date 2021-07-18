@@ -77,7 +77,7 @@ int	get_next_command(t_all *all, int i)
 		{
 			i = fill_args(all, i, command, args);
 			command_check(command, all, args);
-			wildcard_handle(all, args);
+			wildcard_handle(all, &args);
 			args_list_to_arr2(args, command);
 			clear_list2(args);
 			i = set_command_end(command, all, i);
