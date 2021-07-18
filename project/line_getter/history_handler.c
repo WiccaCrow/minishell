@@ -95,7 +95,7 @@ int	add_to_history(char *line, char ***history)
 	char	*history_line;
 
 	i = -1;
-	if (line && history && *history)
+	if (line && history && *history && !(g_completion_code & SIGINT_CALL))
 	{
 		history_line = NULL;
 		while ((*history)[++i])

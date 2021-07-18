@@ -6,7 +6,7 @@ CFLAGS		=	-Wall -Wextra -Werror -g -I./includes/
 #CFLAGS		=	-Wall -Wextra -Werror -fsanitize=address -g3 -I./includes/
 LG_PATH		=	line_getter/
 LG_SRCS		=	line_getter.c line_utils.c history_handler.c term_switch.c key_handlers.c \
-				rdwr_history.c
+				rdwr_history.c char_handle.c
 LC_PATH		=	line_checker/
 LC_SRCS		=	line_checker.c get_next_word.c
 PARSER2_PATH	=	parser2/

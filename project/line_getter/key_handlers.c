@@ -100,7 +100,7 @@ int	control_d_handle(t_line *line)
 			return (0);
 		else if (line->main_line && *line->main_line)
 		{
-			write(STDOUT_FILENO, UNEXP_EOF UNEXP_EOF2, 94);
+			write(STDOUT_FILENO, UNEXP_EOF UNEXP_EOF2, 104);
 			free(line->main_line);
 			line->main_line = ft_strdup("");
 			return (1);

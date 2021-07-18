@@ -1,4 +1,4 @@
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 /**
  * Функция получения законченной командной строки от пользователя
@@ -21,51 +21,6 @@ int	init_t_line(t_line *line, t_all *all)
 		return (1);
 	}
 	return (0);
-}
-
-static int	simple_char_handle(const char *buff, t_line *line, t_all *all)
-{
-	int	i;
-	
-	if (sigint_switcher(line))
-		init_t_line(line, all);
-	if (*buff != 9)
-		add_chr_to_pos(line, *buff);
-	else
-	{
-		i = -1;
-		while (++i < 4)
-			add_chr_to_pos(line, ' ');
-	}
-	return (0);
-}
-
-static int	char_handle(char *buff, t_line *line, t_all *all)
-{
-	if (!strcmp(buff, KEY_UP))
-		show_prev_command(all->history, line);
-	else if (!strcmp(buff, KEY_DOWN))
-		show_next_command(all->history, line);
-	else if (!strcmp(buff, KEY_BACKSPACE))
-		remove_chr_from_pos(line);
-	else if (!strcmp(buff, KEY_RIGHT))
-		key_right_handle(line);
-	else if (!strcmp(buff, KEY_LEFT))
-		key_left_handle(line);
-	else if (!strcmp(buff, "\4"))
-	{
-		if (control_d_handle(line) && line->main_line)
-			return (0);
-	}
-	else if (!strcmp(buff, "\n"))
-	{
-		if (enter_handle(line) && \
-			add_to_history(line->main_line, &(all->history)))
-			return (0);
-	}
-	else
-		simple_char_handle(buff, line, all);
-	return (1);
 }
 
 int	get_line(t_all *all)

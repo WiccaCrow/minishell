@@ -107,7 +107,8 @@ int				set_start_pipes(t_all *all);
 int				open_file(t_command *command, char *filename, char *pwd);
 int				free_commands(t_command ***commands);
 int				fill_args(t_all *all, int i, t_command *command, t_list **args);
-
+int				char_handle(char *buff, t_line *line, t_all *all);
+int				init_t_line(t_line *line, t_all *all);
 
 int				executor(t_all *all, t_command *tmp);
 void			command_not_found(t_all *all, t_command *tmp);
