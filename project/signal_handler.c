@@ -9,6 +9,25 @@ void	sigint_handler(int sig)
 	show_program_name();
 }
 
+/************************************
+ * 			show_program_name		*
+ * **********************************
+*/
+/* Description:
+ * 	Prints the name of the program to standard 
+ * output (terminal). In our program, this will 
+ * happen every time the shell is waiting for a 
+ * command from the user.
+*/
+
+int	show_program_name(void)
+{
+	write(STDOUT_FILENO, GOLD, 8);
+	write(STDOUT_FILENO, NAME, ft_strlen(NAME));
+	write(STDOUT_FILENO, NONECOLOR, 4);
+	return (0);
+}
+
 void	sigquit_handler(int sig)
 {
 	(void) sig;

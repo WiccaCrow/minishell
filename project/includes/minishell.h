@@ -31,7 +31,7 @@
 # define START_PIPE 4
 # define SIGINT_CALL 0x10000
 
-extern int	g_completion_code; // код возврата ошибки $?
+extern int	g_completion_code;
 
 enum	e_command
 {
@@ -73,6 +73,7 @@ typedef struct s_all {
 	pid_t				waitpid;
 }						t_all;
 
+int				main_cycle(t_all *all);
 int				show_commands(t_command **commands);
 
 void			start_all(t_all *all, char **env, char *av0);
