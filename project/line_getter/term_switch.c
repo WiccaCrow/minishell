@@ -1,8 +1,4 @@
-#include "../includes/line_getter.h"
-
-/**
- * Функция переключает терминал в НЕканонический режим
-*/
+#include "line_getter.h"
 
 int	canon_off(void)
 {
@@ -17,10 +13,6 @@ int	canon_off(void)
 	}
 	return (-1);
 }
-
-/**
- * Функция переключает терминал в канонический режим
-*/
 
 int	canon_on(void)
 {

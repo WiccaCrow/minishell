@@ -1,9 +1,5 @@
 #include "minishell.h"
 
-/**
- * Функция получает ключ в командной строке
-*/
-
 char	*get_key(int i, char *line)
 {
 	char	*key;
@@ -23,10 +19,6 @@ char	*get_key(int i, char *line)
 	}
 	return (key);
 }
-
-/**
- * Функция получает значение переменной из env по ее ключу
-*/
 
 char	*get_value(const char *key, t_all *all)
 {
@@ -51,10 +43,6 @@ char	*get_value(const char *key, t_all *all)
 	}
 	return (strdup(""));
 }
-
-/**
- * Функция заменяет переменную в строке на ее значение
-*/
 
 static int	replace_key(char **line, char *key, const char *value, int i)
 {
@@ -96,13 +84,6 @@ int	get_arg_from_env(int i, t_all *all)
 	ft_free((void *)&value);
 	return (ret);
 }
-
-/**
- * Функция обрабатывает неэкранированные символы '$' в строке
- * 
- * При нахождении такого символа переменная заменяется ее значением, и проход
- * по строке начинается заново
-*/
 
 int	dollar_handler(t_all *all)
 {

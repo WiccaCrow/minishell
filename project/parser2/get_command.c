@@ -1,9 +1,5 @@
 #include "minishell.h"
 
-/**
- * Функция проверяет, является ли поданная строка командой 
-*/
-
 static int	is_command(const char *word, const char *command)
 {
 	int	i;
@@ -18,10 +14,6 @@ static int	is_command(const char *word, const char *command)
 	}
 	return (0);
 }
-
-/**
- * Функция ищет команды в строке и возвращает ее код
-*/
 
 enum e_command	get_command(char *word)
 {

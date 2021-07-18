@@ -57,14 +57,14 @@ int	fill_new_args(t_all *all, t_list ***args, t_list **new_args)
 		if (is_wildcard((char *)tmp->content))
 		{
 			wc_list = wildcard_open_read_dir(all->pwd, (char *)tmp->content);
-			if (wc_list)
+			if (wc_list && *wc_list)
 			{
 				add_wclist_to_args(new_args, wc_list);
 				ft_free((void **)&(tmp->content));
 			}
 			else
 				ft_lstadd_back(new_args,
-					ft_lstnew(ft_strdup((char *) tmp->content)));
+					ft_lstnew(((char *) tmp->content)));
 		}
 		else
 			ft_lstadd_back(new_args,

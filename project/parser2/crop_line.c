@@ -1,9 +1,5 @@
 #include "minishell.h"
 
-/**
- * Функция находит первый неэкранированный символ ';' в строке 
-*/
-
 int	get_semicolon(const char *line)
 {
 	int	i;
@@ -28,11 +24,6 @@ int	get_semicolon(const char *line)
 	}
 	return (0);
 }
-
-/**
- * Функция обрезает начало строки до первого неэкранированного ';' в 
- * строке 
-*/
 
 int	crop_line(char **line)
 {

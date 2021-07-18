@@ -1,11 +1,4 @@
-#include "../includes/minishell.h"
-
-/**
- * Функция загружает историю из файла
- * 
- * Открываем файл в режиме чтения, читаем в строку файл, делим по переносу 
- * строки, чистим строку, возвращаем результат деления
-*/
+#include "minishell.h"
 
 char	**get_history(void)
 {
@@ -33,10 +26,6 @@ char	**get_history(void)
 	return (0);
 }
 
-/**
- * Функция читает файл в строку 
-*/
-
 char	*rd_history(int fd)
 {
 	char	*history_line;
@@ -61,13 +50,6 @@ char	*rd_history(int fd)
 	return (history_line);
 }
 
-/**
- * Функция очищает двумерный массив(историю)
- * 
- * Добавляет символ в указанную позицию в строку, остаток строки сдвигается 
- * на 1 символ, позоция курсора также сдвигается на 1 позицию вправо
-*/
-
 int	free_char_array(char **history)
 {
 	int	i;
@@ -86,10 +68,6 @@ int	free_char_array(char **history)
 	}
 	return (0);
 }
-
-/**
- * Функция пишет истоию в файл
-*/
 
 int	wr_history(char **history)
 {
