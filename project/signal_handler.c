@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void sigint_handler(int sig)
+void	sigint_handler(int sig)
 {
 	(void) sig;
 	g_completion_code = 1;
@@ -9,12 +9,12 @@ void sigint_handler(int sig)
 	show_program_name();
 }
 
-void sigquit_handler(int sig)
+void	sigquit_handler(int sig)
 {
 	(void) sig;
 }
 
-int free_t_line(t_line *line)
+int	free_t_line(t_line *line)
 {
 	if (line)
 	{
@@ -47,4 +47,3 @@ int	sigint_switcher(t_line *line)
 	}
 	return (0);
 }
-

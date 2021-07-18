@@ -38,7 +38,10 @@ int	command_check(t_command *command, t_all *all, t_list **args)
 	{
 		all->parse_error = 1;
 		if (command->redirect_type & NO_FILENAME)
+		{
 			write(STDOUT_FILENO, SYN_ERR "newline\'\n", 56);
+			g_completion_code = 258;
+		}
 	}
 	if (command->flag_command)
 		remove_first(args);
@@ -74,6 +77,7 @@ int	get_next_command(t_all *all, int i)
 		{
 			i = fill_args(all, i, command, args);
 			command_check(command, all, args);
+			wildcard_handle(all, args);
 			args_list_to_arr2(args, command);
 			clear_list2(args);
 			i = set_command_end(command, all, i);

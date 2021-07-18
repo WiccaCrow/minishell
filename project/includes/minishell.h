@@ -109,6 +109,7 @@ int				free_commands(t_command ***commands);
 int				fill_args(t_all *all, int i, t_command *command, t_list **args);
 int				char_handle(char *buff, t_line *line, t_all *all);
 int				init_t_line(t_line *line, t_all *all);
+int				wildcard_handle(t_all *all, t_list ***args);
 
 int				executor(t_all *all, t_command *tmp);
 void			command_not_found(t_all *all, t_command *tmp);
