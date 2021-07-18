@@ -48,6 +48,22 @@ int	g_completion_code; // код возврата ошибки $?
  * Мэйн на ридлайне для дебага
  */
 
+int	main_cycle(t_all *all)
+{
+	while (all->line && *(all->line) && check_line(all) && \
+			dollar_handler(all) && parser2(all))
+	{
+		if ((*(all->commands))->end_flag & START_PIPE || \
+					(*(all->commands))->end_flag & PIPE)
+			enter_the_pipes(all, *(all->commands));
+		else if ((*(all->commands))->input_fd != -1)
+			executor(all, *(all->commands));
+	}
+	if (all->check_line)
+		free_commands(&(all->commands));
+	return (0);
+}
+
 int	main(int ac, char **av, char **env)
 {
 	t_all	all;
@@ -58,36 +74,13 @@ int	main(int ac, char **av, char **env)
 	signal(SIGINT, sigint_handler);
 	signal(SIGQUIT, sigquit_handler);
 	start_all(&all, env, av[0]);
-//printf("FOPEN_MAX = |%d|\n", FOPEN_MAX);
 	while (1)
 	{
-		if (fill_all(&all) != -1)
-//		if (line_getter(&all))
-		{
-//			printf("%s\n", all.line);
-//			write(STDOUT_FILENO, "\x1b[32m", 5);
-//			printf("иду из филл олл\n");
-//			write(STDOUT_FILENO, NONECOLOR, 5);
-			while (all.line && *all.line && check_line(&all) && \
-			dollar_handler(&all) && parser2(&all))
-			{
-				if ((*all.commands)->end_flag & START_PIPE || \
-					(*all.commands)->end_flag & PIPE)
-					enter_the_pipes(&all, *all.commands);
-				else if ((*all.commands)->input_fd != -1)
-					executor(&all, *all.commands);
-			}
-			if (all.check_line)
-				free_commands(&all.commands);
-//write(STDOUT_FILENO, "\x1b[32m", 5);
-//printf("иду на следующий филл олл\n");
-//write(STDOUT_FILENO, NONECOLOR, 5);
-		}
+		if (line_getter(&all))
+			main_cycle(&all);
 		else
 			break ;
 		ft_free((void **)&all.line);
-		// free(all.line);
-		// all.line = NULL;
 	}
 	exit_clean(&all);
 	return (0);
