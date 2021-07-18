@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include "minishell.h"
 ///////////////////////////////////////////////////////////////////////////////
-
+int	check_char_or_str(int *flag_brackets_slash, char *str_star, int *i_star);
 ////////////////////////////////////////////////////////////////////////////////
 //int	main()
 //{
@@ -196,34 +196,59 @@ int	wildcard_check_1st_midle_chars(char *d_name, char *str_star, int *i_d_name,
 	int flag_brackets_slash;
 
 	flag_brackets_slash = 0;
-	wildcard_on_of_flag_brackets_slash(&flag_brackets_slash, str_star, i_star);
-	if (str_star[*i_star + 1] && '*' != str_star[*i_star + 1])
+//	wildcard_on_of_flag_brackets_slash(&flag_brackets_slash, str_star, i_star);
+	if (check_char_or_str(&flag_brackets_slash, str_star, i_star))
+	{
+		char_in_d_name = wildcard_chrcmp_d_name(str_star[*i_star],
+												&d_name[*i_d_name], i_d_name);
+		++(*i_star);
+		if (!(flag_brackets_slash & DOUBLE_QUOTE)
+			|| !(flag_brackets_slash & QUOTE))
+		{
+			wildcard_on_of_flag_brackets_slash(&flag_brackets_slash, str_star,
+											   i_star);
+			++(*i_star);
+		}
+
+	}
+	else
 	{
 		char_in_d_name = wildcard_strcmp_star_d_name(&str_star[*i_star],
 				d_name, i_d_name);
 		while (str_star[*i_star] && str_star[*i_star] != '*')
 			++(*i_star);
 	}
-	else
-	{
-		char_in_d_name = wildcard_chrcmp_d_name(str_star[*i_star],
-				&d_name[*i_d_name], i_d_name);
-		++(*i_star);
-	}
 	return (char_in_d_name);
+}
+
+int	check_char_or_str(int *flag_brackets_slash, char *str_star, int *i_star)
+{
+	wildcard_on_of_flag_brackets_slash(flag_brackets_slash, str_star, i_star);
+	if (!(*flag_brackets_slash & DOUBLE_QUOTE)
+		&& !(*flag_brackets_slash & QUOTE)
+		&& str_star[*i_star + 1] && '*' == str_star[*i_star + 1])
+		return (1);
+	if ((*flag_brackets_slash & QUOTE) && str_star[*i_star + 2] == '\'')
+	{
+		++(*i_star);
+		return (1);
+	}
+	if ((*flag_brackets_slash & DOUBLE_QUOTE) && str_star[*i_star + 2] == '\"')
+		return (1);
+	{
+		++(*i_star);
+		return (1);
+	}
+	return (0);
 }
 
 void	wildcard_on_of_flag_brackets_slash(int *flag_brackets_slash,
 										   char *str_star, int *i_star)
 {
-	if ('\\' == str_star[*i_star] && !(*flag_brackets_slash & SHIELD) && !(*flag_brackets_slash & QUOTE))
-		*flag_brackets_slash = *flag_brackets_slash | SHIELD;
-	else if ('\'' == str_star[*i_star] && !(*flag_brackets_slash & SHIELD) && !(*flag_brackets_slash & DOUBLE_QUOTE))
+	if ('\'' == str_star[*i_star] && !(*flag_brackets_slash & SHIELD) && !(*flag_brackets_slash & DOUBLE_QUOTE))
 		*flag_brackets_slash = *flag_brackets_slash ^ QUOTE;
 	else if ('\"' == str_star[*i_star] && !(*flag_brackets_slash & SHIELD) && !(*flag_brackets_slash & QUOTE))
 		*flag_brackets_slash = *flag_brackets_slash ^ DOUBLE_QUOTE;
-
-
 }
 
 /************************************************
