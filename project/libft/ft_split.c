@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdulcie <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: mdulcie 				                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 00:59:23 by mdulcie           #+#    #+#             */
 /*   Updated: 2020/11/13 01:13:54 by mdulcie          ###   ########.fr       */
@@ -24,7 +24,8 @@ static char	*ft_strdup_c(const char *s1, int count)
 {
 	char	*c_copy;
 
-	if (!(c_copy = malloc((count + 1) * sizeof(char))))
+	c_copy = malloc((count + 1) * sizeof(char));
+	if (!c_copy)
 		return (NULL);
 	c_copy[count] = 0;
 	while (count--)
@@ -43,14 +44,15 @@ static int	ft_str(char const *s, char c)
 	{
 		while (s[i] == c)
 			i++;
-		s[i] ? str++ : 0;
+		if (s[i])
+			str++;
 		while (s[i] && s[i] != c)
 			i++;
 	}
 	return (str);
 }
 
-char		**ft_do_split(char const *s, char c, int i, char **massstr)
+char	**ft_do_split(char const *s, char c, int i, char **massstr)
 {
 	int	count;
 	int	dostr;
@@ -64,16 +66,18 @@ char		**ft_do_split(char const *s, char c, int i, char **massstr)
 		while (s[i] && s[i] != c && count++ <= i)
 			++i;
 		++dostr;
-		if (!(*massstr = ft_strdup_c(&s[i - count], count)))
+		*massstr = ft_strdup_c(&s[i - count], count);
+		if (!(*massstr))
 			ft_free(massstr, dostr);
-		--str ? massstr++ : 0;
+		if (--str)
+			massstr++;
 		while (s[i] && s[i] == c)
 			++i;
 	}
 	return (massstr - (dostr - 1));
 }
 
-char		**ft_split(char const *s, char c)
+char	**ft_split(char const *s, char c)
 {
 	char	**massstr;
 	int		str;
@@ -86,7 +90,8 @@ char		**ft_split(char const *s, char c)
 	while (s[i] && s[i] == c)
 		++i;
 	str = ft_str(s, c);
-	if (!(massstr = (char**)malloc((str + 1) * sizeof(char*))))
+	massstr = (char **)malloc((str + 1) * sizeof(char *));
+	if (!massstr)
 		return (NULL);
 	massstr[str] = NULL;
 	if (s[i])
