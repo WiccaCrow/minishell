@@ -61,8 +61,8 @@ int	main(int ac, char **av, char **env)
 //printf("FOPEN_MAX = |%d|\n", FOPEN_MAX);
 	while (1)
 	{
-//		if (fill_all(&all) != -1)
-		if (line_getter(&all))
+		if (fill_all(&all) != -1)
+//		if (line_getter(&all))
 		{
 //			printf("%s\n", all.line);
 //			write(STDOUT_FILENO, "\x1b[32m", 5);

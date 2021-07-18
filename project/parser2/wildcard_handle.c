@@ -6,8 +6,12 @@ int	add_wclist_to_args(t_list **args, t_list **wc_list)
 
 	if (args && wc_list)
 	{
-		tmp = ft_lstlast(*args);
-		tmp->next = *wc_list;
+		if (*args)
+		{
+			tmp = ft_lstlast(*args);
+			tmp->next = *wc_list;
+		}
+		*args = *wc_list;
 		return (1);
 	}
 	return (0);
