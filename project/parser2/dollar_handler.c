@@ -13,7 +13,7 @@ char	*get_key(int i, char *line)
 			key[1] = 0;
 			return (key);
 		}
-		while (key[i] && !ft_strchr(" \"\'$", key[i]))
+		while (key[i] && !ft_strchr(" \"\'$=", key[i]))
 			i++;
 		key[i] = 0;
 	}
