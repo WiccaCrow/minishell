@@ -1,19 +1,11 @@
 #include "minishell.h"
 
-/**
- * Функция пропускает пробелы
-*/
-
 int	skip_spaces(const char *line, int i)
 {
 	while (line && ((line[i] >= 9 && line[i] <= 13) || line[i] == 32))
 		i++;
 	return (i);
 }
-
-/**
- * Функция добавляет символ в строку
-*/
 
 char	*add_chr(char *str, char c)
 {

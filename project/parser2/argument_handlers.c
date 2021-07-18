@@ -1,9 +1,5 @@
 #include "minishell.h"
 
-/**
- * Функция пишет лист аргументов в массив строк
-*/
-
 int	args_list_to_arr2(t_list **args, t_command *command)
 {
 	size_t	size;
@@ -31,10 +27,6 @@ int	args_list_to_arr2(t_list **args, t_command *command)
 	}
 	return (1);
 }
-
-/**
- * Функция очищает лист 
-*/
 
 int	clear_list2(t_list **args)
 {
