@@ -27,7 +27,8 @@ static int	simple_char_handle(const char *buff, t_line *line, t_all *all)
 {
 	if (sigint_switcher(line))
 		init_t_line(line, all);
-	add_chr_to_pos(line, *buff);
+	if (*buff != 9)
+		add_chr_to_pos(line, *buff);
 	return (0);
 }
 
