@@ -1,7 +1,7 @@
 #include "minishell.h"
 
 /************************************
- * 		1.4.2.1. echo_check_flag_n	*
+ * 	1.3.5.2.2.1. echo_check_flag_n	*
  * **********************************
 */
 /* Description:
@@ -31,7 +31,7 @@ void	echo_check_flag_n(t_command *tmp, int *i, int *flag_n)
 }
 
 /************************************
- * 		1.4.2. exec_echo			*
+ * 		1.3.5.2.2. exec_echo		*
  * **********************************
 */
 /* Description:

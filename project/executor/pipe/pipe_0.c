@@ -1,7 +1,7 @@
 #include "minishell.h"
 
 /************************************
- * 				enter_the_pipes		*
+ * 		1.3.4.enter_the_pipes		*
  * **********************************
 */
 /* Description:
@@ -21,9 +21,9 @@
  * 		pid_t *pid. Array of pids (pid[i] = fork()).
  * 		all->fd0 = tmp->input_fd; Can be not 0, if was redirect.
  * Contains functions:
- * 	nb_pipes;
- * 	do_pipes;
- * 	wait_status_fork;
+ * 	1.3.4.1. nb_pipes;
+ * 	1.3.4.2. do_pipes;
+ * 	1.3.4.3. wait_status_fork;
 */
 
 void	enter_the_pipes(t_all *all, t_command *tmp)
@@ -46,7 +46,7 @@ void	enter_the_pipes(t_all *all, t_command *tmp)
 }
 
 /************************************
- * 				nb_pipes			*
+ * 		1.3.4.1. nb_pipes			*
  * **********************************
 */
 /* Description:
@@ -82,7 +82,7 @@ pid_t	*nb_pipes(t_command *tmp, pid_t **pid)
 }
 
 /************************************
- * 				do_pipes			*
+ * 		1.3.4.2.do_pipes			*
  * **********************************
 */
 /* Description:

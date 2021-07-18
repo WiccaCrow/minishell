@@ -1,7 +1,7 @@
 #include "minishell.h"
 
 /************************************
- * 				exec_cd				*
+ * 		1.3.5.3. exec_cd			*
  * **********************************
 */
 /* Description:
@@ -9,9 +9,10 @@
  * 		Change env value: PWD, OLDPWD.
  * 
  * Contains functions:
- * 		change_pwd_oldpwd;
- * libft.	ft_strlen;
- * libft.	ft_strjoin;
+ * 	1.3.5.3.1.	change_pwd_oldpwd;
+ * 	1.3.5.3.2.	change_pwd;
+ * 	libft.		ft_strlen;
+ * 	libft.		ft_strjoin;
 */
 
 int	exec_cd(t_all *all, t_command *tmp)
@@ -35,7 +36,41 @@ int	exec_cd(t_all *all, t_command *tmp)
 }
 
 /************************************
- * 		 	 change_pwd				*
+ * 	1.3.5.3.1. change_oldpwd		*
+ * **********************************
+ */
+/* Description:
+ * 		The function finds OLDPWD strings 
+ * 		in the all-> env array. Writes the value PWD to
+ * 		OLDPWD before calling the cd command.
+ * 		If string PWD dont't exist, set empty value OLDPWD.
+ */
+
+void	change_oldpwd(t_all *all)
+{
+	int		j;
+	char	*oldpwd_env;
+	int		i;
+
+	i = get_my_env_index(all->env, "PWD", 3);
+	j = get_my_env_index(all->env, "OLDPWD", 6);
+	oldpwd_env = all->env[j];
+	if (all->env[i] && all->env[j])
+		all->env[j] = ft_strjoin("OLD", all->env[i]);
+	else if (all->env[j])
+		all->env[j] = ft_strdup("OLDPWD=");
+	if (oldpwd_env && all->env[j] == NULL)
+	{
+		write(STDERR_FILENO, "cd: malloc error, can't change OLDPWD in env\n",
+			46);
+		all->env[j] = oldpwd_env;
+	}
+	else
+		free(oldpwd_env);
+}
+
+/************************************
+ * 	1.3.5.3.2. change_pwd			*
  * **********************************
  */
 /* Description:
@@ -70,40 +105,6 @@ void	change_pwd(t_all *all)
 		else
 			free(pwd_env);
 	}
-}
-
-/************************************
- * 		  change_oldpwd			*
- * **********************************
- */
-/* Description:
- * 		The function finds OLDPWD strings 
- * 		in the all-> env array. Writes the value PWD to
- * 		OLDPWD before calling the cd command.
- * 		If string PWD dont't exist, set empty value OLDPWD.
- */
-
-void	change_oldpwd(t_all *all)
-{
-	int		j;
-	char	*oldpwd_env;
-	int		i;
-
-	i = get_my_env_index(all->env, "PWD", 3);
-	j = get_my_env_index(all->env, "OLDPWD", 6);
-	oldpwd_env = all->env[j];
-	if (all->env[i] && all->env[j])
-		all->env[j] = ft_strjoin("OLD", all->env[i]);
-	else if (all->env[j])
-		all->env[j] = ft_strdup("OLDPWD=");
-	if (oldpwd_env && all->env[j] == NULL)
-	{
-		write(STDERR_FILENO, "cd: malloc error, can't change OLDPWD in env\n",
-			46);
-		all->env[j] = oldpwd_env;
-	}
-	else
-		free(oldpwd_env);
 }
 
 /************************************

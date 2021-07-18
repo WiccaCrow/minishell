@@ -1,7 +1,7 @@
 #include "minishell.h"
 
 /************************************
- * 			free_sort_index			*
+ * 1.3.5.6.2.3. print_export		*
  * **********************************
 */
 /* Description:
@@ -37,7 +37,7 @@ void	print_export(t_command *tmp, char **sort_env_i)
 }
 
 /************************************
- * 			free_sort_index			*
+ * 	1.3.5.6.2.4. free_sort_index	*
  * **********************************
 */
 /* Description:

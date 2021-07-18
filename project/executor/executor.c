@@ -1,49 +1,7 @@
 #include "minishell.h"
 
 /************************************
- * 		print_command_not_found		*
- * **********************************
-*/
-/* Description:
- * Prints the result or error to standard output. Bash standart erorr $?
- * sets 127.
- * 
- * Contains functions:
- * libft. ft_strlen;
-*/
-
-void	print_command_not_found(t_command *tmp)
-{
-	write(STDERR_FILENO, "minishell: ", 12);
-	write(STDERR_FILENO, tmp->args[0], ft_strlen(tmp->args[0]));
-	write(STDERR_FILENO, COM_NOT_FOUND, ft_strlen(COM_NOT_FOUND));
-	g_completion_code = 127;
-}
-
-/************************************
- * 		1.4.1. command_not_found	*
- * **********************************
-*/
-/* Description:
- * Prints the result or error to standard output as needed. Bash standart
- * erorr $? sets 127.
- * 
- * Contains functions:
- * libft. ft_strlen;
-*/
-
-void	command_not_found(t_all *all, t_command *tmp)
-{
-	if (!(tmp->end_flag & PIPE || tmp->end_flag & START_PIPE))
-		g_completion_code = 0;
-	if (!g_completion_code && executable(all, tmp) == 0 && !g_completion_code)
-		return ;
-	if (!g_completion_code)
-		print_command_not_found(tmp);
-}
-
-/************************************
- * 		1.4. executor				*
+ * 		1.3.5.  executor			*
  * **********************************
 */
 /* Description:
@@ -51,17 +9,16 @@ void	command_not_found(t_all *all, t_command *tmp)
  * Prints the result or error to standard output as needed.
  * 
  * Contains functions:
- * 		1.4.1. command_not_found;
+ * 		1.3.5.1. command_not_found;
  * 			Prints the result or error to standard output as needed. Bash
  * 			standart erorr $? 127.
- * 		1.4.2. exec_echo;
- * 		execution command 'echo'
- * 		exec_cd;
- * 		exec_pwd;
- * 		exec_env;
- * 		exec_export;
- * 		exec_unset;
- * 		1.5.   exit_clean;
+ * 		1.3.5.2. exec_echo;
+ * 		1.3.5.3. exec_cd;
+ * 		1.3.5.4. exec_pwd;
+ * 		1.3.5.5. exec_env;
+ * 		1.3.5.6. exec_export;
+ * 		1.3.5.7. exec_unset;
+ * 		1.3.5.8.   exit_clean;
 */
 
 int	executor(t_all *all, t_command *tmp)
@@ -83,6 +40,50 @@ int	executor(t_all *all, t_command *tmp)
 	else if (tmp->flag_command == unset)
 		exec_unset(all, tmp);
 	return (1);
+}
+
+/************************************
+ * 		1.3.5.1. command_not_found	*
+ * **********************************
+*/
+/* Description:
+ * Prints the result or error to standard output as needed. Bash standart
+ * erorr $? sets 127.
+ * 
+ * Contains functions:
+ * 1.3.5.1.1. 	executable;
+ * 1.3.5.1.2. 	print_command_not_found;
+ * libft. 		ft_strlen;
+*/
+
+void	command_not_found(t_all *all, t_command *tmp)
+{
+	if (!(tmp->end_flag & PIPE || tmp->end_flag & START_PIPE))
+		g_completion_code = 0;
+	if (!g_completion_code && executable(all, tmp) == 0 && !g_completion_code)
+		return ;
+	if (!g_completion_code)
+		print_command_not_found(tmp);
+}
+
+/****************************************
+ * 1.3.5.1.2. print_command_not_found	*
+ * **************************************
+*/
+/* Description:
+ * Prints the result or error to standard output. Bash standart erorr $?
+ * sets 127.
+ * 
+ * Contains functions:
+ * libft. ft_strlen;
+*/
+
+void	print_command_not_found(t_command *tmp)
+{
+	write(STDERR_FILENO, "minishell: ", 12);
+	write(STDERR_FILENO, tmp->args[0], ft_strlen(tmp->args[0]));
+	write(STDERR_FILENO, COM_NOT_FOUND, ft_strlen(COM_NOT_FOUND));
+	g_completion_code = 127;
 }
 
 /************************************

@@ -1,8 +1,8 @@
 #include "minishell.h"
 
-/************************************
- * 			1. executable			*
- * **********************************
+/********************************************
+ * 			1.3.5.1.1. executable			*
+ * ******************************************
 */
 /* Description: 
  * 		Function do search and do launch the right executable (based on the
@@ -27,10 +27,10 @@
  * 					file and not command.
  * 			com_name. Command name or executable name.
  * Contains functions:
- * 		1.1. executable_check_and_run;
- * 		1.2. path_env;
- * 		1.3. join_directory_and_command;
- * 		1.4. completion_code_malloc_error;
+ * 		1.3.5.1.1.1. executable_check_and_run;
+ * 		1.3.5.1.1.2. path_env;
+ * 		1.3.5.1.1.3. join_directory_and_command;
+ * 		1.3.5.1.1.4. completion_code_malloc_error;
 */
 
 int	executable(t_all *all, t_command *tmp)
@@ -61,9 +61,9 @@ int	executable(t_all *all, t_command *tmp)
 	return (path == -1);
 }
 
-/************************************
- * 	1.1. executable_check_and_run	*
- * **********************************
+/********************************************
+ * 	1.3.5.1.1.1. executable_check_and_run	*
+ * ******************************************
 */
 /* Description:
  * 		The function checks if the path contains the entered string (checks
@@ -116,9 +116,9 @@ int	executable_check_and_run(t_all *all, char *name_path,
 	return (1);
 }
 
-/************************************
- * 	1.1.1. check_command_sourse		*
- * **********************************
+/********************************************
+ * 	1.3.5.1.1.1.1. check_command_sourse		*
+ * ******************************************
 */
 /* Description:
  * 		1) The function looks for the '/' character.
@@ -150,9 +150,9 @@ int	check_command_sourse(char *com_name)
 	return (0);
 }
 
-/************************************
- * 	1.1.2. executable_error_print	*
- * **********************************
+/********************************************
+ * 	1.3.5.1.1.1.2. executable_error_print	*
+ * ******************************************
 */
 /* Description:
  * 		Set value error_code to *code_to_on. Print error message error_message

@@ -1,7 +1,7 @@
 #include "minishell.h"
 
 /************************************
- * 				exec_export			*
+ * 	1.3.5.6.	exec_export			*
  * **********************************
 */
 /* Description:
@@ -15,9 +15,9 @@
  * 		that variable shall be set to word.
  * 
  * Contains functions:
- * 		count_env_lines;
- * 		sort_env;
- * 		subjoin_env;
+ * 	1.3.5.6.1.	count_env_lines;
+ * 	1.3.5.6.2.	sort_env;
+ * 	1.3.5.6.3.	subjoin_env;
 */
 
 int	exec_export(t_all *all, t_command *tmp)
@@ -34,7 +34,7 @@ int	exec_export(t_all *all, t_command *tmp)
 }
 
 /************************************
- * 			count_env_lines			*
+ * 	1.3.5.6.1. count_env_lines		*
  * **********************************
 */
 /* Description:
@@ -53,16 +53,16 @@ int	count_env_lines(t_all *all)
 }
 
 /************************************
- * 				sort_env			*
+ * 	1.3.5.6.2.	sort_env			*
  * **********************************
 */
 /* Description:
  * 		Sort env array for export.
  * Contains functions:
- * 	do_sort_index;
- * 	ft_strcmp_s1_less_s2;
- * 	print_export;
- * 	free_sort_index;
+ * 	1.3.5.6.2.1. do_sort_index;
+ * 	1.3.5.6.2.2. ft_strcmp_s1_less_s2;
+ * 	1.3.5.6.2.3. print_export;
+ * 	1.3.5.6.2.4. free_sort_index;
 */
 
 void	sort_env(t_all *all, t_command *tmp, int i, int j)

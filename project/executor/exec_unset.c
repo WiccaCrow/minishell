@@ -1,7 +1,7 @@
 #include "minishell.h"
 
 /************************************
- * 			 exec_unset				*
+ * 	1.3.5.7. exec_unset				*
  * **********************************
 */
 /* Description:
@@ -10,10 +10,10 @@
  * 		unset.
  * 
  * Contains functions:
- * 		count_env_lines;
- * 		count_lines;
- * 		exec_unset_find_env_str;
- * 		exec_unset_do_new_env;
+ * 	1.3.5.6.1.	count_env_lines;
+ * 	1.3.5.7.1.	count_lines;
+ * 	1.3.5.7.2.	exec_unset_find_env_str;
+ * 	1.3.5.7.3.	exec_unset_do_new_env;
  */
 
 int	exec_unset(t_all *all, t_command *tmp)
@@ -42,9 +42,9 @@ int	exec_unset(t_all *all, t_command *tmp)
 	return (0);
 }
 
-/************************************
- * 		 exec_unset_find_env_str	*
- * **********************************
+/****************************************
+ * 	1.3.5.7.2. exec_unset_find_env_str	*
+ * **************************************
 */
 /* Description:
  * 		This function checks arguments 
@@ -78,9 +78,9 @@ void	exec_unset_find_env_str(t_all *all, t_command *tmp, char *oper_name)
 	}
 }
 
-/************************************
- * 	  exec_unset_delete_env_str		*
- * **********************************
+/********************************************
+ * 	1.3.5.7.3.  exec_unset_delete_env_str	*
+ * ******************************************
 */
 /* Description:
  * 		The function fills a new array with non-zero 

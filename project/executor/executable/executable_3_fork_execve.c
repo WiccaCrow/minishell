@@ -61,7 +61,7 @@ void	fork_execve_if_fork(t_all *all, t_command *tmp)
 }
 
 /****************************************
- * 				wait_status_fork		*
+ * 		1.3.4.3. wait_status_fork		*
  * **************************************
 */
 /* Description:
