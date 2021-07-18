@@ -25,10 +25,18 @@ int	init_t_line(t_line *line, t_all *all)
 
 static int	simple_char_handle(const char *buff, t_line *line, t_all *all)
 {
+	int	i;
+	
 	if (sigint_switcher(line))
 		init_t_line(line, all);
 	if (*buff != 9)
 		add_chr_to_pos(line, *buff);
+	else
+	{
+		i = -1;
+		while (++i < 4)
+			add_chr_to_pos(line, ' ');
+	}
 	return (0);
 }
 
