@@ -106,10 +106,7 @@ int	control_d_handle(t_line *line)
 			return (1);
 		}
 		else
-		{	
-			write(STDOUT_FILENO, "exit", 4);
 			line->main_line = ft_strdup("exit");
-		}
 		return (2);
 	}
 	return (0);
