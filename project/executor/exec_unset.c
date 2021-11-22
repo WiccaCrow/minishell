@@ -11,9 +11,9 @@
  * 
  * Contains functions:
  * 	1.3.5.6.1.	count_env_lines;
- * 	1.3.5.7.1.	count_lines;
- * 	1.3.5.7.2.	exec_unset_find_env_str;
- * 	1.3.5.7.3.	exec_unset_do_new_env;
+ * 	1.3.5.6.3.1.1.	count_lines;
+ * 	1.3.5.7.1.	exec_unset_find_env_str;
+ * 	1.3.5.7.2.	exec_unset_do_new_env;
  */
 
 int	exec_unset(t_all *all, t_command *tmp)
@@ -43,7 +43,7 @@ int	exec_unset(t_all *all, t_command *tmp)
 }
 
 /****************************************
- * 	1.3.5.7.2. exec_unset_find_env_str	*
+ * 	1.3.5.7.1. exec_unset_find_env_str	*
  * **************************************
 */
 /* Description:
@@ -58,9 +58,9 @@ int	exec_unset(t_all *all, t_command *tmp)
  * 		oper_name - "export" or "unset".
  * 
  * Contains functions
- * 		check_valid_args;
- * 		find_env_str;
- * 		ft_free;
+ * 		1.3.5.6.3.1.1.1. check_valid_args;
+ * 		1.3.5.6.3.1.1.3. find_env_str;
+ * 		1.4. ft_free;
  */
 
 void	exec_unset_find_env_str(t_all *all, t_command *tmp, char *oper_name)
@@ -79,7 +79,7 @@ void	exec_unset_find_env_str(t_all *all, t_command *tmp, char *oper_name)
 }
 
 /********************************************
- * 	1.3.5.7.3.  exec_unset_delete_env_str	*
+ * 	1.3.5.7.2.  exec_unset_delete_env_str	*
  * ******************************************
 */
 /* Description:
