@@ -17,6 +17,7 @@ int	g_completion_code;
  * 1.4. ft_free;
  * 1.5. exit_clean;	Clean exit.
  * 1.6. line_getter; (in line_getter.c)
+ * 1.7. start_all; (in directory start_all)
 */
 
 int	main(int ac, char **av, char **env)
