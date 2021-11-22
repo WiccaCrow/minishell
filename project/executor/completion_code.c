@@ -1,8 +1,8 @@
 #include "minishell.h"
 
-/****************************************
- * 		completion_code_malloc_error	*
- * **************************************
+/**************************************************
+ *   1.3.5.6.3.1.2. completion_code_malloc_error  *
+ * ************************************************
 */
 /* Description:
  * 		In case if array_null point to NULL, set value code_to_on to 1 
