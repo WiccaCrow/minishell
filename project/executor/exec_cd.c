@@ -108,7 +108,7 @@ void	change_pwd(t_all *all)
 }
 
 /************************************
- * 		  get_my_env_index			*
+ * 	1.7.4.  get_my_env_index    *
  * **********************************
 */
 /* Description:
