@@ -1,8 +1,9 @@
 # minishell
 Командный проект.
 
-WiccaCrow https://github.com/WiccaCrow
-bbritva https://github.com/bbritva
+    WiccaCrow https://github.com/WiccaCrow
+
+    bbritva https://github.com/bbritva
 
 Собственная оболочка, написанная на чистом С.
 С деталями проекта можно ознакомиться в папке Subject.
