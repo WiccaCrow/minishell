@@ -1,7 +1,7 @@
 #include "minishell.h"
 
 /************************************
- * 		init_env_av0_path     		*
+ *  1.7.1.3.1. init_env_av0_path    *
  * **********************************
 */
 /* Description:
@@ -12,9 +12,9 @@
  * 		char **av0_path. It is passed to this function as &av0_path_var
  * 				(from char *av0_path_var).
  * Contains functions:
- * 		ft_strlen;
- * 		init_env_err_with_exit_msh;
- * 		ft_strncmp;
+ * 		libft.  ft_strlen;
+ * 		1.7.1.2.init_env_err_with_exit_msh;
+ * 		libft.  ft_strncmp;
  */
 
 void	init_env_av0_path(t_all *all, char *av0, char **av0_path)
@@ -39,9 +39,9 @@ void	init_env_av0_path(t_all *all, char *av0, char **av0_path)
 		(*av0_path)[av_len - 1] = '\0';
 }
 
-/************************************
- * 	init_env_path_without_path   	*
- * **********************************
+/*****************************************
+ * 1.7.1.3.2. init_env_path_without_path *
+ * ***************************************
 */
 /* Description:
  *       The function create and fill env variable PATH
@@ -49,8 +49,8 @@ void	init_env_av0_path(t_all *all, char *av0, char **av0_path)
  *       minishell (income av0_path)after last char ':'.
  *       And set it on all->env[i].
  * Contains functions:
- * 		init_env_err_with_exit_msh;
- * 		ft_strjoin;
+ * 		1.7.1.2. init_env_err_with_exit_msh;
+ * 		libft.   ft_strjoin;
  */
 
 void	init_env_path_without_path(t_all *all, char *av0_path, int i)
@@ -64,9 +64,9 @@ void	init_env_path_without_path(t_all *all, char *av0_path, int i)
 	all->env[i] = new_path;
 }
 
-/************************************
- * 		init_env_path_with_path   	*
- * **********************************
+/****************************************
+ *   1.7.1.3.3. init_env_path_with_path *
+ * **************************************
 */
 /* Description:
  *       The function checks if there is a path in the av0_path variable among
@@ -74,12 +74,14 @@ void	init_env_path_without_path(t_all *all, char *av0_path, int i)
  *       If av0_path is absent among the paths in PATH, add it through the ':
  *       symbol.
  * Contains functions:
- * 		init_env_err_with_exit_msh;
- * 		ft_strlen;
- * 		ft_split;
- * 		ft_free;
- * 		ft_strncmp;
- * 		ft_strjoin;
+ * 		1.7.1.3.3.1. init_env_path_split;
+ * 		1.7.1.3.3.2. free_char_array;
+ * 		1.7.1.2. init_env_err_with_exit_msh;
+ * 		libft.   ft_strlen;
+ * 		libft.   ft_split;
+ * 		libft.   ft_free;
+ * 		libft.   ft_strncmp;
+ * 		libft.   ft_strjoin;
  */
 
 void	init_env_path_with_path(t_all *all, char *av0_path, int index_path)
@@ -106,9 +108,9 @@ void	init_env_path_with_path(t_all *all, char *av0_path, int index_path)
 	free_char_array(all->path_split);
 }
 
-/************************************
- * 			init_env_path_split   	*
- * **********************************
+/*************************************
+ *  1.7.1.3.3.1. init_env_path_split *
+ * ***********************************
 */
 /* Description:
  * 		The function split PATH on paths to all->path_split.
@@ -121,11 +123,11 @@ void	init_env_path_with_path(t_all *all, char *av0_path, int index_path)
  * 		If among the rows in PATH there is no av0_path, the 
  * 		index of the NULL string in the array is returned.
  * Contains functions:
- * 		init_env_err_with_exit_msh;
- * 		ft_strlen;
- * 		ft_split;
- * 		ft_free;
- * 		ft_strncmp;
+ * 		1.7.1.2. init_env_err_with_exit_msh;
+ * 		libft.   ft_strlen;
+ * 		libft.   ft_split;
+ * 		libft.   ft_free;
+ * 		libft.   ft_strncmp;
  */
 
 int	init_env_path_split(t_all *all, int index_path, char *av0_path)
