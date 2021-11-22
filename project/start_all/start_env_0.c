@@ -17,7 +17,7 @@
  * 		1.7.1.1. init_env_allocate_memory;
  * 		1.7.1.2. init_env_err_with_exit_msh;
  * 		1.7.1.3. init_env_path;
- * 		1.7.1.4. get_my_env_index;
+ * 		1.3.5.6.3.1.1.3.1. get_my_env_index;
  * 		libft. ft_strdup;
  * 		libft. ft_strjoin;
  */
@@ -55,7 +55,7 @@ void	init_env(t_all *all, char **env, char *av0)
 /* Description:
  *      The function allocates memory for an all->env array.
  * Contains functions:
- * 		1.7.1.4. get_my_env_index;
+ * 		1.3.5.6.3.1.1.3.1. get_my_env_index;
  * 		1.7.1.2. init_env_err_with_exit_msh;
  */
 
@@ -119,7 +119,7 @@ void	init_env_err_with_exit_msh(t_all *all, char *array_null,
  * 		1.7.1.3.1. init_env_av0_path;
  * 		1.7.1.3.2. init_env_path_without_path;
  * 		1.7.1.3.3. init_env_path_with_path;
- * 		1.7.1.3. get_my_env_index;
+ * 		1.3.5.6.3.1.1.3.1. get_my_env_index;
  */
 
 void	init_env_path(t_all *all, char *av0, int i)
