@@ -1,7 +1,7 @@
 #include "minishell.h"
 
 /************************************
- * 				subjoin_env			*
+ *     1.3.5.6.3. subjoin_env       *
  * **********************************
 */
 /* Start variables value:
@@ -24,10 +24,11 @@
  * Code comments:
  * 		If malloc error occurs all->env not change;
  * Contains functions:
- * 		1. count_lines;
- * 		2. export_args_to_new_env;
+ * 		1.3.5.6.3.1. create_new_env_array;
+ * 		1.3.5.6.3.2. export_args_to_new_env;
  * 			Add new variable to my env array or	overwrites existing env
  * 			variable with new value.
+ * 		1.3.5.6.3.3. check_arg_pwd
 */
 
 void	subjoin_env(t_all *all, t_command *tmp, int i)
@@ -57,9 +58,9 @@ void	subjoin_env(t_all *all, t_command *tmp, int i)
 	check_arg_pwd(all);
 }
 
-/************************************
- * 		create_new_env_array		*
- * **********************************
+/******************************************
+ *   1.3.5.6.3.1. create_new_env_array    *
+ * ****************************************
 */
 /* Start variables value:
  * 		create_new_env_array(all, tmp, i);
@@ -91,8 +92,8 @@ void	subjoin_env(t_all *all, t_command *tmp, int i)
  * 		env_new[count] = all->env[count];
  * 		---------------------
  * Contains functions:
- * 		1. count_lines;
- * 		2. completion_code_malloc_error;
+ * 		1.3.5.6.3.1.1. count_lines;
+ * 		1.3.5.6.3.1.2. completion_code_malloc_error;
 */
 
 char	**create_new_env_array(t_all *all, t_command *tmp, int i)
@@ -116,7 +117,7 @@ char	**create_new_env_array(t_all *all, t_command *tmp, int i)
 }
 
 /************************************
- * 			count_lines				*
+ *    1.3.5.6.3.1.1. count_lines    *
  * **********************************
 */
 /* Description:
@@ -159,13 +160,13 @@ char	**create_new_env_array(t_all *all, t_command *tmp, int i)
  * 		lines in the new env array will decrease.
 */
 /* Contains functions:
- * 		1. check_valid_args;
+ * 		1.3.5.6.3.1.1.1. check_valid_args;
  * 			checks the validity of the entered arguments, 0/1 flag -
  * 			print / no message about the validity of the arguments
- * 		2. check_double_args;
+ * 		1.3.5.6.3.1.1.2. check_double_args;
  * 			checks for the presence of the same argument among subsequent
  * 			arguments 1 - repeats, 0 - no repeats
- * 		3. find_env_str;
+ * 		1.3.5.6.3.1.1.3. find_env_str;
  * 			find and return the env index of the string or null.
  * 		fibft. ft_strncmp;
  * 		fibft. ft_strlen;
@@ -197,9 +198,9 @@ int	count_lines(t_all *all, t_command *tmp, char *oper_name, int nb_env_lines)
 	return (nb_env_lines);
 }
 
-/************************************
- * 		export_args_to_new_env		*
- * **********************************
+/***********************************************
+ * 	1.3.5.6.3.2. export_args_to_new_env    *
+ * *********************************************
 */
 /* Start variables value:
  * 		export_args_to_new_env(all, tmp, env_new);
@@ -237,15 +238,15 @@ int	count_lines(t_all *all, t_command *tmp, char *oper_name, int nb_env_lines)
  * 		}
  * 
  * Contains functions:
- * 		1. check_valid_args;
+ * 		1.3.5.6.3.1.1.1.1. check_valid_args;
  * 			checks the validity of the entered arguments, 0/1 flag -
  * 			print / no message about the validity of the arguments
- * 		2. check_double_args;
+ * 		1.3.5.6.3.1.1.2. check_double_args;
  * 			checks for the presence of the same argument among subsequent
  * 			arguments 1 - repeats, 0 - no repeats
- * 		3. find_env_str;
+ * 		1.3.5.6.3.1.1.3.3. find_env_str;
  * 			find and return the env index of the string or null.
- * 		4. change_env_str;
+ * 		1.3.5.6.3.2.1. change_env_str;
  * 			overwrites existing env variable with new value.
  * 		fibft. ft_strdup;
  * 		fibft. ft_strchr;
