@@ -18,8 +18,8 @@
  * 		1.7.1.2. init_env_err_with_exit_msh;
  * 		1.7.1.3. init_env_path;
  * 		1.7.1.4. get_my_env_index;
- * 		1.7.1.5. ft_strdup;
- * 		1.7.1.6. ft_strjoin;
+ * 		libft. ft_strdup;
+ * 		libft. ft_strjoin;
  */
 
 void	init_env(t_all *all, char **env, char *av0)
