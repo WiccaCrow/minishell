@@ -1,7 +1,7 @@
 #include "minishell.h"
 
 /************************************
- * 		1.1.1. init_env     		*
+ * 		1.7.1. init_env     		*
  * **********************************
 */
 /* Description:
@@ -14,12 +14,12 @@
  * 		For more details see the description of the function
  * 		init_env_path().
  * Contains functions:
- * 		init_env_allocate_memory;
- * 		init_env_err_with_exit_msh;
- * 		init_env_path;
- * 		get_my_env_index;
- * 		ft_strdup;
- * 		ft_strjoin;
+ * 		1.7.1.1. init_env_allocate_memory;
+ * 		1.7.1.2. init_env_err_with_exit_msh;
+ * 		1.7.1.3. init_env_path;
+ * 		1.7.1.4. get_my_env_index;
+ * 		1.7.1.5. ft_strdup;
+ * 		1.7.1.6. ft_strjoin;
  */
 
 void	init_env(t_all *all, char **env, char *av0)
@@ -49,14 +49,14 @@ void	init_env(t_all *all, char **env, char *av0)
 }
 
 /************************************
- * 		init_env_allocate_memory	*
+ * 	1.7.1.1. init_env_allocate_memory	*
  * **********************************
 */
 /* Description:
  *      The function allocates memory for an all->env array.
  * Contains functions:
- * 		get_my_env_index;
- * 		init_env_err_with_exit_msh;
+ * 		1.7.1.4. get_my_env_index;
+ * 		1.7.1.2. init_env_err_with_exit_msh;
  */
 
 int	init_env_allocate_memory(t_all *all, char **env)
@@ -86,7 +86,7 @@ int	init_env_allocate_memory(t_all *all, char **env)
 }
 
 /************************************
- * 		init_env_err_with_exit_msh	*
+ * 	1.7.1.2. init_env_err_with_exit_msh	*
  * **********************************
 */
 /* Description:
@@ -94,8 +94,8 @@ int	init_env_allocate_memory(t_all *all, char **env)
  *      this function is called.
  *      This function prints an error message and exits the program minishell.
  * Contains functions:
- * 		completion_code_malloc_error;
- * 		exit_clean;
+ * 		1.7.1.2.1. completion_code_malloc_error;
+ * 		1.5. exit_clean;
  */
 
 void	init_env_err_with_exit_msh(t_all *all, char *array_null,
@@ -107,7 +107,7 @@ void	init_env_err_with_exit_msh(t_all *all, char *array_null,
 }
 
 /************************************
- * 			init_env_path   		*
+ * 		1.7.1.3. init_env_path   		*
  * **********************************
 */
 /* Description:
@@ -116,10 +116,10 @@ void	init_env_err_with_exit_msh(t_all *all, char *array_null,
  *       "PATH=/usr/gnu/bin:/usr/local/bin:/bin:/usr/bin:.:" and path to the
  *       minishell after char ':'.
  * Contains functions:
- * 		init_env_av0_path;
- * 		init_env_path_without_path;
- * 		init_env_path_with_path;
- * 		get_my_env_index;
+ * 		1.7.1.3.1. init_env_av0_path;
+ * 		1.7.1.3.2. init_env_path_without_path;
+ * 		1.7.1.3.3. init_env_path_with_path;
+ * 		1.7.1.3. get_my_env_index;
  */
 
 void	init_env_path(t_all *all, char *av0, int i)
