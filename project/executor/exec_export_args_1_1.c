@@ -1,8 +1,8 @@
 #include "minishell.h"
 
-/************************************
- * 			print_not_valid			*
- * **********************************
+/*****************************************
+ *  1.3.5.6.3.1.1.1.1.1. print_not_valid *
+ * ***************************************
 */
 /* Variables description, code comments:
  * 		args_name. Name of not validity argument.
@@ -30,7 +30,7 @@ int	print_not_valid(char *args_name, char *operation_name, int flag_print)
 }
 
 /************************************
- * 			change_env_str			*
+ *   1.3.5.6.3.2.1. change_env_str  *
  * **********************************
 */
 /* Description:
@@ -71,7 +71,7 @@ int	change_env_str(t_all *all, t_command *tmp, int index, char **env)
 }
 
 /************************************
- * 			find_env_str			*
+ *   1.3.5.6.3.1.1.3. find_env_str  *
  * **********************************
 */
 /* Start variables value:
@@ -105,8 +105,8 @@ int	change_env_str(t_all *all, t_command *tmp, int index, char **env)
  *		NULL row in the all->env array.
 */
 /* Contains functions:
- * 		1. get_my_env_index;
- * 		Determines the index of the search string, if it exists in the array.
+ * 		1.3.5.6.3.1.1.3.1. get_my_env_index;
+ * 			Determines the index of the search string, if it exists in the array.
  * 		fibft. ft_strncmp;
  * 		fibft. ft_strlen;
  * 		fibft. ft_strchr;
@@ -136,9 +136,9 @@ int	find_env_str(t_all *all, t_command *tmp, char *oper_name, char **env)
 	return (index);
 }
 
-/************************************
- * 		check_double_args			*
- * **********************************
+/*********************************************
+ *  1.3.5.6.3.1.1.2.1. find_next_double_arg  *
+ * *******************************************
 */
 /* Description:
  * 		The function iterates over all subsequent arguments as long as there
