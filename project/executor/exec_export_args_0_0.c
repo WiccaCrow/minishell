@@ -93,7 +93,7 @@ void	sort_env(t_all *all, t_command *tmp, int i, int j)
 }
 
 /************************************
- * 			do_sort_index			*
+ *     1.3.5.6.2.1. do_sort_index   *
  * **********************************
 */
 /* Description:
@@ -117,9 +117,9 @@ int	do_sort_index(char ***sort_env_index, int **sort, int i)
 	return (g_completion_code);
 }
 
-/************************************
- * 		ft_strcmp_s1_less_s2		*
- * **********************************
+/**************************************
+ *  1.3.5.6.2.2. ft_strcmp_s1_less_s2 *
+ * ************************************
 */
 /* Description:
  * 		Compare two strings.
