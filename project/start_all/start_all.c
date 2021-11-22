@@ -1,7 +1,7 @@
 #include "minishell.h"
 
 /************************************
- * 		1.1. start_all				*
+ * 		1.7. start_all				*
  * **********************************
 */
 /* Description:
@@ -9,9 +9,9 @@
  * pointers = NULL, int variables = 0, flag command = 0).
  *
  * Contain functions:
- *  1.1.1. init_env;
+ *  1.7.1. init_env;
  *          do copy env
- *  1.1.2. init_commands;
+ *  1.7.2. init_commands;
  *          init our shell commands
  */
 
