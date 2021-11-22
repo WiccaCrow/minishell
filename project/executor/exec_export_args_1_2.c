@@ -1,8 +1,8 @@
 #include "minishell.h"
 
-/************************************
- * 		check_valid_args			*
- * **********************************
+/*******************************************
+ *     1.3.5.6.3.1.1.1.1. check_valid_args *
+ * *****************************************
 */
 /* Variables description, code comments:
  * 		flag_print. 0/1 flag print/no message about the validity of the
@@ -11,7 +11,7 @@
  * Description:
  * 		checks the validity of the entered arguments (for command in current list).
  * Contains functions:
- * 		print_not_valid;
+ * 		1.3.5.6.3.1.1.1.1.1. print_not_valid;
  * 			print message about not validity of the argument.
  * 		libft. ft_strncmp;
 */
@@ -41,9 +41,9 @@ int	check_valid_args(char *argj, char *oper_name, int flag_print)
 	return (1);
 }
 
-/************************************
- * 		check_double_args			*
- * **********************************
+/***************************************
+ *  1.3.5.6.3.1.1.2. check_double_args *
+ * *************************************
 */
 /* Description:
  * 		The function iterates over all subsequent arguments as long as there
@@ -54,7 +54,7 @@ int	check_valid_args(char *argj, char *oper_name, int flag_print)
  * 		If the desired variable is found in the subsequent arguments, the
  * 		function returns 1.
  * Contains functions:
- * 		find_next_double_arg;
+ * 		1.3.5.6.3.1.1.2.1. find_next_double_arg;
  * 		libft. ft_strchr;
  * 		libft. ft_strlen;
 */
@@ -80,7 +80,7 @@ int	check_double_args(char **args, int find_plus)
 }
 
 /************************************
- * 			check_arg_pwd			*
+ * 	1.3.5.6.3.3. check_arg_pwd  *
  * **********************************
 */
 /* Description:
@@ -94,8 +94,8 @@ int	check_double_args(char **args, int find_plus)
  * 		directory from all-pwd.
  *
  * Contains functions:
- * 		1. ft_strncmp;
- * 		2. change_pwd;
+ * 		libft. ft_strncmp;
+ * 		1.3.5.3.2. change_pwd;
 */
 
 void	check_arg_pwd(t_all *all)
