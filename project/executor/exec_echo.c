@@ -38,7 +38,7 @@ void	echo_check_flag_n(t_command *tmp, int *i, int *flag_n)
  * execution command 'echo'.
  * 
  * function:
- * 1.4.2.1. echo_check_flag_n;
+ * 1.3.5.2.2.1. echo_check_flag_n;
  * 			check flag '-n'.
  * libft. ft_strlen.
 */
